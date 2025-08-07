@@ -33,7 +33,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Send email notification via MailerSend (when trial restrictions are resolved)
       if (process.env.MAILERSEND_API_KEY) {
         try {
-          const sentFrom = new Sender("hello@test-xkjn41mjy1p4z781.mlsender.net", "Dook Scoop Em");
+          const sentFrom = new Sender("noreply@dookscoopem.com", "Dook Scoop Em");
           const recipients = [new Recipient("kellum.ryan@gmail.com", "Ryan")];
           
           const emailParams = new EmailParams()
