@@ -20,6 +20,15 @@ export const waitlistSubmissions = pgTable("waitlist_submissions", {
   submittedAt: text("submitted_at").default(sql`CURRENT_TIMESTAMP`),
 });
 
+export const serviceLocations = pgTable("service_locations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  city: text("city").notNull(),
+  state: text("state").notNull(),
+  zipCodes: text("zip_codes").array().notNull(),
+  launchDate: text("launch_date"),
+  isActive: text("is_active").default("false"),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -37,7 +46,19 @@ export const insertWaitlistSubmissionSchema = createInsertSchema(waitlistSubmiss
   numberOfDogs: z.string().min(1, "Please select number of dogs"),
 });
 
+export const insertServiceLocationSchema = createInsertSchema(serviceLocations).omit({
+  id: true,
+}).extend({
+  city: z.string().min(2, "City name is required"),
+  state: z.string().min(2, "State is required"),
+  zipCodes: z.array(z.string()).min(1, "At least one zip code is required"),
+  launchDate: z.string().optional(),
+  isActive: z.string().default("false"),
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertWaitlistSubmission = z.infer<typeof insertWaitlistSubmissionSchema>;
 export type WaitlistSubmission = typeof waitlistSubmissions.$inferSelect;
+export type InsertServiceLocation = z.infer<typeof insertServiceLocationSchema>;
+export type ServiceLocation = typeof serviceLocations.$inferSelect;

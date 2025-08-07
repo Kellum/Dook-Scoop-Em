@@ -22,6 +22,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Waitlist submission endpoint
+  // Get service locations endpoint
+  app.get("/api/locations", async (req, res) => {
+    try {
+      const locations = await storage.getAllServiceLocations();
+      res.json({ locations });
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+      res.status(500).json({ error: "Failed to fetch locations" });
+    }
+  });
+
   // Get waitlist notifications endpoint
   app.get("/api/notifications", async (req, res) => {
     try {

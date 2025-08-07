@@ -1,4 +1,5 @@
-import { Dog, Calendar, Shield, Heart, DollarSign, Leaf, Smartphone, Clock, Phone, Mail, Facebook, Instagram } from "lucide-react";
+import { Dog, Calendar, Shield, Heart, DollarSign, Leaf, Smartphone, Clock, Phone, Mail, Facebook, Instagram, MapPin } from "lucide-react";
+import { Link } from "wouter";
 import WaitlistForm from "@/components/waitlist-form";
 
 export default function Landing() {
@@ -20,13 +21,21 @@ export default function Landing() {
               <Dog className="text-2xl text-primary" />
               <h1 className="text-xl sm:text-2xl font-bold text-primary">Dook Scoop Em</h1>
             </div>
-            <a 
-              href="#waitlist" 
-              onClick={scrollToWaitlist}
-              className="bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity font-medium"
-            >
-              Join Waitlist
-            </a>
+            <div className="flex items-center space-x-3">
+              <Link href="/locations">
+                <button className="text-primary hover:text-primary/80 font-medium inline-flex items-center space-x-1">
+                  <MapPin className="w-4 h-4" />
+                  <span>Service Areas</span>
+                </button>
+              </Link>
+              <a 
+                href="#waitlist" 
+                onClick={scrollToWaitlist}
+                className="bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity font-medium"
+              >
+                Join Waitlist
+              </a>
+            </div>
           </div>
         </div>
       </header>
@@ -57,10 +66,12 @@ export default function Landing() {
                   <Heart className="w-5 h-5 mr-2" />
                   Join Our Waitlist
                 </a>
-                <button className="border-2 border-primary text-primary px-8 py-4 rounded-lg hover:bg-primary hover:text-white transition-colors font-semibold text-lg inline-flex items-center justify-center">
-                  <Shield className="w-5 h-5 mr-2" />
-                  Learn More
-                </button>
+                <Link href="/locations">
+                  <button className="border-2 border-primary text-primary px-8 py-4 rounded-lg hover:bg-primary hover:text-white transition-colors font-semibold text-lg inline-flex items-center justify-center">
+                    <MapPin className="w-5 h-5 mr-2" />
+                    View Service Areas
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
