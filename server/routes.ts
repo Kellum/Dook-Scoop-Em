@@ -22,7 +22,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Send email notification via MailerSend
       if (process.env.MAILERSEND_API_KEY) {
         try {
-          const sentFrom = new Sender("MS_8vX4jy@trial-pxkjn41rz7z4z781.mlsender.net", "Dook Scoop Em");
+          console.log("Attempting to send email to:", "kellum.ryan@gmail.com");
+          
+          // Use the trial domain that should work with your account
+          const sentFrom = new Sender("trial@trial-pxkjn41rz7z4z781.mlsender.net", "Dook Scoop Em");
           const recipients = [new Recipient("kellum.ryan@gmail.com", "Ryan Kellum")];
           
           const emailParams = new EmailParams()
@@ -49,7 +52,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
               Submitted At: ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}
             `);
 
-          await mailerSend.email.send(emailParams);
+          const result = await mailerSend.email.send(emailParams);
+          console.log("Email sent successfully:", result);
         } catch (emailError) {
           console.error("Email sending failed:", emailError);
           // Continue without failing the request - submission is still saved
