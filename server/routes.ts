@@ -24,8 +24,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         try {
           console.log("Attempting to send email to:", "kellum.ryan@gmail.com");
           
-          // Use the trial domain that should work with your account
-          const sentFrom = new Sender("trial@trial-pxkjn41rz7z4z781.mlsender.net", "Dook Scoop Em");
+          // Use your actual trial domain
+          const sentFrom = new Sender("noreply@test-xkjn41mjy1p4z781.mlsender.net", "Dook Scoop Em");
           const recipients = [new Recipient("kellum.ryan@gmail.com", "Ryan Kellum")];
           
           const emailParams = new EmailParams()
