@@ -2,16 +2,12 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertWaitlistSubmissionSchema } from "@shared/schema";
-import nodemailer from "nodemailer";
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Configure nodemailer
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL_USER || 'your-email@gmail.com',
-      pass: process.env.EMAIL_PASS || 'your-app-password'
-    }
+  // Configure MailerSend
+  const mailerSend = new MailerSend({
+    apiKey: process.env.MAILERSEND_API_KEY || '',
   });
 
   // Waitlist submission endpoint
@@ -23,23 +19,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Store submission
       const submission = await storage.createWaitlistSubmission(validatedData);
       
-      // Send email notification
-      const mailOptions = {
-        from: process.env.EMAIL_USER || 'noreply@dookscoopem.com',
-        to: 'kellum.ryan@gmail.com',
-        subject: 'New Dook Scoop Em Waitlist Signup',
-        html: `
-          <h2>New Waitlist Signup</h2>
-          <p><strong>Name:</strong> ${submission.name}</p>
-          <p><strong>Email:</strong> ${submission.email}</p>
-          <p><strong>Address:</strong> ${submission.address}</p>
-          <p><strong>Phone:</strong> ${submission.phone}</p>
-          <p><strong>Number of Dogs:</strong> ${submission.numberOfDogs}</p>
-          <p><strong>Submitted At:</strong> ${new Date(submission.submittedAt).toLocaleString()}</p>
-        `
-      };
+      // Send email notification via MailerSend
+      if (process.env.MAILERSEND_API_KEY) {
+        try {
+          const sentFrom = new Sender("noreply@yourdomain.com", "Dook Scoop Em");
+          const recipients = [new Recipient("kellum.ryan@gmail.com", "Ryan Kellum")];
+          
+          const emailParams = new EmailParams()
+            .setFrom(sentFrom)
+            .setTo(recipients)
+            .setSubject("New Dook Scoop Em Waitlist Signup")
+            .setHtml(`
+              <h2>New Waitlist Signup</h2>
+              <p><strong>Name:</strong> ${submission.name}</p>
+              <p><strong>Email:</strong> ${submission.email}</p>
+              <p><strong>Address:</strong> ${submission.address}</p>
+              <p><strong>Phone:</strong> ${submission.phone}</p>
+              <p><strong>Number of Dogs:</strong> ${submission.numberOfDogs}</p>
+              <p><strong>Submitted At:</strong> ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}</p>
+            `)
+            .setText(`
+              New Waitlist Signup
+              
+              Name: ${submission.name}
+              Email: ${submission.email}
+              Address: ${submission.address}
+              Phone: ${submission.phone}
+              Number of Dogs: ${submission.numberOfDogs}
+              Submitted At: ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}
+            `);
 
-      await transporter.sendMail(mailOptions);
+          await mailerSend.email.send(emailParams);
+        } catch (emailError) {
+          console.error("Email sending failed:", emailError);
+          // Continue without failing the request - submission is still saved
+        }
+      }
       
       res.json({ 
         message: "Successfully joined waitlist!", 
@@ -48,10 +63,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Waitlist submission error:", error);
       
-      if (error.name === 'ZodError') {
+      if (error instanceof Error && error.name === 'ZodError') {
         return res.status(400).json({ 
           message: "Validation error", 
-          errors: error.errors 
+          errors: (error as any).errors 
         });
       }
       
