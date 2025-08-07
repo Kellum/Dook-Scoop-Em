@@ -35,41 +35,32 @@ export default function Landing() {
         {/* Hero Section */}
         <section className="relative bg-gradient-to-br from-secondary via-white to-secondary min-h-screen flex items-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="text-center lg:text-left">
-                <div className="inline-block bg-accent text-white px-4 py-2 rounded-full text-sm font-medium mb-6">
-                  <Clock className="w-4 h-4 inline mr-2" />
-                  Coming Soon
-                </div>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-dark mb-6 leading-tight">
-                  Professional Pet Waste 
-                  <span className="text-primary"> Removal Service</span>
-                </h1>
-                <p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed">
-                  Keep your yard clean and healthy with our reliable, professional dog waste removal service. 
-                  We're launching soon and taking signups for our waitlist!
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                  <a 
-                    href="#waitlist" 
-                    onClick={scrollToWaitlist}
-                    className="bg-primary text-white px-8 py-4 rounded-lg hover:opacity-90 transition-opacity font-semibold text-lg inline-flex items-center justify-center"
-                  >
-                    <Heart className="w-5 h-5 mr-2" />
-                    Join Our Waitlist
-                  </a>
-                  <button className="border-2 border-primary text-primary px-8 py-4 rounded-lg hover:bg-primary hover:text-white transition-colors font-semibold text-lg inline-flex items-center justify-center">
-                    <Shield className="w-5 h-5 mr-2" />
-                    Learn More
-                  </button>
-                </div>
+            <div className="text-center">
+              <div className="inline-block bg-accent text-white px-4 py-2 rounded-full text-sm font-medium mb-6">
+                <Clock className="w-4 h-4 inline mr-2" />
+                Coming Soon
               </div>
-              <div className="order-first lg:order-last">
-                <img 
-                  src="https://images.unsplash.com/photo-1552053831-71594a27632d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
-                  alt="Happy golden retriever in a clean backyard" 
-                  className="rounded-2xl shadow-2xl w-full h-auto object-cover"
-                />
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-dark mb-6 leading-tight">
+                Professional Pet Waste 
+                <span className="text-primary"> Removal Service</span>
+              </h1>
+              <p className="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl mx-auto">
+                Keep your yard clean and healthy with our reliable, professional dog waste removal service. 
+                We're launching soon and taking signups for our waitlist!
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a 
+                  href="#waitlist" 
+                  onClick={scrollToWaitlist}
+                  className="bg-primary text-white px-8 py-4 rounded-lg hover:opacity-90 transition-opacity font-semibold text-lg inline-flex items-center justify-center"
+                >
+                  <Heart className="w-5 h-5 mr-2" />
+                  Join Our Waitlist
+                </a>
+                <button className="border-2 border-primary text-primary px-8 py-4 rounded-lg hover:bg-primary hover:text-white transition-colors font-semibold text-lg inline-flex items-center justify-center">
+                  <Shield className="w-5 h-5 mr-2" />
+                  Learn More
+                </button>
               </div>
             </div>
           </div>
