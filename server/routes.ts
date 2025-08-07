@@ -54,7 +54,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const result = await mailerSend.email.send(emailParams);
           console.log("Email sent successfully:", result);
         } catch (emailError) {
-          console.log("Email sending failed (MailerSend trial restrictions) - submission logged above");
+          console.error("Email sending failed:", emailError);
+          console.log("Full error details:", JSON.stringify(emailError, null, 2));
         }
       }
       
