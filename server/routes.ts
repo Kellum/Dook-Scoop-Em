@@ -22,7 +22,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Send email notification via MailerSend
       if (process.env.MAILERSEND_API_KEY) {
         try {
-          const sentFrom = new Sender("noreply@yourdomain.com", "Dook Scoop Em");
+          const sentFrom = new Sender("MS_8vX4jy@trial-pxkjn41rz7z4z781.mlsender.net", "Dook Scoop Em");
           const recipients = [new Recipient("kellum.ryan@gmail.com", "Ryan Kellum")];
           
           const emailParams = new EmailParams()
