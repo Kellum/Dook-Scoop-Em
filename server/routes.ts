@@ -24,6 +24,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("Name:", submission.name);
       console.log("Email:", submission.email);
       console.log("Address:", submission.address);
+      console.log("Zip Code:", submission.zipCode);
       console.log("Phone:", submission.phone);
       console.log("Number of Dogs:", submission.numberOfDogs);
       console.log("Submitted At:", submission.submittedAt);
@@ -44,6 +45,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               <p><strong>Name:</strong> ${submission.name}</p>
               <p><strong>Email:</strong> ${submission.email}</p>
               <p><strong>Address:</strong> ${submission.address}</p>
+              <p><strong>Zip Code:</strong> ${submission.zipCode}</p>
               <p><strong>Phone:</strong> ${submission.phone}</p>
               <p><strong>Number of Dogs:</strong> ${submission.numberOfDogs}</p>
               <p><strong>Submitted At:</strong> ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}</p>

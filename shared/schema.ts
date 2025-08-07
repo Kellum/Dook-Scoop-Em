@@ -14,6 +14,7 @@ export const waitlistSubmissions = pgTable("waitlist_submissions", {
   name: text("name").notNull(),
   email: text("email").notNull(),
   address: text("address").notNull(),
+  zipCode: text("zip_code").notNull(),
   phone: text("phone").notNull(),
   numberOfDogs: text("number_of_dogs").notNull(),
   submittedAt: text("submitted_at").default(sql`CURRENT_TIMESTAMP`),
@@ -31,6 +32,7 @@ export const insertWaitlistSubmissionSchema = createInsertSchema(waitlistSubmiss
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
   address: z.string().min(10, "Please enter a complete address"),
+  zipCode: z.string().min(5, "Please enter a valid zip code"),
   phone: z.string().min(10, "Please enter a valid phone number"),
   numberOfDogs: z.string().min(1, "Please select number of dogs"),
 });

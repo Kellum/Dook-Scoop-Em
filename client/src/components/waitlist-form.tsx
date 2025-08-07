@@ -21,6 +21,7 @@ export default function WaitlistForm() {
       name: "",
       email: "",
       address: "",
+      zipCode: "",
       phone: "",
       numberOfDogs: "",
     },
@@ -122,7 +123,27 @@ export default function WaitlistForm() {
                 </FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder="Enter your full address" 
+                    placeholder="Enter your street address" 
+                    {...field}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="zipCode"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="block text-sm font-medium text-dark">
+                  Zip Code *
+                </FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder="12345" 
                     {...field}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
                   />
