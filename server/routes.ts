@@ -100,6 +100,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.delete("/api/admin/locations/:id", requireAuth, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteServiceLocation(id);
+      res.json({ message: "Location deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting location:", error);
+      res.status(500).json({ message: "Failed to delete location" });
+    }
+  });
+
   app.get("/api/admin/waitlist", requireAuth, async (req, res) => {
     try {
       const submissions = await storage.getAllWaitlistSubmissions();

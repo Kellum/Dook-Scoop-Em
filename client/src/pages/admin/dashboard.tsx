@@ -11,7 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { MapPin, Users, Plus, LogOut, AlertCircle, CheckCircle } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { MapPin, Users, Plus, LogOut, AlertCircle, CheckCircle, Trash2 } from "lucide-react";
 import { insertServiceLocationSchema, type ServiceLocation, type WaitlistSubmission } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 
@@ -79,15 +80,6 @@ export default function AdminDashboard() {
         ? data.zipCodes.split(',').map((zip: string) => zip.trim()).filter((zip: string) => zip.length > 0)
         : data.zipCodes as string[];
       
-      const response = await apiRequest("POST", "/api/admin/locations", {
-        ...data,
-        zipCodes: zipCodesArray,
-      });
-      
-      // Set authorization header manually for admin endpoints
-      const headers = new Headers();
-      headers.set('Authorization', `Bearer ${token}`);
-      
       const adminResponse = await fetch("/api/admin/locations", {
         method: "POST",
         headers: {
@@ -107,6 +99,24 @@ export default function AdminDashboard() {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/locations"] });
       setIsAddLocationOpen(false);
       form.reset();
+    },
+  });
+
+  const deleteLocationMutation = useMutation({
+    mutationFn: async (locationId: string) => {
+      const token = localStorage.getItem("admin-token");
+      const response = await fetch(`/api/admin/locations/${locationId}`, {
+        method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      
+      if (!response.ok) throw new Error('Failed to delete location');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/locations"] });
     },
   });
 
@@ -295,15 +305,44 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {locations.map((location) => (
+                  {locations.map((location: ServiceLocation) => (
                     <Card key={location.id} className="shadow-sm">
                       <CardHeader>
-                        <CardTitle className="text-lg">
-                          {location.city}, {location.state}
-                        </CardTitle>
-                        <Badge variant="secondary" className="w-fit">
-                          {location.isActive === "true" ? "Active" : "Coming Soon"}
-                        </Badge>
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <CardTitle className="text-lg">
+                              {location.city}, {location.state}
+                            </CardTitle>
+                            <Badge variant="secondary" className="w-fit mt-1">
+                              {location.isActive === "true" ? "Active" : "Coming Soon"}
+                            </Badge>
+                          </div>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete Location</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to delete {location.city}, {location.state}? This action cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction 
+                                  onClick={() => deleteLocationMutation.mutate(location.id)}
+                                  className="bg-red-600 hover:bg-red-700"
+                                  disabled={deleteLocationMutation.isPending}
+                                >
+                                  {deleteLocationMutation.isPending ? "Deleting..." : "Delete"}
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
                       </CardHeader>
                       <CardContent>
                         {location.launchDate && (
@@ -312,7 +351,7 @@ export default function AdminDashboard() {
                           </p>
                         )}
                         <div className="flex flex-wrap gap-1">
-                          {location.zipCodes?.slice(0, 3).map((zip) => (
+                          {location.zipCodes?.slice(0, 3).map((zip: string) => (
                             <Badge key={zip} variant="outline" className="text-xs">
                               {zip}
                             </Badge>
@@ -339,7 +378,7 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4">
-                  {submissions.map((submission) => (
+                  {submissions.map((submission: WaitlistSubmission) => (
                     <Card key={submission.id} className="shadow-sm">
                       <CardContent className="pt-4">
                         <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">

@@ -53,6 +53,10 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(waitlistSubmissions);
   }
 
+  async deleteServiceLocation(id: string): Promise<void> {
+    await db.delete(serviceLocations).where(eq(serviceLocations.id, id));
+  }
+
   async getAllServiceLocations(): Promise<ServiceLocation[]> {
     const locations = await db.select().from(serviceLocations);
     
