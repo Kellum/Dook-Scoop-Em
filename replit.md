@@ -1,6 +1,14 @@
 # Overview
 
-Dook Scoop Em is a professional pet waste removal service with a React-based landing page and waitlist functionality. This is a coming-soon website that allows potential customers to join a waitlist while the service prepares to launch. The application features a modern, responsive design built with React, TypeScript, and Tailwind CSS, backed by a Node.js/Express server with PostgreSQL database integration.
+Dook Scoop Em is a professional pet waste removal service with a React-based landing page, waitlist functionality, and admin panel. This is a coming-soon website that allows potential customers to join a waitlist while the service prepares to launch. The application features a modern, responsive design built with React, TypeScript, and Tailwind CSS, backed by a Node.js/Express server with PostgreSQL database integration.
+
+## Recent Changes (January 2025)
+
+- **Admin Authentication System**: Added JWT-based admin login system with bcrypt password hashing
+- **Admin Dashboard**: Created comprehensive admin panel to manage service locations and view waitlist submissions  
+- **Database Migration**: Migrated from in-memory storage to PostgreSQL database using Drizzle ORM
+- **Service Locations Management**: Admin can now manually add new service areas with zip codes and launch dates
+- **Admin Access**: Login at `/admin/login` with username: `admin` and password: `DookScoop2025!`
 
 # User Preferences
 

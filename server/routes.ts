@@ -1,7 +1,8 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertWaitlistSubmissionSchema } from "@shared/schema";
+import { insertWaitlistSubmissionSchema, insertServiceLocationSchema, insertUserSchema } from "@shared/schema";
+import { hashPassword, verifyPassword, generateToken, requireAuth } from "./auth";
 import nodemailer from "nodemailer";
 import { writeFile, readFile, existsSync } from "fs";
 import { promisify } from "util";
@@ -21,7 +22,95 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Waitlist submission endpoint
+  // Admin Authentication Endpoints
+  app.post("/api/admin/login", async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      
+      if (!username || !password) {
+        return res.status(400).json({ message: "Username and password required" });
+      }
+
+      const user = await storage.getUserByUsername(username);
+      if (!user) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      const isValidPassword = await verifyPassword(password, user.password);
+      if (!isValidPassword) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      const token = generateToken({ userId: user.id, username: user.username });
+      res.json({ token, user: { id: user.id, username: user.username } });
+    } catch (error) {
+      console.error("Login error:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.post("/api/admin/create-admin", async (req, res) => {
+    try {
+      const validatedData = insertUserSchema.parse(req.body);
+      const hashedPassword = await hashPassword(validatedData.password);
+      
+      const user = await storage.createUser({
+        username: validatedData.username,
+        password: hashedPassword
+      });
+
+      res.json({ 
+        message: "Admin user created successfully", 
+        user: { id: user.id, username: user.username } 
+      });
+    } catch (error) {
+      console.error("Create admin error:", error);
+      if (error instanceof Error && error.message.includes('unique')) {
+        return res.status(400).json({ message: "Username already exists" });
+      }
+      res.status(500).json({ message: "Failed to create admin user" });
+    }
+  });
+
+  // Admin-only endpoints
+  app.get("/api/admin/locations", requireAuth, async (req, res) => {
+    try {
+      const locations = await storage.getAllServiceLocations();
+      res.json({ locations });
+    } catch (error) {
+      console.error("Error fetching admin locations:", error);
+      res.status(500).json({ error: "Failed to fetch locations" });
+    }
+  });
+
+  app.post("/api/admin/locations", requireAuth, async (req, res) => {
+    try {
+      const validatedData = insertServiceLocationSchema.parse(req.body);
+      const location = await storage.createServiceLocation(validatedData);
+      res.json({ location });
+    } catch (error) {
+      console.error("Error creating location:", error);
+      if (error instanceof Error && error.name === 'ZodError') {
+        return res.status(400).json({ 
+          message: "Validation error", 
+          errors: (error as any).errors 
+        });
+      }
+      res.status(500).json({ message: "Failed to create location" });
+    }
+  });
+
+  app.get("/api/admin/waitlist", requireAuth, async (req, res) => {
+    try {
+      const submissions = await storage.getAllWaitlistSubmissions();
+      res.json({ submissions });
+    } catch (error) {
+      console.error("Error fetching waitlist:", error);
+      res.status(500).json({ error: "Failed to fetch waitlist" });
+    }
+  });
+
+  // Public endpoints
   // Get service locations endpoint
   app.get("/api/locations", async (req, res) => {
     try {

@@ -1,5 +1,16 @@
-import { type User, type InsertUser, type WaitlistSubmission, type InsertWaitlistSubmission, type ServiceLocation, type InsertServiceLocation } from "@shared/schema";
-import { randomUUID } from "crypto";
+import { 
+  users, 
+  waitlistSubmissions, 
+  serviceLocations, 
+  type User, 
+  type InsertUser, 
+  type WaitlistSubmission, 
+  type InsertWaitlistSubmission, 
+  type ServiceLocation, 
+  type InsertServiceLocation 
+} from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -11,69 +22,58 @@ export interface IStorage {
   createServiceLocation(location: InsertServiceLocation): Promise<ServiceLocation>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private waitlistSubmissions: Map<string, WaitlistSubmission>;
-  private serviceLocations: Map<string, ServiceLocation>;
-
-  constructor() {
-    this.users = new Map();
-    this.waitlistSubmissions = new Map();
-    this.serviceLocations = new Map();
-    
-    // Initialize with some sample locations
-    this.initializeServiceLocations();
-  }
-
+export class DatabaseStorage implements IStorage {
   async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
     return user;
   }
 
   async createWaitlistSubmission(insertSubmission: InsertWaitlistSubmission): Promise<WaitlistSubmission> {
-    const id = randomUUID();
-    const submittedAt = new Date().toISOString();
-    const submission: WaitlistSubmission = { 
-      ...insertSubmission, 
-      id, 
-      submittedAt 
-    };
-    this.waitlistSubmissions.set(id, submission);
+    const [submission] = await db
+      .insert(waitlistSubmissions)
+      .values(insertSubmission)
+      .returning();
     return submission;
   }
 
   async getAllWaitlistSubmissions(): Promise<WaitlistSubmission[]> {
-    return Array.from(this.waitlistSubmissions.values());
+    return await db.select().from(waitlistSubmissions);
   }
 
   async getAllServiceLocations(): Promise<ServiceLocation[]> {
-    return Array.from(this.serviceLocations.values());
+    const locations = await db.select().from(serviceLocations);
+    
+    // Initialize with sample data if empty
+    if (locations.length === 0) {
+      await this.initializeServiceLocations();
+      return await db.select().from(serviceLocations);
+    }
+    
+    return locations;
   }
 
   async createServiceLocation(insertLocation: InsertServiceLocation): Promise<ServiceLocation> {
-    const id = randomUUID();
-    const location: ServiceLocation = { 
-      ...insertLocation, 
-      id,
-      launchDate: insertLocation.launchDate || null
-    };
-    this.serviceLocations.set(id, location);
+    const [location] = await db
+      .insert(serviceLocations)
+      .values(insertLocation)
+      .returning();
     return location;
   }
 
-  private initializeServiceLocations() {
+  private async initializeServiceLocations() {
     const sampleLocations: InsertServiceLocation[] = [
       {
         city: "Austin",
@@ -112,16 +112,8 @@ export class MemStorage implements IStorage {
       }
     ];
 
-    sampleLocations.forEach(location => {
-      const id = randomUUID();
-      const serviceLocation: ServiceLocation = { 
-        ...location, 
-        id,
-        launchDate: location.launchDate || null
-      };
-      this.serviceLocations.set(id, serviceLocation);
-    });
+    await db.insert(serviceLocations).values(sampleLocations);
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
