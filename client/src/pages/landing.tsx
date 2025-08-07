@@ -102,9 +102,9 @@ export default function Landing() {
                 <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
                   <Shield className="text-white text-xl w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-semibold text-dark mb-3">Fully Insured</h3>
+                <h3 className="text-xl font-semibold text-dark mb-3">Trustworthy Service</h3>
                 <p className="text-gray-600">
-                  Licensed and insured professionals you can trust with your property.
+                  Professional and reliable service you can trust with your property.
                 </p>
               </div>
 
@@ -177,11 +177,11 @@ export default function Landing() {
               <div className="flex flex-wrap justify-center items-center gap-8 text-gray-400">
                 <div className="flex items-center space-x-2">
                   <Shield className="text-xl w-6 h-6" />
-                  <span className="font-medium">Fully Insured</span>
+                  <span className="font-medium">Professional Service</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Heart className="text-xl w-6 h-6" />
-                  <span className="font-medium">Licensed Professionals</span>
+                  <span className="font-medium">Trusted Professionals</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Dog className="text-xl w-6 h-6" />
@@ -241,7 +241,7 @@ export default function Landing() {
           
           <div className="border-t border-gray-700 mt-8 pt-8 text-center">
             <p className="text-gray-400">
-              © 2024 Dook Scoop Em. All rights reserved. | Licensed & Insured
+              © 2024 Dook Scoop Em. All rights reserved.
             </p>
           </div>
         </div>
