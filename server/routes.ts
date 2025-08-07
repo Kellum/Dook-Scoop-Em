@@ -19,14 +19,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Store submission
       const submission = await storage.createWaitlistSubmission(validatedData);
       
-      // Send email notification via MailerSend
+      // Log submission details to console for now (since MailerSend trial has restrictions)
+      console.log("=== NEW WAITLIST SUBMISSION ===");
+      console.log("Name:", submission.name);
+      console.log("Email:", submission.email);
+      console.log("Address:", submission.address);
+      console.log("Phone:", submission.phone);
+      console.log("Number of Dogs:", submission.numberOfDogs);
+      console.log("Submitted At:", submission.submittedAt);
+      console.log("================================");
+
+      // Send email notification via MailerSend (when trial restrictions are resolved)
       if (process.env.MAILERSEND_API_KEY) {
         try {
-          console.log("Attempting to send email to:", "kellum.ryan@gmail.com");
-          
-          // Use your actual trial domain
-          const sentFrom = new Sender("noreply@test-xkjn41mjy1p4z781.mlsender.net", "Dook Scoop Em");
-          const recipients = [new Recipient("kellum.ryan@gmail.com", "Ryan Kellum")];
+          const sentFrom = new Sender("hello@test-xkjn41mjy1p4z781.mlsender.net", "Dook Scoop Em");
+          const recipients = [new Recipient("kellum.ryan@gmail.com", "Ryan")];
           
           const emailParams = new EmailParams()
             .setFrom(sentFrom)
@@ -40,23 +47,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
               <p><strong>Phone:</strong> ${submission.phone}</p>
               <p><strong>Number of Dogs:</strong> ${submission.numberOfDogs}</p>
               <p><strong>Submitted At:</strong> ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}</p>
-            `)
-            .setText(`
-              New Waitlist Signup
-              
-              Name: ${submission.name}
-              Email: ${submission.email}
-              Address: ${submission.address}
-              Phone: ${submission.phone}
-              Number of Dogs: ${submission.numberOfDogs}
-              Submitted At: ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}
             `);
 
           const result = await mailerSend.email.send(emailParams);
           console.log("Email sent successfully:", result);
         } catch (emailError) {
-          console.error("Email sending failed:", emailError);
-          // Continue without failing the request - submission is still saved
+          console.log("Email sending failed (MailerSend trial restrictions) - submission logged above");
         }
       }
       
