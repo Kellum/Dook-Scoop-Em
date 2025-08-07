@@ -1,0 +1,13 @@
+[
+  {
+    "id": "3b1c36c9-2896-4472-83a0-d6f17d49355c",
+    "name": "File Test User",
+    "email": "filetest@example.com",
+    "address": "789 File Test Lane",
+    "zipCode": "12345",
+    "phone": "555-123-4567",
+    "numberOfDogs": "2",
+    "submittedAt": "2025-08-07T12:46:03.210Z",
+    "timestamp": "2025-08-07T12:46:03.210Z"
+  }
+]
