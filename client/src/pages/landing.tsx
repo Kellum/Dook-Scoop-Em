@@ -176,14 +176,6 @@ export default function Landing() {
               </h3>
               <div className="flex flex-wrap justify-center items-center gap-8 text-gray-400">
                 <div className="flex items-center space-x-2">
-                  <Shield className="text-xl w-6 h-6" />
-                  <span className="font-medium">Professional Service</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Heart className="text-xl w-6 h-6" />
-                  <span className="font-medium">Trusted Professionals</span>
-                </div>
-                <div className="flex items-center space-x-2">
                   <Dog className="text-xl w-6 h-6" />
                   <span className="font-medium">Pet Lovers</span>
                 </div>
