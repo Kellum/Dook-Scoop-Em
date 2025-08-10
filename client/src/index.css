@@ -131,36 +131,27 @@
     text-shadow: 0 0 10px currentColor;
   }
 
-  /* Duke Nukem neon glow effects */
-  .neon-red {
-    color: hsl(2 100% 55%);
-    text-shadow: 
-      0 0 5px hsl(2 100% 55%),
-      0 0 10px hsl(2 100% 55%),
-      0 0 20px hsl(2 100% 55%);
+  /* Subtle retro glow effects */
+  .glow-red {
+    color: hsl(2 100% 60%);
+    text-shadow: 0 0 8px hsla(2, 100%, 60%, 0.3);
   }
 
-  .neon-yellow {
-    color: hsl(60 100% 50%);
-    text-shadow: 
-      0 0 5px hsl(60 100% 50%),
-      0 0 10px hsl(60 100% 50%),
-      0 0 20px hsl(60 100% 50%);
+  .glow-yellow {
+    color: hsl(60 100% 55%);
+    text-shadow: 0 0 8px hsla(60, 100%, 55%, 0.3);
   }
 
-  .neon-green {
-    color: hsl(120 100% 40%);
-    text-shadow: 
-      0 0 5px hsl(120 100% 40%),
-      0 0 10px hsl(120 100% 40%),
-      0 0 20px hsl(120 100% 40%);
+  .glow-green {
+    color: hsl(120 100% 45%);
+    text-shadow: 0 0 8px hsla(120, 100%, 45%, 0.3);
   }
 
-  .cyber-border {
-    border: 2px solid hsl(60 100% 30%);
+  .retro-border {
+    border: 1px solid hsl(60 100% 40%);
     box-shadow: 
-      inset 0 0 10px hsla(60, 100%, 50%, 0.2),
-      0 0 10px hsla(60, 100%, 50%, 0.3);
+      inset 0 0 5px hsla(60, 100%, 50%, 0.1),
+      0 0 5px hsla(60, 100%, 50%, 0.2);
   }
 
   .metal-panel {
@@ -185,64 +176,64 @@
       transparent 100%);
   }
 
-  .explosive-button {
+  .action-button {
     background: linear-gradient(135deg, 
-      hsl(2 100% 55%) 0%,
-      hsl(2 100% 65%) 50%,
-      hsl(2 100% 55%) 100%);
-    border: 2px solid hsl(2 100% 40%);
+      hsl(2 100% 60%) 0%,
+      hsl(2 100% 70%) 50%,
+      hsl(2 100% 60%) 100%);
+    border: 1px solid hsl(2 100% 45%);
     box-shadow: 
-      inset 0 1px 0 hsla(2, 100%, 70%, 0.3),
-      0 0 10px hsla(2, 100%, 55%, 0.5);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+      inset 0 1px 0 hsla(2, 100%, 75%, 0.2),
+      0 0 5px hsla(2, 100%, 60%, 0.3);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     transition: all 0.2s ease;
   }
 
-  .explosive-button:hover {
+  .action-button:hover {
     box-shadow: 
-      inset 0 1px 0 hsla(2, 100%, 70%, 0.3),
-      0 0 20px hsla(2, 100%, 55%, 0.8);
+      inset 0 1px 0 hsla(2, 100%, 75%, 0.2),
+      0 0 10px hsla(2, 100%, 60%, 0.5);
     transform: translateY(-1px);
   }
 
-  .nuclear-button {
+  .bright-button {
     background: linear-gradient(135deg, 
-      hsl(60 100% 50%) 0%,
-      hsl(60 100% 60%) 50%,
-      hsl(60 100% 50%) 100%);
-    border: 2px solid hsl(60 100% 35%);
+      hsl(60 100% 55%) 0%,
+      hsl(60 100% 65%) 50%,
+      hsl(60 100% 55%) 100%);
+    border: 1px solid hsl(60 100% 40%);
     color: hsl(220 20% 8%);
     box-shadow: 
-      inset 0 1px 0 hsla(60, 100%, 70%, 0.3),
-      0 0 10px hsla(60, 100%, 50%, 0.5);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      inset 0 1px 0 hsla(60, 100%, 75%, 0.2),
+      0 0 5px hsla(60, 100%, 55%, 0.3);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
     transition: all 0.2s ease;
   }
 
-  .nuclear-button:hover {
+  .bright-button:hover {
     box-shadow: 
-      inset 0 1px 0 hsla(60, 100%, 70%, 0.3),
-      0 0 20px hsla(60, 100%, 50%, 0.8);
+      inset 0 1px 0 hsla(60, 100%, 75%, 0.2),
+      0 0 10px hsla(60, 100%, 55%, 0.5);
     transform: translateY(-1px);
   }
 
-  .toxic-button {
+  .success-button {
     background: linear-gradient(135deg, 
-      hsl(120 100% 40%) 0%,
-      hsl(120 100% 50%) 50%,
-      hsl(120 100% 40%) 100%);
-    border: 2px solid hsl(120 100% 30%);
+      hsl(120 100% 45%) 0%,
+      hsl(120 100% 55%) 50%,
+      hsl(120 100% 45%) 100%);
+    border: 1px solid hsl(120 100% 35%);
     box-shadow: 
-      inset 0 1px 0 hsla(120, 100%, 60%, 0.3),
-      0 0 10px hsla(120, 100%, 40%, 0.5);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+      inset 0 1px 0 hsla(120, 100%, 65%, 0.2),
+      0 0 5px hsla(120, 100%, 45%, 0.3);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
     transition: all 0.2s ease;
   }
 
-  .toxic-button:hover {
+  .success-button:hover {
     box-shadow: 
-      inset 0 1px 0 hsla(120, 100%, 60%, 0.3),
-      0 0 20px hsla(120, 100%, 40%, 0.8);
+      inset 0 1px 0 hsla(120, 100%, 65%, 0.2),
+      0 0 10px hsla(120, 100%, 45%, 0.5);
     transform: translateY(-1px);
   }
 }

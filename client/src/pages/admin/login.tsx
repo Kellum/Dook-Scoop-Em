@@ -52,16 +52,16 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-md metal-panel cyber-border p-8">
+      <div className="w-full max-w-md metal-panel retro-border p-8">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 explosive-button rounded-sm flex items-center justify-center">
+            <div className="w-16 h-16 action-button rounded-sm flex items-center justify-center">
               <Shield className="h-8 w-8 text-yellow-300" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold neon-red font-serif mb-2">COMMAND CENTER</h1>
+          <h1 className="text-3xl font-bold glow-red font-serif mb-2">Admin Login</h1>
           <p className="text-yellow-300 font-mono">
-            CLASSIFIED ACCESS - TACTICAL OPERATIONS ONLY
+            Authorized Personnel Only
           </p>
         </div>
         <Form {...form}>
@@ -71,12 +71,12 @@ export default function AdminLogin() {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-yellow-300 font-mono font-bold">OPERATIVE ID</FormLabel>
+                  <FormLabel className="text-yellow-300 font-mono font-bold">Username</FormLabel>
                   <FormControl>
                     <Input 
-                      placeholder="Enter clearance code" 
+                      placeholder="Enter username" 
                       {...field} 
-                      className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono cyber-border"
+                      className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono retro-border"
                     />
                   </FormControl>
                   <FormMessage className="text-red-400" />
@@ -88,13 +88,13 @@ export default function AdminLogin() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-yellow-300 font-mono font-bold">ACCESS KEY</FormLabel>
+                  <FormLabel className="text-yellow-300 font-mono font-bold">Password</FormLabel>
                   <FormControl>
                     <Input 
                       type="password" 
-                      placeholder="Enter security protocol" 
+                      placeholder="Enter password" 
                       {...field} 
-                      className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono cyber-border"
+                      className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono retro-border"
                     />
                   </FormControl>
                   <FormMessage className="text-red-400" />
@@ -105,16 +105,16 @@ export default function AdminLogin() {
               <div className="metal-panel p-4 border-red-600">
                 <div className="flex items-center text-red-400">
                   <AlertCircle className="h-5 w-5 mr-2" />
-                  <span className="font-mono font-bold">ACCESS DENIED: {error}</span>
+                  <span className="font-mono font-bold">Login Failed: {error}</span>
                 </div>
               </div>
             )}
             <Button 
               type="submit" 
-              className="w-full explosive-button py-3 text-xl font-mono font-bold text-yellow-300"
+              className="w-full action-button py-3 text-xl font-mono font-bold text-yellow-300"
               disabled={loginMutation.isPending}
             >
-              {loginMutation.isPending ? "AUTHORIZING..." : "BREACH SECURITY"}
+              {loginMutation.isPending ? "Logging In..." : "Access Dashboard"}
             </Button>
           </form>
         </Form>

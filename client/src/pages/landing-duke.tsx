@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { Calendar, Shield, Heart, MapPin, Clock, Target, Zap, Bomb } from "lucide-react";
+import { Calendar, Shield, Heart, MapPin, Clock, Target, Zap } from "lucide-react";
 
 type WaitlistForm = InsertWaitlistSubmission;
 
@@ -38,8 +38,8 @@ export default function Landing() {
     },
     onSuccess: () => {
       toast({
-        title: "TARGET ACQUIRED!",
-        description: "Your coordinates have been logged. Prepare for tactical cleanup deployment!",
+        title: "Welcome to the Team!",
+        description: "You've been added to our waitlist. We'll notify you when we launch in your area!",
         variant: "default",
       });
       form.reset();
@@ -47,8 +47,8 @@ export default function Landing() {
     },
     onError: (error) => {
       toast({
-        title: "MISSION FAILED",
-        description: error.message || "Strategic error encountered. Retry mission.",
+        title: "Signup Failed",
+        description: error.message || "Something went wrong. Please try again.",
         variant: "destructive",
       });
     },
@@ -70,28 +70,28 @@ export default function Landing() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
-              <div className="w-14 h-14 explosive-button rounded-sm flex items-center justify-center shadow-lg">
-                <span className="text-2xl font-bold text-yellow-300">💥</span>
+              <div className="w-14 h-14 action-button rounded-sm flex items-center justify-center shadow-lg">
+                <span className="text-2xl font-bold text-yellow-300">🐕</span>
               </div>
               <div>
-                <h1 className="text-3xl font-bold neon-yellow font-serif tracking-wider">DOOK SCOOP EM</h1>
-                <p className="text-sm text-yellow-300 font-mono tracking-wide">TACTICAL WASTE ELIMINATION</p>
+                <h1 className="text-3xl font-bold glow-yellow font-serif tracking-wider">Dook Scoop Em</h1>
+                <p className="text-sm text-yellow-300 font-mono tracking-wide">Professional Pet Waste Removal</p>
               </div>
             </div>
             <nav className="hidden md:flex space-x-6">
               <Link href="/locations">
-                <button className="nuclear-button px-4 py-2 font-mono font-bold tracking-wide">
+                <button className="bright-button px-4 py-2 font-mono font-bold tracking-wide">
                   <MapPin className="w-4 h-4 inline mr-2" />
-                  COMBAT ZONES
+                  Service Areas
                 </button>
               </Link>
               <a 
                 href="#waitlist" 
                 onClick={scrollToWaitlist}
-                className="explosive-button px-4 py-2 font-mono font-bold tracking-wide text-yellow-300"
+                className="action-button px-4 py-2 font-mono font-bold tracking-wide text-yellow-300"
               >
                 <Target className="w-4 h-4 inline mr-2" />
-                JOIN SQUAD
+                Join Waitlist
               </a>
             </nav>
           </div>
@@ -104,32 +104,32 @@ export default function Landing() {
           <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black opacity-50"></div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
             <div className="text-center">
-              <div className="inline-block nuclear-button px-6 py-3 font-mono font-bold mb-8">
+              <div className="inline-block bright-button px-6 py-3 font-mono font-bold mb-8">
                 <Clock className="w-5 h-5 inline mr-2" />
-                MISSION BRIEFING: LAUNCHING SOON
+                Coming Soon - Launch Date TBD
               </div>
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold neon-red font-serif mb-8 leading-tight tracking-wider">
-                ELIMINATE 
-                <span className="neon-yellow block"> DOG WASTE</span>
-                <span className="neon-green text-4xl sm:text-5xl lg:text-6xl"> WITH EXTREME PREJUDICE</span>
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold glow-red font-serif mb-8 leading-tight tracking-wider">
+                Professional 
+                <span className="glow-yellow block"> Dog Waste</span>
+                <span className="glow-green text-4xl sm:text-5xl lg:text-6xl"> Removal Service</span>
               </h1>
               <p className="text-xl sm:text-2xl text-yellow-300 mb-12 leading-relaxed max-w-4xl mx-auto font-mono">
-                Professional tactical cleanup operations for your yard perimeter. 
-                Zero tolerance for biological hazards. ENLIST TODAY!
+                Keep your yard clean and healthy with our reliable pet waste removal service. 
+                We're launching soon in your area!
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <a 
                   href="#waitlist" 
                   onClick={scrollToWaitlist}
-                  className="explosive-button px-8 py-5 font-mono font-bold text-xl text-yellow-300 inline-flex items-center justify-center"
+                  className="action-button px-8 py-5 font-mono font-bold text-xl text-yellow-300 inline-flex items-center justify-center"
                 >
-                  <Bomb className="w-6 h-6 mr-3" />
-                  DEPLOY TO WAITLIST
+                  <Heart className="w-6 h-6 mr-3" />
+                  Join Our Waitlist
                 </a>
                 <Link href="/locations">
-                  <button className="nuclear-button px-8 py-5 font-mono font-bold text-xl inline-flex items-center justify-center">
+                  <button className="bright-button px-8 py-5 font-mono font-bold text-xl inline-flex items-center justify-center">
                     <MapPin className="w-6 h-6 mr-3" />
-                    RECON TERRITORIES
+                    View Service Areas
                   </button>
                 </Link>
               </div>
@@ -141,42 +141,42 @@ export default function Landing() {
         <section className="py-20 metal-panel">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl sm:text-5xl font-bold neon-yellow font-serif mb-6 tracking-wider">
-                TACTICAL ADVANTAGES
+              <h2 className="text-4xl sm:text-5xl font-bold glow-yellow font-serif mb-6 tracking-wider">
+                Why Choose Us?
               </h2>
               <p className="text-xl text-yellow-300 max-w-3xl mx-auto font-mono">
-                Military-grade waste elimination protocols. No mess left behind. Maximum efficiency guaranteed.
+                Professional, reliable, and affordable pet waste removal services that keep your yard clean.
               </p>
             </div>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="metal-panel p-8 cyber-border">
-                <div className="w-20 h-20 explosive-button rounded-sm flex items-center justify-center mx-auto mb-6">
+              <div className="metal-panel p-8 retro-border">
+                <div className="w-20 h-20 action-button rounded-sm flex items-center justify-center mx-auto mb-6">
                   <Calendar className="text-yellow-300 w-8 h-8" />
                 </div>
-                <h3 className="text-2xl font-bold neon-red font-serif mb-4 text-center">SCHEDULED RAIDS</h3>
+                <h3 className="text-2xl font-bold glow-red font-serif mb-4 text-center">Reliable Schedule</h3>
                 <p className="text-yellow-300 font-mono text-center">
-                  Weekly, bi-weekly, or monthly tactical strikes. Your yard stays clean. Mission guaranteed.
+                  Weekly, bi-weekly, or monthly service options that fit your needs and budget.
                 </p>
               </div>
 
-              <div className="metal-panel p-8 cyber-border">
-                <div className="w-20 h-20 toxic-button rounded-sm flex items-center justify-center mx-auto mb-6">
+              <div className="metal-panel p-8 retro-border">
+                <div className="w-20 h-20 success-button rounded-sm flex items-center justify-center mx-auto mb-6">
                   <Shield className="text-yellow-300 w-8 h-8" />
                 </div>
-                <h3 className="text-2xl font-bold neon-green font-serif mb-4 text-center">ELITE OPERATORS</h3>
+                <h3 className="text-2xl font-bold glow-green font-serif mb-4 text-center">Professional Team</h3>
                 <p className="text-yellow-300 font-mono text-center">
-                  Professional cleanup specialists. Insured and bonded. Ready for any biological threat.
+                  Trained specialists who are insured and bonded. Your yard is in expert hands.
                 </p>
               </div>
 
-              <div className="metal-panel p-8 cyber-border">
-                <div className="w-20 h-20 nuclear-button rounded-sm flex items-center justify-center mx-auto mb-6">
+              <div className="metal-panel p-8 retro-border">
+                <div className="w-20 h-20 bright-button rounded-sm flex items-center justify-center mx-auto mb-6">
                   <Zap className="text-gray-900 w-8 h-8" />
                 </div>
-                <h3 className="text-2xl font-bold neon-yellow font-serif mb-4 text-center">RAPID RESPONSE</h3>
+                <h3 className="text-2xl font-bold glow-yellow font-serif mb-4 text-center">Quick Service</h3>
                 <p className="text-yellow-300 font-mono text-center">
-                  Fast deployment. Quick extraction. Your yard perimeter secured within hours.
+                  Fast and efficient cleanup service. Your yard stays healthy and beautiful.
                 </p>
               </div>
             </div>
@@ -187,15 +187,15 @@ export default function Landing() {
         <section id="waitlist" className="py-20 bg-gradient-to-br from-gray-900 to-black">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-4xl sm:text-5xl font-bold neon-red font-serif mb-6 tracking-wider">
-                ENLIST FOR DUTY
+              <h2 className="text-4xl sm:text-5xl font-bold glow-red font-serif mb-6 tracking-wider">
+                Join Our Waitlist
               </h2>
               <p className="text-xl text-yellow-300 font-mono">
-                Register your coordinates. Be first in line for tactical waste elimination deployment.
+                Be the first to know when we launch in your area. Simple signup, no commitment.
               </p>
             </div>
 
-            <div className="metal-panel p-8 cyber-border max-w-2xl mx-auto">
+            <div className="metal-panel p-8 retro-border max-w-2xl mx-auto">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
@@ -204,12 +204,12 @@ export default function Landing() {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-yellow-300 font-mono font-bold">OPERATIVE NAME</FormLabel>
+                          <FormLabel className="text-yellow-300 font-mono font-bold">Your Name</FormLabel>
                           <FormControl>
                             <Input 
-                              placeholder="John Duke" 
+                              placeholder="Enter your name" 
                               {...field} 
-                              className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono cyber-border"
+                              className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono retro-border"
                             />
                           </FormControl>
                           <FormMessage className="text-red-400" />
@@ -221,13 +221,13 @@ export default function Landing() {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-yellow-300 font-mono font-bold">COMM CHANNEL</FormLabel>
+                          <FormLabel className="text-yellow-300 font-mono font-bold">Email Address</FormLabel>
                           <FormControl>
                             <Input 
                               type="email" 
-                              placeholder="duke@battlefield.com" 
+                              placeholder="your.email@example.com" 
                               {...field} 
-                              className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono cyber-border"
+                              className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono retro-border"
                             />
                           </FormControl>
                           <FormMessage className="text-red-400" />
@@ -240,12 +240,12 @@ export default function Landing() {
                     name="address"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-yellow-300 font-mono font-bold">TARGET COORDINATES</FormLabel>
+                        <FormLabel className="text-yellow-300 font-mono font-bold">Your Address</FormLabel>
                         <FormControl>
                           <Input 
                             placeholder="123 Main Street, Austin, TX" 
                             {...field} 
-                            className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono cyber-border"
+                            className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono retro-border"
                           />
                         </FormControl>
                         <FormMessage className="text-red-400" />
@@ -258,12 +258,12 @@ export default function Landing() {
                       name="zipCode"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-yellow-300 font-mono font-bold">SECTOR CODE</FormLabel>
+                          <FormLabel className="text-yellow-300 font-mono font-bold">Zip Code</FormLabel>
                           <FormControl>
                             <Input 
                               placeholder="78701" 
                               {...field} 
-                              className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono cyber-border"
+                              className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono retro-border"
                             />
                           </FormControl>
                           <FormMessage className="text-red-400" />
@@ -275,12 +275,12 @@ export default function Landing() {
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-yellow-300 font-mono font-bold">TACTICAL PHONE</FormLabel>
+                          <FormLabel className="text-yellow-300 font-mono font-bold">Phone Number</FormLabel>
                           <FormControl>
                             <Input 
                               placeholder="(555) 123-4567" 
                               {...field} 
-                              className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono cyber-border"
+                              className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono retro-border"
                             />
                           </FormControl>
                           <FormMessage className="text-red-400" />
@@ -293,18 +293,18 @@ export default function Landing() {
                     name="numberOfDogs"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-yellow-300 font-mono font-bold">BIOLOGICAL THREATS COUNT</FormLabel>
+                        <FormLabel className="text-yellow-300 font-mono font-bold">Number of Dogs</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono cyber-border">
-                              <SelectValue placeholder="Select threat level" />
+                            <SelectTrigger className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono retro-border">
+                              <SelectValue placeholder="Select number of dogs" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="bg-gray-900 border-yellow-600">
-                            <SelectItem value="1" className="text-yellow-300 font-mono">1 DOG</SelectItem>
-                            <SelectItem value="2" className="text-yellow-300 font-mono">2 DOGS</SelectItem>
-                            <SelectItem value="3" className="text-yellow-300 font-mono">3 DOGS</SelectItem>
-                            <SelectItem value="4+" className="text-yellow-300 font-mono">4+ DOGS (HIGH THREAT)</SelectItem>
+                            <SelectItem value="1" className="text-yellow-300 font-mono">1 Dog</SelectItem>
+                            <SelectItem value="2" className="text-yellow-300 font-mono">2 Dogs</SelectItem>
+                            <SelectItem value="3" className="text-yellow-300 font-mono">3 Dogs</SelectItem>
+                            <SelectItem value="4+" className="text-yellow-300 font-mono">4+ Dogs</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage className="text-red-400" />
@@ -313,10 +313,10 @@ export default function Landing() {
                   />
                   <Button 
                     type="submit" 
-                    className="w-full explosive-button py-4 text-xl font-mono font-bold text-yellow-300"
+                    className="w-full action-button py-4 text-xl font-mono font-bold text-yellow-300"
                     disabled={submitMutation.isPending}
                   >
-                    {submitMutation.isPending ? "DEPLOYING..." : "ENLIST FOR CLEANUP DUTY"}
+                    {submitMutation.isPending ? "Joining..." : "Join Waitlist"}
                   </Button>
                 </form>
               </Form>
@@ -328,19 +328,19 @@ export default function Landing() {
         <footer className="metal-panel border-t-2 border-yellow-400 py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="flex items-center justify-center space-x-4 mb-6">
-              <div className="w-12 h-12 explosive-button rounded-sm flex items-center justify-center">
-                <span className="text-2xl font-bold text-yellow-300">💥</span>
+              <div className="w-12 h-12 action-button rounded-sm flex items-center justify-center">
+                <span className="text-2xl font-bold text-yellow-300">🐕</span>
               </div>
               <div>
-                <h3 className="text-2xl font-bold neon-yellow font-serif">DOOK SCOOP EM</h3>
-                <p className="text-sm text-yellow-300 font-mono">TACTICAL WASTE ELIMINATION</p>
+                <h3 className="text-2xl font-bold glow-yellow font-serif">Dook Scoop Em</h3>
+                <p className="text-sm text-yellow-300 font-mono">Professional Pet Waste Removal</p>
               </div>
             </div>
             <p className="text-yellow-300 font-mono">
-              Professional biological threat neutralization services. Licensed. Insured. Ready for deployment.
+              Professional pet waste removal services. Licensed, insured, and ready to serve your community.
             </p>
             <p className="text-yellow-600 font-mono text-sm mt-4">
-              © 2025 Dook Scoop Em. All waste eliminated with extreme prejudice.
+              © 2025 Dook Scoop Em. Keeping your yard clean and healthy.
             </p>
           </div>
         </footer>
