@@ -52,62 +52,73 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
-            <Shield className="h-12 w-12 text-primary" />
+      <div className="w-full max-w-md metal-panel cyber-border p-8">
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-16 explosive-button rounded-sm flex items-center justify-center">
+              <Shield className="h-8 w-8 text-yellow-300" />
+            </div>
           </div>
-          <CardTitle className="text-2xl">Admin Login</CardTitle>
-          <CardDescription>
-            Access the Dook Scoop Em admin panel
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Username</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter username" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="Enter password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {error && (
-                <Alert variant="destructive">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
+          <h1 className="text-3xl font-bold neon-red font-serif mb-2">COMMAND CENTER</h1>
+          <p className="text-yellow-300 font-mono">
+            CLASSIFIED ACCESS - TACTICAL OPERATIONS ONLY
+          </p>
+        </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-yellow-300 font-mono font-bold">OPERATIVE ID</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="Enter clearance code" 
+                      {...field} 
+                      className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono cyber-border"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-400" />
+                </FormItem>
               )}
-              <Button 
-                type="submit" 
-                className="w-full" 
-                disabled={loginMutation.isPending}
-              >
-                {loginMutation.isPending ? "Signing in..." : "Sign In"}
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-yellow-300 font-mono font-bold">ACCESS KEY</FormLabel>
+                  <FormControl>
+                    <Input 
+                      type="password" 
+                      placeholder="Enter security protocol" 
+                      {...field} 
+                      className="bg-gray-900 border-yellow-600 text-yellow-300 font-mono cyber-border"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-400" />
+                </FormItem>
+              )}
+            />
+            {error && (
+              <div className="metal-panel p-4 border-red-600">
+                <div className="flex items-center text-red-400">
+                  <AlertCircle className="h-5 w-5 mr-2" />
+                  <span className="font-mono font-bold">ACCESS DENIED: {error}</span>
+                </div>
+              </div>
+            )}
+            <Button 
+              type="submit" 
+              className="w-full explosive-button py-3 text-xl font-mono font-bold text-yellow-300"
+              disabled={loginMutation.isPending}
+            >
+              {loginMutation.isPending ? "AUTHORIZING..." : "BREACH SECURITY"}
+            </Button>
+          </form>
+        </Form>
+      </div>
     </div>
   );
 }
