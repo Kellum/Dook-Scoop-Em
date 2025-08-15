@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Calendar, MapPin } from "lucide-react";
+import logoImage from "@assets/ChatGPT Image Aug 15, 2025, 06_49_12 PM_1755298579638.png";
 
 interface Location {
   id: string;
@@ -40,11 +41,11 @@ export default function Locations() {
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="logo-container">
-              <div className="logo-icon">💩⚒️</div>
-              <div>
-                <h1 className="text-2xl font-bold text-primary">Dook Scoop 'Em</h1>
-                <p className="slogan">We fear no pile.</p>
-              </div>
+              <img 
+                src={logoImage} 
+                alt="Dook Scoop 'Em - We Fear No Pile" 
+                className="h-16 w-auto pixel-art"
+              />
             </div>
             
             <Link href="/">

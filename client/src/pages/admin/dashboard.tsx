@@ -15,6 +15,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { MapPin, Users, Plus, LogOut, AlertCircle, CheckCircle, Trash2 } from "lucide-react";
 import { insertServiceLocationSchema, type ServiceLocation, type WaitlistSubmission } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
+import logoImage from "@assets/ChatGPT Image Aug 15, 2025, 06_49_12 PM_1755298579638.png";
 
 type LocationForm = typeof insertServiceLocationSchema._type;
 
@@ -149,9 +150,16 @@ export default function AdminDashboard() {
       <div className="border-b bg-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-foreground">
-              Dook Scoop Em Admin
-            </h1>
+            <div className="flex items-center space-x-4">
+              <img 
+                src={logoImage} 
+                alt="Dook Scoop 'Em - We Fear No Pile" 
+                className="h-12 w-auto pixel-art"
+              />
+              <h1 className="text-2xl font-bold text-foreground">
+                Admin Dashboard
+              </h1>
+            </div>
             <Button variant="outline" onClick={handleLogout} className="gap-2">
               <LogOut className="h-4 w-4" />
               Logout

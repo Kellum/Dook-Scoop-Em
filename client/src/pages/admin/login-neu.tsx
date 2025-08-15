@@ -9,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Shield, AlertCircle } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
+import logoImage from "@assets/ChatGPT Image Aug 15, 2025, 06_49_12 PM_1755298579638.png";
 
 const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -120,9 +121,14 @@ export default function AdminLoginNeu() {
           </form>
         </Form>
         
-        <div className="mt-8 pt-6 border-t border-border">
-          <p className="text-center text-sm text-muted-foreground">
-            <span className="pixel-text text-accent">Dook Scoop 'Em</span> Management System
+        <div className="mt-8 pt-6 border-t border-border text-center">
+          <img 
+            src={logoImage} 
+            alt="Dook Scoop 'Em - We Fear No Pile" 
+            className="h-12 w-auto pixel-art mx-auto mb-2"
+          />
+          <p className="text-sm text-muted-foreground">
+            Management System
           </p>
         </div>
       </div>

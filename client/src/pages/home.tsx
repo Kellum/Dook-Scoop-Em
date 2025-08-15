@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Calendar, MapPin, Shield, Clock, Phone, Mail } from "lucide-react";
+import logoImage from "@assets/ChatGPT Image Aug 15, 2025, 06_49_12 PM_1755298579638.png";
 
 type WaitlistForm = InsertWaitlistSubmission;
 
@@ -71,11 +72,11 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="logo-container">
-              <div className="logo-icon">💩⚒️</div>
-              <div>
-                <h1 className="text-2xl font-bold text-primary">Dook Scoop 'Em</h1>
-                <p className="slogan">We fear no pile.</p>
-              </div>
+              <img 
+                src={logoImage} 
+                alt="Dook Scoop 'Em - We Fear No Pile" 
+                className="h-16 w-auto pixel-art"
+              />
             </div>
             
             <div className="hidden md:flex items-center space-x-6">
@@ -327,12 +328,12 @@ export default function Home() {
       {/* Footer */}
       <footer className="neu-flat mt-20 py-12">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <div className="logo-container justify-center mb-6">
-            <div className="logo-icon">💩⚒️</div>
-            <div>
-              <h3 className="text-2xl font-bold text-primary">Dook Scoop 'Em</h3>
-              <p className="slogan">We fear no pile.</p>
-            </div>
+          <div className="flex justify-center mb-6">
+            <img 
+              src={logoImage} 
+              alt="Dook Scoop 'Em - We Fear No Pile" 
+              className="h-20 w-auto pixel-art"
+            />
           </div>
           
           <p className="text-muted-foreground mb-4">
