@@ -1,18 +1,22 @@
 # Overview
 
-Dook Scoop Em is a professional pet waste removal service with a React-based landing page, waitlist functionality, and admin panel. This is a coming-soon website that allows potential customers to join a waitlist while the service prepares to launch. The application features a modern, responsive design built with React, TypeScript, and Tailwind CSS, backed by a Node.js/Express server with PostgreSQL database integration.
+Dook Scoop 'Em is a professional pet waste removal service featuring a premium Apple-style neumorphic web interface with subtle retro gaming accents. The brand combines sleek modern design with playful pixel art elements, creating a unique identity that balances professionalism with approachable personality. The slogan "We fear no pile" captures both confidence and humor.
 
 ## Recent Changes (January 2025)
 
-- **Admin Authentication System**: Added JWT-based admin login system with bcrypt password hashing
-- **Admin Dashboard**: Created comprehensive admin panel to manage service locations and view waitlist submissions  
-- **Database Migration**: Migrated from in-memory storage to PostgreSQL database using Drizzle ORM
-- **Service Locations Management**: Admin can now manually add new service areas with zip codes and launch dates
+- **Complete Design System Overhaul**: Implemented Apple-style neumorphic design with brand kit integration
+- **Retro Gaming Accents**: Added pixel art icons (💩⚒️) and retro fonts (Press Start 2P, VCR OSD Mono) as subtle design elements
+- **Color Palette**: Primary charcoal black (#3B3B3B), white backgrounds, golden orange CTAs (#FFB347), earth brown accents (#6B4F2F)
+- **Neumorphic Components**: Custom CSS classes for raised, pressed, and flat surfaces with proper Apple-style shadows
+- **Typography System**: SF Pro Display for body text, Press Start 2P for headlines, VCR OSD Mono for accents
+- **Responsive Layout**: Mobile-first design with smooth animations and hover effects
 - **Admin Access**: Login at `/admin/login` with username: `admin` and password: `DookScoop2025!`
 
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
+Design preference: Apple-style neumorphic design with subtle retro gaming accents, premium feel with playful touches.
+Brand identity: Professional pet waste removal service that's approachable and friendly, not overly corporate.
 
 # System Architecture
 
