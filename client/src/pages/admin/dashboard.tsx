@@ -16,8 +16,18 @@ import { MapPin, Users, Plus, LogOut, AlertCircle, CheckCircle, Trash2 } from "l
 import { insertServiceLocationSchema, type ServiceLocation, type WaitlistSubmission } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import logoImage from "@assets/ChatGPT Image Aug 15, 2025, 06_49_12 PM_1755298579638.png";
+import { z } from "zod";
 
-type LocationForm = typeof insertServiceLocationSchema._type;
+// Form schema that accepts string input for zip codes
+const locationFormSchema = z.object({
+  city: z.string().min(2, "City name is required"),
+  state: z.string().min(2, "State is required"),
+  zipCodes: z.string().min(1, "At least one zip code is required"),
+  launchDate: z.string().optional(),
+  isActive: z.string().default("false"),
+});
+
+type LocationForm = z.infer<typeof locationFormSchema>;
 
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
@@ -34,11 +44,11 @@ export default function AdminDashboard() {
   }, [setLocation]);
 
   const form = useForm<LocationForm>({
-    resolver: zodResolver(insertServiceLocationSchema),
+    resolver: zodResolver(locationFormSchema),
     defaultValues: {
       city: "",
       state: "TX",
-      zipCodes: [],
+      zipCodes: "",
       launchDate: "",
       isActive: "false",
     },
@@ -77,9 +87,12 @@ export default function AdminDashboard() {
   const addLocationMutation = useMutation({
     mutationFn: async (data: LocationForm) => {
       const token = localStorage.getItem("admin-token");
-      const zipCodesArray = typeof data.zipCodes === 'string' 
-        ? data.zipCodes.split(',').map((zip: string) => zip.trim()).filter((zip: string) => zip.length > 0)
-        : data.zipCodes as string[];
+      
+      // Convert string zipCodes to array for backend
+      const zipCodesArray = data.zipCodes
+        .split(',')
+        .map((zip: string) => zip.trim())
+        .filter((zip: string) => zip.length > 0);
       
       const adminResponse = await fetch("/api/admin/locations", {
         method: "POST",
@@ -264,8 +277,6 @@ export default function AdminDashboard() {
                                   <Input 
                                     placeholder="78701, 78702, 78703" 
                                     {...field}
-                                    value={Array.isArray(field.value) ? field.value.join(', ') : field.value}
-                                    onChange={(e) => field.onChange(e.target.value)}
                                   />
                                 </FormControl>
                                 <FormMessage />
