@@ -16,9 +16,11 @@ interface Location {
 
 export default function Locations() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { data: locations = [], isLoading } = useQuery<Location[]>({
+  const { data, isLoading } = useQuery<{locations: Location[]}>({
     queryKey: ["/api/locations"],
   });
+  
+  const locations = data?.locations || [];
 
   if (isLoading) {
     return (
