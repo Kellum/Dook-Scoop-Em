@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { Calendar, MapPin, Shield, Clock, Phone, Mail } from "lucide-react";
+import { Calendar, MapPin, Shield, Clock, Phone, Mail, Menu, X } from "lucide-react";
 import logoImage from "@assets/ChatGPT Image Aug 15, 2025, 06_49_12 PM_1755298579638.png";
 
 type WaitlistForm = InsertWaitlistSubmission;
@@ -18,6 +18,7 @@ type WaitlistForm = InsertWaitlistSubmission;
 export default function Home() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const form = useForm<WaitlistForm>({
     resolver: zodResolver(insertWaitlistSubmissionSchema),
@@ -79,6 +80,7 @@ export default function Home() {
               />
             </div>
             
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/locations">
                 <button className="text-primary hover:text-accent transition-colors font-medium">
@@ -96,7 +98,64 @@ export default function Home() {
                 Book My Scoop
               </button>
             </div>
+
+            {/* Mobile Menu Button */}
+            <button 
+              className="md:hidden neu-flat p-3 rounded-2xl"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6 text-primary" />
+              ) : (
+                <Menu className="w-6 h-6 text-primary" />
+              )}
+            </button>
           </div>
+
+          {/* Mobile Menu */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden mt-6 neu-pressed p-6 rounded-2xl slide-down">
+              <div className="space-y-3">
+                <Link href="/locations">
+                  <button 
+                    className="mobile-menu-item w-full text-left py-4 px-4 text-primary hover:text-accent font-medium neu-flat rounded-xl"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <MapPin className="w-5 h-5 text-accent" />
+                      <span>Service Areas</span>
+                    </div>
+                  </button>
+                </Link>
+                
+                <a 
+                  href="#waitlist" 
+                  onClick={(e) => {
+                    scrollToWaitlist(e);
+                    setIsMobileMenuOpen(false);
+                  }}
+                >
+                  <button className="mobile-menu-item w-full text-left py-4 px-4 text-primary hover:text-accent font-medium neu-flat rounded-xl">
+                    <div className="flex items-center space-x-3">
+                      <Calendar className="w-5 h-5 text-accent" />
+                      <span>Join Waitlist</span>
+                    </div>
+                  </button>
+                </a>
+
+                <div className="pt-2">
+                  <button 
+                    className="w-full neu-button py-4 text-lg flex items-center justify-center space-x-3"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <span className="pixel-art text-xl">⚒️</span>
+                    <span>Book My Scoop</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 

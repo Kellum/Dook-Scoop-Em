@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { Link } from "wouter";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Calendar, MapPin } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Menu, X, Home } from "lucide-react";
 import logoImage from "@assets/ChatGPT Image Aug 15, 2025, 06_49_12 PM_1755298579638.png";
 
 interface Location {
@@ -14,6 +15,7 @@ interface Location {
 }
 
 export default function Locations() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { data: locations = [], isLoading } = useQuery<Location[]>({
     queryKey: ["/api/locations"],
   });
@@ -48,13 +50,68 @@ export default function Locations() {
               />
             </div>
             
-            <Link href="/">
+            {/* Desktop Navigation */}
+            <Link href="/" className="hidden md:block">
               <button className="neu-flat px-4 py-2 font-medium text-primary hover:text-accent transition-colors flex items-center space-x-2">
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back to Home</span>
               </button>
             </Link>
+
+            {/* Mobile Menu Button */}
+            <button 
+              className="md:hidden neu-flat p-3 rounded-2xl"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6 text-primary" />
+              ) : (
+                <Menu className="w-6 h-6 text-primary" />
+              )}
+            </button>
           </div>
+
+          {/* Mobile Menu */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden mt-6 neu-pressed p-6 rounded-2xl slide-down">
+              <div className="space-y-3">
+                <Link href="/">
+                  <button 
+                    className="mobile-menu-item w-full text-left py-4 px-4 text-primary hover:text-accent font-medium neu-flat rounded-xl"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <Home className="w-5 h-5 text-accent" />
+                      <span>Back to Home</span>
+                    </div>
+                  </button>
+                </Link>
+                
+                <Link href="/#waitlist">
+                  <button 
+                    className="mobile-menu-item w-full text-left py-4 px-4 text-primary hover:text-accent font-medium neu-flat rounded-xl"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <Calendar className="w-5 h-5 text-accent" />
+                      <span>Join Waitlist</span>
+                    </div>
+                  </button>
+                </Link>
+
+                <div className="pt-2">
+                  <button 
+                    className="w-full neu-button py-4 text-lg flex items-center justify-center space-x-3"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <span className="pixel-art text-xl">⚒️</span>
+                    <span>Book My Scoop</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
