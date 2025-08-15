@@ -7,7 +7,7 @@ import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Shield, AlertCircle } from "lucide-react";
+import { Shield, AlertCircle, Home } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import logoImage from "@assets/ChatGPT Image Aug 15, 2025, 06_49_12 PM_1755298579638.png";
 
@@ -51,6 +51,16 @@ export default function AdminLoginNeu() {
 
   return (
     <div className="min-h-screen gradient-bg flex items-center justify-center p-6">
+      {/* Back to Main Site Button */}
+      <Button 
+        variant="ghost" 
+        onClick={() => window.open("/", "_blank")} 
+        className="absolute top-6 left-6 gap-2 neu-flat"
+      >
+        <Home className="h-4 w-4" />
+        Back to Main Site
+      </Button>
+      
       <div className="w-full max-w-md neu-card fade-in">
         <div className="text-center mb-8">
           <div className="w-20 h-20 neu-flat rounded-2xl flex items-center justify-center mx-auto mb-6">
