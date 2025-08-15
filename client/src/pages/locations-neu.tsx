@@ -60,7 +60,7 @@ export default function Locations() {
 
             {/* Mobile Menu Button */}
             <button 
-              className="md:hidden neu-flat p-3 rounded-2xl"
+              className="md:hidden p-3 rounded-2xl hover:bg-muted transition-colors"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle mobile menu"
             >
