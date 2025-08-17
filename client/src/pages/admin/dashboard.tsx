@@ -412,21 +412,30 @@ export default function AdminDashboard() {
                   {submissions.map((submission: WaitlistSubmission) => (
                     <Card key={submission.id} className="shadow-sm">
                       <CardContent className="pt-4">
-                        <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
-                          <div>
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                          <div className="space-y-1">
                             <p className="text-sm font-medium">{submission.name}</p>
                             <p className="text-xs text-muted-foreground">{submission.email}</p>
+                            <p className="text-xs text-muted-foreground">{submission.phone}</p>
                           </div>
-                          <div>
+                          <div className="space-y-1">
                             <p className="text-sm">{submission.address}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {submission.zipCode} • {submission.phone}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-sm">
+                            <p className="text-xs text-muted-foreground">Zip: {submission.zipCode}</p>
+                            <p className="text-xs font-medium">
                               {submission.numberOfDogs} dog{submission.numberOfDogs !== "1" ? "s" : ""}
                             </p>
+                          </div>
+                          <div className="space-y-1">
+                            {submission.referralSource && (
+                              <p className="text-xs text-muted-foreground">
+                                <span className="font-medium">Source:</span> {submission.referralSource}
+                              </p>
+                            )}
+                            {submission.urgency && (
+                              <p className="text-xs text-muted-foreground">
+                                <span className="font-medium">Urgency:</span> {submission.urgency}
+                              </p>
+                            )}
                             <p className="text-xs text-muted-foreground">
                               {submission.submittedAt ? new Date(submission.submittedAt).toLocaleDateString() : 'Unknown'}
                             </p>

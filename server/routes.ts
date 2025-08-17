@@ -223,6 +223,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("Zip Code:", submission.zipCode);
       console.log("Phone:", submission.phone);
       console.log("Number of Dogs:", submission.numberOfDogs);
+      console.log("Referral Source:", submission.referralSource);
+      console.log("Urgency:", submission.urgency);
       console.log("Submitted At:", submission.submittedAt);
       console.log("================================");
 
@@ -236,6 +238,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           zipCode: submission.zipCode,
           phone: submission.phone,
           numberOfDogs: submission.numberOfDogs,
+          referralSource: submission.referralSource,
+          urgency: submission.urgency,
           submittedAt: submission.submittedAt,
           timestamp: new Date().toISOString()
         };
@@ -260,16 +264,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
           try {
             const mailOptions = {
               from: '"Dook Scoop Em" <noreply@dookscoopem.com>',
-              to: 'kellum.ryan@gmail.com',
+              to: 'ryan@dookscoop.com',
               subject: 'New Dook Scoop Em Waitlist Signup',
               html: `
                 <h2>New Waitlist Signup</h2>
                 <p><strong>Name:</strong> ${submission.name}</p>
                 <p><strong>Email:</strong> ${submission.email}</p>
+                <p><strong>Phone:</strong> ${submission.phone}</p>
                 <p><strong>Address:</strong> ${submission.address}</p>
                 <p><strong>Zip Code:</strong> ${submission.zipCode}</p>
-                <p><strong>Phone:</strong> ${submission.phone}</p>
                 <p><strong>Number of Dogs:</strong> ${submission.numberOfDogs}</p>
+                ${submission.referralSource ? `<p><strong>How they heard about us:</strong> ${submission.referralSource}</p>` : ''}
+                ${submission.urgency ? `<p><strong>Service urgency:</strong> ${submission.urgency}</p>` : ''}
                 <p><strong>Submitted At:</strong> ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}</p>
               `,
               text: `
@@ -277,10 +283,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 
                 Name: ${submission.name}
                 Email: ${submission.email}
+                Phone: ${submission.phone}
                 Address: ${submission.address}
                 Zip Code: ${submission.zipCode}
-                Phone: ${submission.phone}
                 Number of Dogs: ${submission.numberOfDogs}
+                ${submission.referralSource ? `How they heard about us: ${submission.referralSource}` : ''}
+                ${submission.urgency ? `Service urgency: ${submission.urgency}` : ''}
                 Submitted At: ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}
               `
             };
