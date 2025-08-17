@@ -138,7 +138,7 @@ export default function LandingMinimal() {
                         <FormControl>
                           <Input 
                             {...field} 
-                            className="neu-input font-medium"
+                            className="neu-input font-medium bg-gray-100"
                             placeholder="John"
                           />
                         </FormControl>
@@ -155,7 +155,7 @@ export default function LandingMinimal() {
                         <FormControl>
                           <Input 
                             {...field} 
-                            className="neu-input font-medium"
+                            className="neu-input font-medium bg-gray-100"
                             placeholder="Doe"
                           />
                         </FormControl>
@@ -177,7 +177,7 @@ export default function LandingMinimal() {
                           <Input 
                             {...field} 
                             type="email"
-                            className="neu-input font-medium"
+                            className="neu-input font-medium bg-gray-100"
                             placeholder="john@example.com"
                           />
                         </FormControl>
@@ -195,7 +195,7 @@ export default function LandingMinimal() {
                           <Input 
                             {...field} 
                             type="tel"
-                            className="neu-input font-medium"
+                            className="neu-input font-medium bg-gray-100"
                             placeholder="(555) 123-4567"
                           />
                         </FormControl>
@@ -215,7 +215,7 @@ export default function LandingMinimal() {
                       <FormControl>
                         <Input 
                           {...field} 
-                          className="neu-input font-medium"
+                          className="neu-input font-medium bg-gray-100"
                           placeholder="12345"
                         />
                       </FormControl>
@@ -268,7 +268,7 @@ export default function LandingMinimal() {
                       <FormLabel className="font-bold">How did you hear about us?</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="neu-input">
+                          <SelectTrigger className="neu-input bg-gray-100">
                             <SelectValue placeholder="Select an option" />
                           </SelectTrigger>
                         </FormControl>
@@ -297,7 +297,7 @@ export default function LandingMinimal() {
                       <FormLabel className="font-bold">How soon do you need service?</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="neu-input">
+                          <SelectTrigger className="neu-input bg-gray-100">
                             <SelectValue placeholder="Select your urgency level" />
                           </SelectTrigger>
                         </FormControl>
