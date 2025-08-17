@@ -340,7 +340,7 @@ export default function LandingMinimal() {
                 href="https://facebook.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-700 transition-colors"
+                className="text-gray-800 hover:text-gray-600 transition-colors"
               >
                 <Facebook size={32} />
               </a>
@@ -348,7 +348,7 @@ export default function LandingMinimal() {
                 href="https://instagram.com" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-pink-600 hover:text-pink-700 transition-colors"
+                className="text-gray-800 hover:text-gray-600 transition-colors"
               >
                 <Instagram size={32} />
               </a>
