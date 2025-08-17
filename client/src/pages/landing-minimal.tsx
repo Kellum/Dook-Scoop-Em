@@ -61,7 +61,7 @@ export default function LandingMinimal() {
         urgency: data.urgency,
       };
 
-      return apiRequest("/api/waitlist", "POST", submitData);
+      return apiRequest("POST", "/api/waitlist", submitData);
     },
     onSuccess: () => {
       toast({
