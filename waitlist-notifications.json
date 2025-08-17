@@ -53,5 +53,18 @@
     "numberOfDogs": "3",
     "submittedAt": "2025-08-17 14:33:02.019631+00",
     "timestamp": "2025-08-17T14:33:02.074Z"
+  },
+  {
+    "id": "48f4b496-a17e-44dc-b013-95b9daa7fe64",
+    "name": "Test Archive User",
+    "email": "testarchive@example.com",
+    "address": "Zip: 67890",
+    "zipCode": "67890",
+    "phone": "5551112222",
+    "numberOfDogs": "1",
+    "referralSource": "google",
+    "urgency": "asap",
+    "submittedAt": "2025-08-17 19:11:03.302372+00",
+    "timestamp": "2025-08-17T19:11:03.335Z"
   }
 ]

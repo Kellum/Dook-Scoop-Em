@@ -12,7 +12,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { MapPin, Users, Plus, LogOut, AlertCircle, CheckCircle, Trash2, Home } from "lucide-react";
+import { MapPin, Users, Plus, LogOut, AlertCircle, CheckCircle, Trash2, Home, Archive } from "lucide-react";
 import { insertServiceLocationSchema, type ServiceLocation, type WaitlistSubmission } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import logoImage from "@assets/ChatGPT Image Aug 15, 2025, 06_49_12 PM_1755298579638.png";
@@ -34,6 +34,26 @@ export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const [isAddLocationOpen, setIsAddLocationOpen] = useState(false);
   const queryClient = useQueryClient();
+
+  // Archive submission mutation
+  const archiveMutation = useMutation({
+    mutationFn: async (id: string) => {
+      return apiRequest("PATCH", `/api/admin/waitlist/${id}/archive`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/waitlist"] });
+    },
+  });
+
+  // Delete submission mutation
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      return apiRequest("DELETE", `/api/admin/waitlist/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/waitlist"] });
+    },
+  });
 
   // Check authentication on mount
   useEffect(() => {
@@ -412,7 +432,7 @@ export default function AdminDashboard() {
                   {submissions.map((submission: WaitlistSubmission) => (
                     <Card key={submission.id} className="shadow-sm">
                       <CardContent className="pt-4">
-                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                           <div className="space-y-1">
                             <p className="text-sm font-medium">{submission.name}</p>
                             <p className="text-xs text-muted-foreground">{submission.email}</p>
@@ -439,6 +459,47 @@ export default function AdminDashboard() {
                             <p className="text-xs text-muted-foreground">
                               {submission.submittedAt ? new Date(submission.submittedAt).toLocaleDateString() : 'Unknown'}
                             </p>
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => archiveMutation.mutate(submission.id)}
+                              disabled={archiveMutation.isPending}
+                              className="text-xs"
+                            >
+                              <Archive className="h-3 w-3 mr-1" />
+                              Archive
+                            </Button>
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-xs text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
+                                >
+                                  <Trash2 className="h-3 w-3 mr-1" />
+                                  Delete
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Delete Submission</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Are you sure you want to permanently delete this waitlist submission from {submission.name}? This action cannot be undone.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction
+                                    onClick={() => deleteMutation.mutate(submission.id)}
+                                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                  >
+                                    Delete
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
                           </div>
                         </div>
                       </CardContent>

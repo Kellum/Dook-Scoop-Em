@@ -19,6 +19,7 @@ export const waitlistSubmissions = pgTable("waitlist_submissions", {
   numberOfDogs: text("number_of_dogs").notNull(),
   referralSource: text("referral_source"),
   urgency: text("urgency"),
+  status: text("status").default("active"), // active, archived, deleted
   submittedAt: text("submitted_at").default(sql`CURRENT_TIMESTAMP`),
 });
 

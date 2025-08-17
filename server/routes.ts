@@ -122,6 +122,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.patch("/api/admin/waitlist/:id/archive", requireAuth, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const submission = await storage.updateWaitlistSubmissionStatus(id, "archived");
+      if (!submission) {
+        return res.status(404).json({ error: "Submission not found" });
+      }
+      res.json({ message: "Submission archived successfully" });
+    } catch (error) {
+      console.error("Error archiving submission:", error);
+      res.status(500).json({ error: "Failed to archive submission" });
+    }
+  });
+
+  app.delete("/api/admin/waitlist/:id", requireAuth, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteWaitlistSubmission(id);
+      res.json({ message: "Submission deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting submission:", error);
+      res.status(500).json({ error: "Failed to delete submission" });
+    }
+  });
+
   // Sweep&Go webhook endpoint
   app.post("/api/webhooks/sweepandgo", handleSweepAndGoWebhook);
 

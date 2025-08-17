@@ -50,7 +50,20 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAllWaitlistSubmissions(): Promise<WaitlistSubmission[]> {
-    return await db.select().from(waitlistSubmissions);
+    return await db.select().from(waitlistSubmissions).where(eq(waitlistSubmissions.status, "active"));
+  }
+
+  async updateWaitlistSubmissionStatus(id: string, status: string): Promise<WaitlistSubmission | undefined> {
+    const [submission] = await db
+      .update(waitlistSubmissions)
+      .set({ status })
+      .where(eq(waitlistSubmissions.id, id))
+      .returning();
+    return submission;
+  }
+
+  async deleteWaitlistSubmission(id: string): Promise<void> {
+    await db.delete(waitlistSubmissions).where(eq(waitlistSubmissions.id, id));
   }
 
   async deleteServiceLocation(id: string): Promise<void> {
