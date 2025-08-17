@@ -12,6 +12,7 @@ import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Facebook, Instagram } from "lucide-react";
+import newLogoImage from "@assets/Dook logo 001_1755440254749.png";
 
 // Enhanced waitlist form schema
 const waitlistFormSchema = z.object({
@@ -89,11 +90,14 @@ export default function LandingMinimal() {
       {/* Header */}
       <header className="w-full py-8 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Logo placeholder - user will upload their own */}
+          {/* New Pixel Art Logo */}
           <div className="mb-6">
-            <div className="w-32 h-32 mx-auto bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
-              <span className="text-4xl">💩</span>
-            </div>
+            <img 
+              src={newLogoImage} 
+              alt="Dook Scoop Em Logo" 
+              className="w-32 h-32 mx-auto object-contain pixel-perfect"
+              style={{ imageRendering: 'pixelated' }}
+            />
           </div>
           
           {/* Main Header with Pixel Font */}

@@ -4,12 +4,13 @@ Dook Scoop 'Em is a professional pet waste removal service featuring a premium A
 
 ## Recent Changes (January 2025)
 
-- **Complete Design System Overhaul**: Implemented Apple-style neumorphic design with brand kit integration
-- **Retro Gaming Accents**: Added pixel art icons (💩⚒️) and retro fonts (Press Start 2P, VCR OSD Mono) as subtle design elements
-- **Color Palette**: Primary charcoal black (#3B3B3B), white backgrounds, golden orange CTAs (#FFB347), earth brown accents (#6B4F2F)
-- **Neumorphic Components**: Custom CSS classes for raised, pressed, and flat surfaces with proper Apple-style shadows
-- **Typography System**: SF Pro Display for body text, Press Start 2P for headlines, VCR OSD Mono for accents
-- **Responsive Layout**: Mobile-first design with smooth animations and hover effects
+- **Minimal Go-Live Landing Page**: Created streamlined landing page with "WE FEAR NO PILE" pixel font header
+- **Font System Update**: Switched to Roboto Black as primary font family with pixel fonts for headers
+- **New Pixel Art Logo**: Integrated custom brown pixel art logo with proper rendering
+- **Enhanced Waitlist Form**: Added comprehensive form with first/last name, phone, zip, dog slider (1-4+), referral source, and comical urgency options
+- **Social Media Integration**: Added Facebook and Instagram links
+- **Database Schema**: Extended waitlist table with referralSource and urgency fields
+- **Simplified Navigation**: Hidden complex site features for clean go-live experience
 - **Admin Access**: Login at `/admin/login` with username: `admin` and password: `DookScoop2025!`
 
 # User Preferences

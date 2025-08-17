@@ -74,6 +74,14 @@ body {
   font-feature-settings: "rlig" 1, "calt" 1;
 }
 
+/* Pixel Art Rendering */
+.pixel-perfect {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
 /* Neumorphic Components */
 .neu-raised {
   background: hsl(var(--background));
