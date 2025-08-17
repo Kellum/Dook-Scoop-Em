@@ -34,10 +34,19 @@ export default function SweepAndGoTest() {
   });
 
   // Test API connection
-  const { data: testResult, isLoading: testLoading, refetch: testConnection } = useQuery<TestResult>({
-    queryKey: ["/api/admin/sweepandgo/test"],
-    retry: false,
-    enabled: false, // Don't auto-run, only on manual trigger
+  const testConnectionMutation = useMutation({
+    mutationFn: async () => {
+      const token = localStorage.getItem("admin-token");
+      const response = await fetch("/api/admin/sweepandgo/test", {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      
+      if (!response.ok) throw new Error('Failed to test connection');
+      return response.json();
+    },
   });
 
   // Get pricing mutation
@@ -59,7 +68,7 @@ export default function SweepAndGoTest() {
   });
 
   const handleTestConnection = () => {
-    testConnection();
+    testConnectionMutation.mutate();
   };
 
   const handleGetPricing = () => {
@@ -87,10 +96,10 @@ export default function SweepAndGoTest() {
         <CardContent className="space-y-4">
           <Button 
             onClick={handleTestConnection} 
-            disabled={testLoading}
+            disabled={testConnectionMutation.isPending}
             className="w-full sm:w-auto"
           >
-            {testLoading ? (
+            {testConnectionMutation.isPending ? (
               <>
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                 Testing Connection...
@@ -103,37 +112,37 @@ export default function SweepAndGoTest() {
             )}
           </Button>
 
-          {testResult && (
+          {testConnectionMutation.data && (
             <div className={`p-4 rounded-lg border ${
-              testResult.success 
+              testConnectionMutation.data.success 
                 ? 'bg-green-50 border-green-200 dark:bg-green-950 dark:border-green-800' 
                 : 'bg-red-50 border-red-200 dark:bg-red-950 dark:border-red-800'
             }`}>
               <div className="flex items-center gap-2 mb-2">
-                {testResult.success ? (
+                {testConnectionMutation.data.success ? (
                   <CheckCircle className="h-5 w-5 text-green-600" />
                 ) : (
                   <XCircle className="h-5 w-5 text-red-600" />
                 )}
-                <span className="font-medium">{testResult.message}</span>
+                <span className="font-medium">{testConnectionMutation.data.message}</span>
               </div>
               
-              {testResult.test_result && (
+              {testConnectionMutation.data.test_result && (
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <Badge variant={testResult.test_result.api_configured ? "default" : "destructive"}>
-                      API Configured: {testResult.test_result.api_configured ? "Yes" : "No"}
+                    <Badge variant={testConnectionMutation.data.test_result.api_configured ? "default" : "destructive"}>
+                      API Configured: {testConnectionMutation.data.test_result.api_configured ? "Yes" : "No"}
                     </Badge>
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    Email check test result: {testResult.test_result.email_check ? "Found" : "Not found"}
+                    Email check test result: {testConnectionMutation.data.test_result.email_check ? "Found" : "Not found"}
                   </div>
                 </div>
               )}
               
-              {testResult.error && (
+              {testConnectionMutation.data.error && (
                 <div className="text-sm text-red-600 mt-2">
-                  Error: {testResult.error}
+                  Error: {testConnectionMutation.data.error}
                 </div>
               )}
             </div>
@@ -244,10 +253,44 @@ export default function SweepAndGoTest() {
             }`}>
               {pricingMutation.data.success ? (
                 <div>
-                  <h4 className="font-medium mb-2">Pricing Result:</h4>
-                  <pre className="text-sm bg-muted p-2 rounded overflow-auto">
-                    {JSON.stringify(pricingMutation.data.pricing, null, 2)}
-                  </pre>
+                  <h4 className="font-medium mb-3">Pricing Result:</h4>
+                  {pricingMutation.data.pricing ? (
+                    <div className="space-y-3">
+                      {/* Display pricing in a user-friendly format */}
+                      {pricingMutation.data.pricing.initial_price && (
+                        <div className="flex justify-between items-center p-3 bg-muted rounded-lg">
+                          <span className="font-medium">Initial Cleanup:</span>
+                          <span className="text-lg font-bold text-green-600">
+                            ${pricingMutation.data.pricing.initial_price}
+                          </span>
+                        </div>
+                      )}
+                      {pricingMutation.data.pricing.recurring_price && (
+                        <div className="flex justify-between items-center p-3 bg-muted rounded-lg">
+                          <span className="font-medium">Recurring Service:</span>
+                          <span className="text-lg font-bold text-blue-600">
+                            ${pricingMutation.data.pricing.recurring_price}
+                          </span>
+                        </div>
+                      )}
+                      {pricingMutation.data.pricing.frequency && (
+                        <div className="text-sm text-muted-foreground">
+                          Frequency: {pricingMutation.data.pricing.frequency}
+                        </div>
+                      )}
+                      {/* Show raw data in collapsed section */}
+                      <details className="mt-4">
+                        <summary className="cursor-pointer text-sm font-medium text-muted-foreground hover:text-foreground">
+                          View Raw API Response
+                        </summary>
+                        <pre className="text-xs bg-muted p-3 rounded mt-2 overflow-auto">
+                          {JSON.stringify(pricingMutation.data.pricing, null, 2)}
+                        </pre>
+                      </details>
+                    </div>
+                  ) : (
+                    <div className="text-muted-foreground">No pricing data returned</div>
+                  )}
                 </div>
               ) : (
                 <div className="text-red-600">
