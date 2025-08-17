@@ -141,9 +141,9 @@ body {
 .neu-input {
   background: hsl(var(--background));
   border-radius: 16px;
-  border: 1px solid hsl(var(--border));
+  border: 1px solid hsl(0 0% 85%); /* Light grey border */
   padding: 16px 20px;
-  font-family: var(--font-system);
+  font-family: var(--font-primary);
   font-size: 16px;
   color: hsl(var(--foreground));
   transition: all 0.3s ease;
@@ -152,7 +152,10 @@ body {
 .neu-input:focus {
   outline: none;
   border-color: hsl(var(--accent));
-  box-shadow: 0 0 0 2px hsl(var(--accent) / 0.2);
+  box-shadow: 
+    0 0 0 3px rgba(255, 179, 71, 0.2),
+    -2px -2px 4px var(--neu-shadow-light),
+    2px 2px 4px var(--neu-shadow-dark);
 }
 
 .neu-card {
