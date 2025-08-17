@@ -111,14 +111,15 @@ export class SweepAndGoAPI {
     }
 
     try {
-      const url = `${SWEEPANDGO_BASE_URL}/v2/client_on_boarding/check_client_email_exists`;
+      const queryParams = new URLSearchParams({
+        slug: this.organizationSlug,
+        email: email,
+      });
+      
+      const url = `${SWEEPANDGO_BASE_URL}/v2/client_on_boarding/check_client_email_exists?${queryParams}`;
       const response = await fetch(url, {
         method: "GET",
         headers: this.getHeaders(),
-        body: JSON.stringify({
-          organization: this.organizationSlug,
-          email: email,
-        }),
       });
 
       if (!response.ok) {
@@ -147,29 +148,49 @@ export class SweepAndGoAPI {
     }
 
     try {
+      // Map frequency values to match Sweep&Go API expectations
+      const frequencyMap: Record<string, string> = {
+        "weekly": "once_a_week",
+        "bi_weekly": "every_two_weeks", 
+        "monthly": "once_a_month"
+      };
+
       const queryParams = new URLSearchParams({
         organization: this.organizationSlug,
         last_time_yard_was_thoroughly_cleaned: params.lastCleanedTimeframe,
-        clean_up_frequency: params.frequency,
+        clean_up_frequency: frequencyMap[params.frequency] || params.frequency,
         number_of_dogs: params.numberOfDogs.toString(),
         zip_code: params.zipCode,
       });
 
       const url = `${SWEEPANDGO_BASE_URL}/v2/client_on_boarding/price_registration_form?${queryParams}`;
+      
+      console.log("Sweep&Go pricing request URL:", url);
+      console.log("Pricing parameters:", {
+        organization: this.organizationSlug,
+        last_time_yard_was_thoroughly_cleaned: params.lastCleanedTimeframe,
+        clean_up_frequency: frequencyMap[params.frequency] || params.frequency,
+        number_of_dogs: params.numberOfDogs.toString(),
+        zip_code: params.zipCode,
+      });
+
       const response = await fetch(url, {
         method: "GET",
         headers: this.getHeaders(),
       });
 
       if (!response.ok) {
-        console.error("Sweep&Go pricing failed:", response.statusText);
-        return null;
+        const errorText = await response.text();
+        console.error("Sweep&Go pricing failed:", response.status, response.statusText, errorText);
+        return { error: `API Error ${response.status}: ${response.statusText}`, details: errorText };
       }
 
-      return await response.json();
+      const data = await response.json();
+      console.log("Sweep&Go pricing response:", data);
+      return data;
     } catch (error) {
       console.error("Error getting pricing:", error);
-      return null;
+      return { error: error instanceof Error ? error.message : "Unknown error" };
     }
   }
 

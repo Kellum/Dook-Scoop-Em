@@ -203,6 +203,7 @@ export default function SweepAndGoTest() {
                 <SelectContent>
                   <SelectItem value="weekly">Weekly</SelectItem>
                   <SelectItem value="bi_weekly">Bi-Weekly</SelectItem>
+                  <SelectItem value="two_times_a_week">Twice Weekly</SelectItem>
                   <SelectItem value="monthly">Monthly</SelectItem>
                 </SelectContent>
               </Select>
