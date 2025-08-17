@@ -122,6 +122,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/admin/waitlist/archived", requireAuth, async (req, res) => {
+    try {
+      const submissions = await storage.getArchivedWaitlistSubmissions();
+      res.json({ submissions });
+    } catch (error) {
+      console.error("Error fetching archived waitlist:", error);
+      res.status(500).json({ error: "Failed to fetch archived waitlist" });
+    }
+  });
+
   app.patch("/api/admin/waitlist/:id/archive", requireAuth, async (req, res) => {
     try {
       const { id } = req.params;

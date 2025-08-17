@@ -44,6 +44,7 @@ export default function AdminDashboard() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/waitlist"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/waitlist/archived"] });
       toast({
         title: "Submission Archived",
         description: "The waitlist submission has been archived successfully.",
@@ -129,6 +130,21 @@ export default function AdminDashboard() {
     retry: false,
   });
 
+  const { data: archivedData, isLoading: archivedLoading } = useQuery<{submissions: WaitlistSubmission[]}>({
+    queryKey: ["/api/admin/waitlist/archived"],
+    queryFn: async () => {
+      const token = localStorage.getItem("admin-token");
+      const response = await fetch("/api/admin/waitlist/archived", {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) throw new Error('Failed to fetch archived waitlist');
+      return response.json();
+    },
+    retry: false,
+  });
+
   const addLocationMutation = useMutation({
     mutationFn: async (data: LocationForm) => {
       const token = localStorage.getItem("admin-token");
@@ -190,6 +206,7 @@ export default function AdminDashboard() {
 
   const locations = locationsData?.locations || [];
   const submissions = waitlistData?.submissions || [];
+  const archivedSubmissions = archivedData?.submissions || [];
 
   if (locationsLoading && waitlistLoading) {
     return (
@@ -269,7 +286,8 @@ export default function AdminDashboard() {
         <Tabs defaultValue="locations" className="space-y-4">
           <TabsList>
             <TabsTrigger value="locations">Service Locations</TabsTrigger>
-            <TabsTrigger value="waitlist">Waitlist</TabsTrigger>
+            <TabsTrigger value="waitlist">Active Waitlist ({submissions.length})</TabsTrigger>
+            <TabsTrigger value="archived">Archived ({archivedSubmissions.length})</TabsTrigger>
             <TabsTrigger value="sweepandgo">Sweep&Go API</TabsTrigger>
           </TabsList>
 
@@ -532,6 +550,62 @@ export default function AdminDashboard() {
                   {submissions.length === 0 && (
                     <div className="text-center py-8 text-muted-foreground">
                       No waitlist submissions yet
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="archived">
+            <Card>
+              <CardHeader>
+                <CardTitle>Archived Submissions</CardTitle>
+                <CardDescription>Previously archived waitlist signups</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4">
+                  {archivedSubmissions.map((submission: WaitlistSubmission) => (
+                    <Card key={submission.id} className="shadow-sm bg-muted/50">
+                      <CardContent className="pt-4">
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                          <div className="space-y-1">
+                            <p className="text-sm font-medium">{submission.name}</p>
+                            <p className="text-xs text-muted-foreground">{submission.email}</p>
+                            <p className="text-xs text-muted-foreground">{submission.phone}</p>
+                          </div>
+                          <div className="space-y-1">
+                            <p className="text-sm">{submission.address}</p>
+                            <p className="text-xs text-muted-foreground">Zip: {submission.zipCode}</p>
+                            <p className="text-xs font-medium">
+                              {submission.numberOfDogs} dog{submission.numberOfDogs !== "1" ? "s" : ""}
+                            </p>
+                          </div>
+                          <div className="space-y-1">
+                            {submission.referralSource && (
+                              <p className="text-xs text-muted-foreground">
+                                <span className="font-medium">Source:</span> {submission.referralSource}
+                              </p>
+                            )}
+                            {submission.urgency && (
+                              <p className="text-xs text-muted-foreground">
+                                <span className="font-medium">Urgency:</span> {submission.urgency}
+                              </p>
+                            )}
+                            <p className="text-xs text-muted-foreground">
+                              {submission.submittedAt ? new Date(submission.submittedAt).toLocaleDateString() : 'Unknown'}
+                            </p>
+                            <Badge variant="secondary" className="text-xs">
+                              Archived
+                            </Badge>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                  {archivedSubmissions.length === 0 && (
+                    <div className="text-center py-8 text-muted-foreground">
+                      No archived submissions yet
                     </div>
                   )}
                 </div>

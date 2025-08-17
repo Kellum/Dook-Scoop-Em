@@ -53,6 +53,10 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(waitlistSubmissions).where(eq(waitlistSubmissions.status, "active"));
   }
 
+  async getArchivedWaitlistSubmissions(): Promise<WaitlistSubmission[]> {
+    return await db.select().from(waitlistSubmissions).where(eq(waitlistSubmissions.status, "archived"));
+  }
+
   async updateWaitlistSubmissionStatus(id: string, status: string): Promise<WaitlistSubmission | undefined> {
     const [submission] = await db
       .update(waitlistSubmissions)
