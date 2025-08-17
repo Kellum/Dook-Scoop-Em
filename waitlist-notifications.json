@@ -66,5 +66,18 @@
     "urgency": "asap",
     "submittedAt": "2025-08-17 19:11:03.302372+00",
     "timestamp": "2025-08-17T19:11:03.335Z"
+  },
+  {
+    "id": "9a6f343f-2cdc-4329-b6a4-1bd58b8b650b",
+    "name": "Test Delete User",
+    "email": "testdelete@example.com",
+    "address": "Zip: 98765",
+    "zipCode": "98765",
+    "phone": "5553334444",
+    "numberOfDogs": "2",
+    "referralSource": "friend",
+    "urgency": "whenever",
+    "submittedAt": "2025-08-17 19:14:57.458365+00",
+    "timestamp": "2025-08-17T19:14:57.510Z"
   }
 ]

@@ -15,6 +15,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { MapPin, Users, Plus, LogOut, AlertCircle, CheckCircle, Trash2, Home, Archive } from "lucide-react";
 import { insertServiceLocationSchema, type ServiceLocation, type WaitlistSubmission } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import logoImage from "@assets/ChatGPT Image Aug 15, 2025, 06_49_12 PM_1755298579638.png";
 import SweepAndGoTest from "./sweepandgo-test";
 import { z } from "zod";
@@ -34,6 +35,7 @@ export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const [isAddLocationOpen, setIsAddLocationOpen] = useState(false);
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   // Archive submission mutation
   const archiveMutation = useMutation({
@@ -42,6 +44,17 @@ export default function AdminDashboard() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/waitlist"] });
+      toast({
+        title: "Submission Archived",
+        description: "The waitlist submission has been archived successfully.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to archive submission. Please try again.",
+        variant: "destructive",
+      });
     },
   });
 
@@ -52,6 +65,17 @@ export default function AdminDashboard() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/waitlist"] });
+      toast({
+        title: "Submission Deleted",
+        description: "The waitlist submission has been permanently deleted.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to delete submission. Please try again.",
+        variant: "destructive",
+      });
     },
   });
 
