@@ -83,6 +83,16 @@ export class SweepAndGoAPI {
     this.apiToken = process.env.SWEEPANDGO_API_TOKEN;
     this.organizationId = process.env.SWEEPANDGO_ORGANIZATION_ID;
     this.organizationSlug = process.env.SWEEPANDGO_ORGANIZATION_SLUG;
+    
+    // Log configuration status (without exposing sensitive data)
+    console.log("Sweep&Go API Configuration:");
+    console.log("- API Token:", this.apiToken ? "✓ Configured" : "✗ Missing");
+    console.log("- Organization ID:", this.organizationId ? "✓ Configured" : "✗ Missing");
+    console.log("- Organization Slug:", this.organizationSlug ? "✓ Configured" : "✗ Missing");
+  }
+
+  isConfigured(): boolean {
+    return !!(this.apiToken && this.organizationId && this.organizationSlug);
   }
 
   private getHeaders() {

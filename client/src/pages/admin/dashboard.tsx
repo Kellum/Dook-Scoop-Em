@@ -16,6 +16,7 @@ import { MapPin, Users, Plus, LogOut, AlertCircle, CheckCircle, Trash2, Home } f
 import { insertServiceLocationSchema, type ServiceLocation, type WaitlistSubmission } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import logoImage from "@assets/ChatGPT Image Aug 15, 2025, 06_49_12 PM_1755298579638.png";
+import SweepAndGoTest from "./sweepandgo-test";
 import { z } from "zod";
 
 // Form schema that accepts string input for zip codes
@@ -225,6 +226,7 @@ export default function AdminDashboard() {
           <TabsList>
             <TabsTrigger value="locations">Service Locations</TabsTrigger>
             <TabsTrigger value="waitlist">Waitlist</TabsTrigger>
+            <TabsTrigger value="sweepandgo">Sweep&Go API</TabsTrigger>
           </TabsList>
 
           <TabsContent value="locations">
@@ -439,6 +441,18 @@ export default function AdminDashboard() {
                     </div>
                   )}
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="sweepandgo">
+            <Card>
+              <CardHeader>
+                <CardTitle>Sweep&Go API Integration</CardTitle>
+                <CardDescription>Test and manage your Sweep&Go API connection</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <SweepAndGoTest />
               </CardContent>
             </Card>
           </TabsContent>

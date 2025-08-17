@@ -125,6 +125,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Sweep&Go webhook endpoint
   app.post("/api/webhooks/sweepandgo", handleSweepAndGoWebhook);
 
+  // Test Sweep&Go API connection (admin only)
+  app.get("/api/admin/sweepandgo/test", requireAuth, async (req, res) => {
+    try {
+      // Test basic API connectivity
+      const testEmail = "test@example.com";
+      const emailExists = await sweepAndGoAPI.checkClientEmailExists(testEmail);
+      
+      res.json({ 
+        success: true,
+        message: "Sweep&Go API connection successful",
+        test_result: {
+          email_check: emailExists,
+          api_configured: sweepAndGoAPI.isConfigured()
+        }
+      });
+    } catch (error) {
+      console.error("Sweep&Go API test failed:", error);
+      res.status(500).json({ 
+        success: false,
+        message: "Sweep&Go API connection failed",
+        error: error instanceof Error ? error.message : "Unknown error"
+      });
+    }
+  });
+
+  // Get pricing from Sweep&Go API (admin only)
+  app.post("/api/admin/sweepandgo/pricing", requireAuth, async (req, res) => {
+    try {
+      const { zipCode, numberOfDogs, frequency, lastCleaned } = req.body;
+      
+      const pricing = await sweepAndGoAPI.getPricing({
+        zipCode,
+        numberOfDogs: parseInt(numberOfDogs),
+        frequency: frequency || "weekly",
+        lastCleanedTimeframe: lastCleaned || "one_week"
+      });
+
+      res.json({ success: true, pricing });
+    } catch (error) {
+      console.error("Pricing lookup failed:", error);
+      res.status(500).json({ 
+        success: false,
+        error: error instanceof Error ? error.message : "Pricing lookup failed"
+      });
+    }
+  });
+
   // Public endpoints
   // Get service locations endpoint
   app.get("/api/locations", async (req, res) => {
@@ -159,6 +206,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Validate request body
       const validatedData = insertWaitlistSubmissionSchema.parse(req.body);
       
+      // Check if email already exists in Sweep&Go before storing
+      const emailExists = await sweepAndGoAPI.checkClientEmailExists(validatedData.email);
+      if (emailExists) {
+        console.log(`Email ${validatedData.email} already exists in Sweep&Go`);
+      }
+
       // Store submission
       const submission = await storage.createWaitlistSubmission(validatedData);
       
