@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertWaitlistSubmissionSchema, insertServiceLocationSchema, insertUserSchema } from "@shared/schema";
 import { hashPassword, verifyPassword, generateToken, requireAuth } from "./auth";
+import { handleSweepAndGoWebhook, sweepAndGoAPI } from "./sweepandgo";
 import nodemailer from "nodemailer";
 import { writeFile, readFile, existsSync } from "fs";
 import { promisify } from "util";
@@ -120,6 +121,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to fetch waitlist" });
     }
   });
+
+  // Sweep&Go webhook endpoint
+  app.post("/api/webhooks/sweepandgo", handleSweepAndGoWebhook);
 
   // Public endpoints
   // Get service locations endpoint
