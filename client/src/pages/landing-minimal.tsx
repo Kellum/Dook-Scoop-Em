@@ -121,7 +121,7 @@ export default function LandingMinimal() {
               Join Our Waitlist
             </CardTitle>
             <p className="text-gray-600 mt-2">
-              Be the first to know when we're scooping in your area!
+              We may already be scooping in your area!
             </p>
           </CardHeader>
           <CardContent>
