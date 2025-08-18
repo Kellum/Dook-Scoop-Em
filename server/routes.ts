@@ -317,7 +317,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                     name: "Ryan"
                   }
                 ],
-                subject: "New Dook Scoop Em Waitlist Signup",
+                subject: `New Waitlist Signup - ${submission.name} (${new Date().toLocaleDateString()})`,
                 html: `
                   <h2>New Waitlist Signup</h2>
                   <p><strong>Name:</strong> ${submission.name}</p>
@@ -367,7 +367,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               const mailOptions = {
                 from: '"Dook Scoop Em" <noreply@dookscoopem.com>',
                 to: 'ryan@dookscoop.com',
-                subject: 'New Dook Scoop Em Waitlist Signup',
+                subject: `New Waitlist Signup - ${submission.name} (${new Date().toLocaleDateString()})`,
                 html: `
                   <h2>New Waitlist Signup</h2>
                   <p><strong>Name:</strong> ${submission.name}</p>
