@@ -358,9 +358,9 @@ export default function LandingMinimal() {
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
-                        <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        <label className="text-sm font-medium leading-none cursor-pointer select-none">
                           I accept your texts of destiny, no spam please
-                        </FormLabel>
+                        </label>
                       </div>
                     </FormItem>
                   )}
