@@ -207,31 +207,29 @@ export default function LandingMinimal() {
                       </FormItem>
                     )}
                   />
-                  
-                  {/* Text Permission Checkbox */}
-                  <FormField
-                    control={form.control}
-                    name="canText"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 mt-4">
+                </div>
+
+                {/* Text Permission Checkbox */}
+                <FormField
+                  control={form.control}
+                  name="canText"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-bold">Can we text you?</FormLabel>
+                      <div className="flex items-start space-x-3">
                         <FormControl>
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
-                        <div className="space-y-1 leading-none">
-                          <FormLabel className="text-sm">
-                            Yes, you can text me updates about my service
-                          </FormLabel>
-                          <FormDescription className="text-xs text-gray-500">
-                            We'll only text you about your poop scooping service - no spam!
-                          </FormDescription>
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                        <label className="text-sm font-medium leading-none cursor-pointer select-none">
+                          I accept your texts of destiny, no spam please
+                        </label>
+                      </div>
+                    </FormItem>
+                  )}
+                />
 
                 {/* Zip Code */}
                 <FormField
@@ -340,28 +338,6 @@ export default function LandingMinimal() {
                         </SelectContent>
                       </Select>
                       <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Text Permission Checkbox */}
-                <FormField
-                  control={form.control}
-                  name="canText"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-bold">Can we text you?</FormLabel>
-                      <div className="flex items-start space-x-3">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <label className="text-sm font-medium leading-none cursor-pointer select-none">
-                          I accept your texts of destiny, no spam please
-                        </label>
-                      </div>
                     </FormItem>
                   )}
                 />
