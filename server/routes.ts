@@ -308,7 +308,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               },
               body: JSON.stringify({
                 from: {
-                  email: "noreply@trial-351ndgwpxr9lzqx8.mlsender.net",
+                  email: "noreply@dookscoopem.com",
                   name: "Dook Scoop Em"
                 },
                 to: [
@@ -365,7 +365,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           if (process.env.MAILERSEND_SMTP_USER && process.env.MAILERSEND_SMTP_PASS) {
             try {
               const mailOptions = {
-                from: '"Dook Scoop Em" <noreply@trial-351ndgwpxr9lzqx8.mlsender.net>',
+                from: '"Dook Scoop Em" <noreply@dookscoopem.com>',
                 to: 'ryan@dookscoop.com',
                 subject: 'New Dook Scoop Em Waitlist Signup',
                 html: `
