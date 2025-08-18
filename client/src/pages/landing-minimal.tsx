@@ -344,6 +344,27 @@ export default function LandingMinimal() {
                   )}
                 />
 
+                {/* Text Permission Checkbox */}
+                <FormField
+                  control={form.control}
+                  name="canText"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel className="text-sm font-medium">
+                          Yes, text me (we promise not to spam!) 📱
+                        </FormLabel>
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
                 {/* Submit Button */}
                 <Button
                   type="submit"
