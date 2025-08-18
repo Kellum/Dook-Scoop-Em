@@ -349,16 +349,17 @@ export default function LandingMinimal() {
                   control={form.control}
                   name="canText"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel className="text-sm font-medium">
-                          Yes, text me (we promise not to spam!) 📱
+                    <FormItem>
+                      <FormLabel className="font-bold">Can we text you?</FormLabel>
+                      <div className="flex items-start space-x-3">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                          I accept your texts of destiny, no spam please
                         </FormLabel>
                       </div>
                     </FormItem>
