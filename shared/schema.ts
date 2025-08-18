@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, integer, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -17,8 +17,9 @@ export const waitlistSubmissions = pgTable("waitlist_submissions", {
   zipCode: text("zip_code").notNull(),
   phone: text("phone").notNull(),
   numberOfDogs: text("number_of_dogs").notNull(),
-  referralSource: text("referral_source"),
-  urgency: text("urgency"),
+  referralSource: text("referral_source").notNull(),
+  urgency: text("urgency").notNull(),
+  canText: boolean("can_text").default(false).notNull(),
   status: text("status").default("active"), // active, archived, deleted
   submittedAt: text("submitted_at").default(sql`CURRENT_TIMESTAMP`),
 });
@@ -40,6 +41,7 @@ export const insertUserSchema = createInsertSchema(users).pick({
 export const insertWaitlistSubmissionSchema = createInsertSchema(waitlistSubmissions).omit({
   id: true,
   submittedAt: true,
+  status: true,
 }).extend({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
@@ -47,8 +49,9 @@ export const insertWaitlistSubmissionSchema = createInsertSchema(waitlistSubmiss
   zipCode: z.string().min(5, "Please enter a valid zip code"),
   phone: z.string().min(10, "Please enter a valid phone number"),
   numberOfDogs: z.string().min(1, "Please select number of dogs"),
-  referralSource: z.string().optional(),
-  urgency: z.string().optional(),
+  referralSource: z.string().min(1, "Please select how you heard about us"),
+  urgency: z.string().min(1, "Please select your preferred timeline"),
+  canText: z.boolean().default(false),
 });
 
 export const insertServiceLocationSchema = createInsertSchema(serviceLocations).omit({

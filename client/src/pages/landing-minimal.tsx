@@ -5,7 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
@@ -24,6 +25,7 @@ const waitlistFormSchema = z.object({
   numberOfDogs: z.number().min(1).max(4),
   referralSource: z.string().min(1, "Please tell us how you heard about us"),
   urgency: z.string().min(1, "Please let us know your timing needs"),
+  canText: z.boolean().default(false),
 });
 
 type WaitlistFormData = z.infer<typeof waitlistFormSchema>;
@@ -44,6 +46,7 @@ export default function LandingMinimal() {
       numberOfDogs: 2,
       referralSource: "",
       urgency: "",
+      canText: false,
     },
   });
 
@@ -59,6 +62,7 @@ export default function LandingMinimal() {
         numberOfDogs: data.numberOfDogs.toString(),
         referralSource: data.referralSource,
         urgency: data.urgency,
+        canText: data.canText,
       };
 
       return apiRequest("POST", "/api/waitlist", submitData);
@@ -200,6 +204,30 @@ export default function LandingMinimal() {
                           />
                         </FormControl>
                         <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  {/* Text Permission Checkbox */}
+                  <FormField
+                    control={form.control}
+                    name="canText"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0 mt-4">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel className="text-sm">
+                            Yes, you can text me updates about my service
+                          </FormLabel>
+                          <FormDescription className="text-xs text-gray-500">
+                            We'll only text you about your poop scooping service - no spam!
+                          </FormDescription>
+                        </div>
                       </FormItem>
                     )}
                   />

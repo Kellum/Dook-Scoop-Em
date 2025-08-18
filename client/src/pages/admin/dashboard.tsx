@@ -501,6 +501,11 @@ export default function AdminDashboard() {
                             <p className="text-xs text-muted-foreground">
                               {submission.submittedAt ? new Date(submission.submittedAt).toLocaleDateString() : 'Unknown'}
                             </p>
+                            {submission.canText && (
+                              <p className="text-xs text-green-600 font-medium">
+                                ✓ Can text updates
+                              </p>
+                            )}
                           </div>
                           <div className="flex flex-col gap-2">
                             <Button
@@ -595,6 +600,11 @@ export default function AdminDashboard() {
                             <p className="text-xs text-muted-foreground">
                               {submission.submittedAt ? new Date(submission.submittedAt).toLocaleDateString() : 'Unknown'}
                             </p>
+                            {submission.canText && (
+                              <p className="text-xs text-green-600 font-medium">
+                                ✓ Can text updates
+                              </p>
+                            )}
                             <Badge variant="secondary" className="text-xs">
                               Archived
                             </Badge>

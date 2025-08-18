@@ -92,5 +92,18 @@
     "urgency": "whenever",
     "submittedAt": "2025-08-17 19:17:08.807917+00",
     "timestamp": "2025-08-17T19:17:08.839Z"
+  },
+  {
+    "id": "68cde754-206d-4096-928d-67e509f481a5",
+    "name": "Text Permission Test",
+    "email": "texttest@example.com",
+    "address": "123 Test Street",
+    "zipCode": "12345",
+    "phone": "5551234567",
+    "numberOfDogs": "2",
+    "referralSource": "website",
+    "urgency": "asap",
+    "submittedAt": "2025-08-18 10:56:06.542414+00",
+    "timestamp": "2025-08-18T10:56:06.594Z"
   }
 ]

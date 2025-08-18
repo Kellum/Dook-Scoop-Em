@@ -260,6 +260,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("Number of Dogs:", submission.numberOfDogs);
       console.log("Referral Source:", submission.referralSource);
       console.log("Urgency:", submission.urgency);
+      console.log("Can Text:", submission.canText ? "YES" : "NO");
       console.log("Submitted At:", submission.submittedAt);
       console.log("================================");
 
@@ -275,6 +276,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           numberOfDogs: submission.numberOfDogs,
           referralSource: submission.referralSource,
           urgency: submission.urgency,
+          canText: submission.canText,
           submittedAt: submission.submittedAt,
           timestamp: new Date().toISOString()
         };
@@ -311,6 +313,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 <p><strong>Number of Dogs:</strong> ${submission.numberOfDogs}</p>
                 ${submission.referralSource ? `<p><strong>How they heard about us:</strong> ${submission.referralSource}</p>` : ''}
                 ${submission.urgency ? `<p><strong>Service urgency:</strong> ${submission.urgency}</p>` : ''}
+                <p><strong>Can Text Updates:</strong> ${submission.canText ? 'YES ✓' : 'NO'}</p>
                 <p><strong>Submitted At:</strong> ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}</p>
               `,
               text: `
@@ -324,6 +327,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 Number of Dogs: ${submission.numberOfDogs}
                 ${submission.referralSource ? `How they heard about us: ${submission.referralSource}` : ''}
                 ${submission.urgency ? `Service urgency: ${submission.urgency}` : ''}
+                Can Text Updates: ${submission.canText ? 'YES' : 'NO'}
                 Submitted At: ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}
               `
             };
