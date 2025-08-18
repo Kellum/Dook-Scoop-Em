@@ -296,46 +296,112 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await writeFileAsync(filePath, JSON.stringify(notifications, null, 2));
         console.log("Notification saved to file successfully");
 
-        // Also try to send email via SMTP if credentials are available
-        if (process.env.MAILERSEND_SMTP_USER && process.env.MAILERSEND_SMTP_PASS) {
-          try {
-            const mailOptions = {
-              from: '"Dook Scoop Em" <noreply@dookscoopem.com>',
-              to: 'ryan@dookscoop.com',
-              subject: 'New Dook Scoop Em Waitlist Signup',
-              html: `
-                <h2>New Waitlist Signup</h2>
-                <p><strong>Name:</strong> ${submission.name}</p>
-                <p><strong>Email:</strong> ${submission.email}</p>
-                <p><strong>Phone:</strong> ${submission.phone}</p>
-                <p><strong>Address:</strong> ${submission.address}</p>
-                <p><strong>Zip Code:</strong> ${submission.zipCode}</p>
-                <p><strong>Number of Dogs:</strong> ${submission.numberOfDogs}</p>
-                ${submission.referralSource ? `<p><strong>How they heard about us:</strong> ${submission.referralSource}</p>` : ''}
-                ${submission.urgency ? `<p><strong>Service urgency:</strong> ${submission.urgency}</p>` : ''}
-                <p><strong>Can Text Updates:</strong> ${submission.canText ? 'YES ✓' : 'NO'}</p>
-                <p><strong>Submitted At:</strong> ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}</p>
-              `,
-              text: `
-                New Waitlist Signup
-                
-                Name: ${submission.name}
-                Email: ${submission.email}
-                Phone: ${submission.phone}
-                Address: ${submission.address}
-                Zip Code: ${submission.zipCode}
-                Number of Dogs: ${submission.numberOfDogs}
-                ${submission.referralSource ? `How they heard about us: ${submission.referralSource}` : ''}
-                ${submission.urgency ? `Service urgency: ${submission.urgency}` : ''}
-                Can Text Updates: ${submission.canText ? 'YES' : 'NO'}
-                Submitted At: ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}
-              `
-            };
+        // Try to send email via MailerSend API first, then fallback to SMTP
+        try {
+          if (process.env.MAILERSEND_API_KEY) {
+            // Use MailerSend API
+            const mailersendResponse = await fetch('https://api.mailersend.com/v1/email', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.MAILERSEND_API_KEY}`
+              },
+              body: JSON.stringify({
+                from: {
+                  email: "noreply@trial-351ndgwpxr9lzqx8.mlsender.net",
+                  name: "Dook Scoop Em"
+                },
+                to: [
+                  {
+                    email: "ryan@dookscoop.com",
+                    name: "Ryan"
+                  }
+                ],
+                subject: "New Dook Scoop Em Waitlist Signup",
+                html: `
+                  <h2>New Waitlist Signup</h2>
+                  <p><strong>Name:</strong> ${submission.name}</p>
+                  <p><strong>Email:</strong> ${submission.email}</p>
+                  <p><strong>Phone:</strong> ${submission.phone}</p>
+                  <p><strong>Address:</strong> ${submission.address}</p>
+                  <p><strong>Zip Code:</strong> ${submission.zipCode}</p>
+                  <p><strong>Number of Dogs:</strong> ${submission.numberOfDogs}</p>
+                  ${submission.referralSource ? `<p><strong>How they heard about us:</strong> ${submission.referralSource}</p>` : ''}
+                  ${submission.urgency ? `<p><strong>Service urgency:</strong> ${submission.urgency}</p>` : ''}
+                  <p><strong>Can Text Updates:</strong> ${submission.canText ? 'YES ✓' : 'NO'}</p>
+                  <p><strong>Submitted At:</strong> ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}</p>
+                `,
+                text: `
+                  New Waitlist Signup
+                  
+                  Name: ${submission.name}
+                  Email: ${submission.email}
+                  Phone: ${submission.phone}
+                  Address: ${submission.address}
+                  Zip Code: ${submission.zipCode}
+                  Number of Dogs: ${submission.numberOfDogs}
+                  ${submission.referralSource ? `How they heard about us: ${submission.referralSource}` : ''}
+                  ${submission.urgency ? `Service urgency: ${submission.urgency}` : ''}
+                  Can Text Updates: ${submission.canText ? 'YES' : 'NO'}
+                  Submitted At: ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}
+                `
+              })
+            });
 
-            const result = await transporter.sendMail(mailOptions);
-            console.log("Email sent successfully via SMTP:", result);
-          } catch (emailError) {
-            console.log("SMTP email failed (using file backup):", emailError.response || emailError.message);
+            if (mailersendResponse.ok) {
+              console.log("Email sent successfully via MailerSend API");
+            } else {
+              const errorData = await mailersendResponse.text();
+              console.log("MailerSend API failed:", errorData);
+              throw new Error(`MailerSend API failed: ${mailersendResponse.status}`);
+            }
+          } else {
+            throw new Error("No MailerSend API key available");
+          }
+        } catch (apiError) {
+          console.log("MailerSend API failed, trying SMTP fallback:", apiError.message);
+          
+          // Fallback to SMTP
+          if (process.env.MAILERSEND_SMTP_USER && process.env.MAILERSEND_SMTP_PASS) {
+            try {
+              const mailOptions = {
+                from: '"Dook Scoop Em" <noreply@trial-351ndgwpxr9lzqx8.mlsender.net>',
+                to: 'ryan@dookscoop.com',
+                subject: 'New Dook Scoop Em Waitlist Signup',
+                html: `
+                  <h2>New Waitlist Signup</h2>
+                  <p><strong>Name:</strong> ${submission.name}</p>
+                  <p><strong>Email:</strong> ${submission.email}</p>
+                  <p><strong>Phone:</strong> ${submission.phone}</p>
+                  <p><strong>Address:</strong> ${submission.address}</p>
+                  <p><strong>Zip Code:</strong> ${submission.zipCode}</p>
+                  <p><strong>Number of Dogs:</strong> ${submission.numberOfDogs}</p>
+                  ${submission.referralSource ? `<p><strong>How they heard about us:</strong> ${submission.referralSource}</p>` : ''}
+                  ${submission.urgency ? `<p><strong>Service urgency:</strong> ${submission.urgency}</p>` : ''}
+                  <p><strong>Can Text Updates:</strong> ${submission.canText ? 'YES ✓' : 'NO'}</p>
+                  <p><strong>Submitted At:</strong> ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}</p>
+                `,
+                text: `
+                  New Waitlist Signup
+                  
+                  Name: ${submission.name}
+                  Email: ${submission.email}
+                  Phone: ${submission.phone}
+                  Address: ${submission.address}
+                  Zip Code: ${submission.zipCode}
+                  Number of Dogs: ${submission.numberOfDogs}
+                  ${submission.referralSource ? `How they heard about us: ${submission.referralSource}` : ''}
+                  ${submission.urgency ? `Service urgency: ${submission.urgency}` : ''}
+                  Can Text Updates: ${submission.canText ? 'YES' : 'NO'}
+                  Submitted At: ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}
+                `
+              };
+
+              const result = await transporter.sendMail(mailOptions);
+              console.log("Email sent successfully via SMTP fallback:", result);
+            } catch (smtpError) {
+              console.log("Both MailerSend API and SMTP failed (using file backup):", smtpError.response || smtpError.message);
+            }
           }
         }
       } catch (fileError) {
