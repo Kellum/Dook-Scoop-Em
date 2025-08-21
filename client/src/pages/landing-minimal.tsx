@@ -411,7 +411,7 @@ export default function LandingMinimal() {
                     <td className="p-4 text-center font-bold text-gray-600">~$23.08</td>
                   </tr>
                   <tr className="border-b border-gray-200">
-                    <td className="p-4 font-bold text-gray-800">First Month Free*</td>
+                    <td className="p-4 font-bold text-gray-800">Free Month*</td>
                     <td className="p-4 text-center bg-blue-50">
                       <span className="text-green-600 font-black text-xl">✓</span>
                     </td>
@@ -461,7 +461,7 @@ export default function LandingMinimal() {
 
           {/* Terms Details */}
           <div className="mt-8 text-sm text-gray-600 space-y-2">
-            <p><strong>*</strong> "First month free" is delivered as a credit on month 4 after 3 consecutive paid months.</p>
+            <p><strong>*</strong> "Free month" is delivered as a credit on month 4 after 3 consecutive paid months.</p>
             <p>Cancellation takes effect next billing cycle; cancelling before 3 months forfeits the credit.</p>
             <p>Rate lock lasts 12 months from first paid service date.</p>
             <p>Weekly service assumed (~4.33 visits/month).</p>
