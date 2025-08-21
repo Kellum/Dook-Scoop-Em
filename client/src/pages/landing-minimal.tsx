@@ -115,7 +115,7 @@ export default function LandingMinimal() {
           </p>
           
           <p className="text-lg md:text-xl text-gray-700 mb-2 font-bold">
-            Starting in Yulee, Fernandina & Nassau County. Founding members <a href="#perks" className="text-orange-600 hover:text-orange-700 font-bold transition-colors">get perks</a>.
+            Starting in Yulee, Fernandina, Oceanway & Nassau County. Founding members <a href="#perks" className="text-orange-600 hover:text-orange-700 font-bold transition-colors">get perks</a>.
           </p>
           
           <p className="text-base md:text-lg text-gray-500 mb-8 font-medium italic">
