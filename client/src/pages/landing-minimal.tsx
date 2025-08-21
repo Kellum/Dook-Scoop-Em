@@ -13,7 +13,7 @@ import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Facebook, Instagram } from "lucide-react";
-import newLogoImage from "@assets/Dook logo 001_1755440254749.png";
+import heroLogoImage from "@assets/a-pixel-art-logo-depicting-a-heroic-figu_G2-wk3h-RHK0S_WbYEP9fQ_PgM67temTW2i1pqE1QU24A_1755776704851.png";
 
 // Enhanced waitlist form schema
 const waitlistFormSchema = z.object({
@@ -94,21 +94,20 @@ export default function LandingMinimal() {
       {/* Header */}
       <header className="w-full py-8 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          {/* New Pixel Art Logo */}
+          {/* Company Name */}
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6 text-gray-800">
+            Dook Scoop 'Em
+          </h1>
+          
+          {/* Hero Pixel Art Logo */}
           <div className="mb-6">
             <img 
-              src={newLogoImage} 
-              alt="Dook Scoop Em Logo" 
-              className="w-32 h-32 mx-auto object-contain pixel-perfect"
+              src={heroLogoImage} 
+              alt="Dook Scoop Em Hero Logo" 
+              className="w-64 h-64 mx-auto object-contain pixel-perfect"
               style={{ imageRendering: 'pixelated' }}
             />
           </div>
-          
-          {/* Main Header with Pixel Font */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 text-gray-800" 
-              style={{ fontFamily: 'var(--font-pixel)' }}>
-            WE FEAR NO PILE
-          </h1>
           
           <p className="text-xl md:text-2xl text-gray-600 mb-4 font-black">
             Professional Pet Waste Removal Service
