@@ -13,7 +13,7 @@ import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Facebook, Instagram } from "lucide-react";
-import heroLogoImage from "@assets/a-pixel-art-logo-depicting-a-heroic-figu_G2-wk3h-RHK0S_WbYEP9fQ_PgM67temTW2i1pqE1QU24A_1755776704851.png";
+import heroLogoImage from "@assets/transp_BG_1755778985315.png";
 
 // Enhanced waitlist form schema
 const waitlistFormSchema = z.object({
