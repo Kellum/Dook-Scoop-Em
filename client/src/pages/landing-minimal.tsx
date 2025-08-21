@@ -90,7 +90,7 @@ export default function LandingMinimal() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 scroll-smooth">
       {/* Header */}
       <header className="w-full py-8 px-4">
         <div className="max-w-4xl mx-auto text-center">
@@ -114,7 +114,7 @@ export default function LandingMinimal() {
           </p>
           
           <p className="text-lg md:text-xl text-gray-700 mb-2 font-bold">
-            Starting in Yulee, Fernandina & Nassau County. Founding members <a href="#perks" className="text-orange-600 hover:text-orange-700 font-bold transition-colors">get perks</a>.
+            Starting in Yulee, Fernandina & Nassau County. Founding members <a href="#perks" className="text-orange-600 hover:text-orange-700 font-bold transition-colors scroll-smooth">get perks</a>.
           </p>
           
           <p className="text-base md:text-lg text-gray-500 mb-8 font-medium italic">
@@ -126,7 +126,7 @@ export default function LandingMinimal() {
       {/* Main Content */}
       <main className="max-w-2xl mx-auto px-4 pb-16">
         {/* Waitlist Form */}
-        <Card className="neu-raised shadow-2xl">
+        <Card id="waitlist-form" className="neu-raised shadow-2xl">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl md:text-3xl font-black text-gray-800">
               Join Our Waitlist
@@ -447,6 +447,16 @@ export default function LandingMinimal() {
               </table>
             </div>
           </Card>
+
+          {/* CTA Button */}
+          <div className="text-center mt-8">
+            <a 
+              href="#waitlist-form" 
+              className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-black py-4 px-8 rounded-lg text-lg transition-colors scroll-smooth"
+            >
+              Let's Do It!
+            </a>
+          </div>
 
           {/* Terms Details */}
           <div className="mt-8 text-sm text-gray-600 space-y-2">
