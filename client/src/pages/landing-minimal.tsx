@@ -110,8 +110,16 @@ export default function LandingMinimal() {
             WE FEAR NO PILE
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-600 mb-8 font-black">
+          <p className="text-xl md:text-2xl text-gray-600 mb-4 font-black">
             Professional Pet Waste Removal Service
+          </p>
+          
+          <p className="text-lg md:text-xl text-gray-700 mb-2 font-bold">
+            Starting in Yulee, Fernandina & Nassau County. Founding members get perks.
+          </p>
+          
+          <p className="text-base md:text-lg text-gray-500 mb-8 font-medium italic">
+            coming to the rest of North East Florida very soon...
           </p>
         </div>
       </header>
