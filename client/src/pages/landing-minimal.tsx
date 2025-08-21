@@ -95,8 +95,9 @@ export default function LandingMinimal() {
       <header className="w-full py-8 px-4">
         <div className="max-w-4xl mx-auto text-center">
           {/* Company Name */}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6 text-gray-800">
-            Dook Scoop 'Em
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6 text-gray-800" 
+              style={{ fontFamily: 'var(--font-90s)', letterSpacing: '0.05em' }}>
+            DOOK SCOOP 'EM
           </h1>
           
           {/* Hero Pixel Art Logo */}
