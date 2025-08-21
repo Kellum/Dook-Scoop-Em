@@ -90,7 +90,7 @@ export default function LandingMinimal() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 scroll-smooth">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Header */}
       <header className="w-full py-8 px-4">
         <div className="max-w-4xl mx-auto text-center">
@@ -114,7 +114,7 @@ export default function LandingMinimal() {
           </p>
           
           <p className="text-lg md:text-xl text-gray-700 mb-2 font-bold">
-            Starting in Yulee, Fernandina & Nassau County. Founding members <a href="#perks" className="text-orange-600 hover:text-orange-700 font-bold transition-colors scroll-smooth">get perks</a>.
+            Starting in Yulee, Fernandina & Nassau County. Founding members <a href="#perks" className="text-orange-600 hover:text-orange-700 font-bold transition-colors">get perks</a>.
           </p>
           
           <p className="text-base md:text-lg text-gray-500 mb-8 font-medium italic">
@@ -452,7 +452,7 @@ export default function LandingMinimal() {
           <div className="text-center mt-8">
             <a 
               href="#waitlist-form" 
-              className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-black py-4 px-8 rounded-lg text-lg transition-colors scroll-smooth"
+              className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-black py-4 px-8 rounded-lg text-lg transition-colors"
             >
               Let's Do It!
             </a>
