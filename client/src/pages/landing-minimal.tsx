@@ -114,7 +114,7 @@ export default function LandingMinimal() {
           </p>
           
           <p className="text-lg md:text-xl text-gray-700 mb-2 font-bold">
-            Starting in Yulee, Fernandina & Nassau County. Founding members <a href="#perks" className="text-blue-600 hover:text-blue-800 underline transition-colors">get perks</a>.
+            Starting in Yulee, Fernandina & Nassau County. Founding members <a href="#perks" className="text-orange-600 hover:text-orange-700 font-bold transition-colors">get perks</a>.
           </p>
           
           <p className="text-base md:text-lg text-gray-500 mb-8 font-medium italic">
@@ -442,20 +442,7 @@ export default function LandingMinimal() {
                     </td>
                     <td className="p-4 text-center font-bold text-gray-600">Varies by company</td>
                   </tr>
-                  <tr className="border-b border-gray-200 bg-gray-50">
-                    <td className="p-4 font-bold text-gray-800">Priority Scheduling</td>
-                    <td className="p-4 text-center bg-blue-50">
-                      <span className="text-green-600 font-black">Included</span>
-                    </td>
-                    <td className="p-4 text-center font-bold text-gray-600">—</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 font-bold text-gray-800">Early Access to New Zip Codes</td>
-                    <td className="p-4 text-center bg-blue-50">
-                      <span className="text-green-600 font-black">Included</span>
-                    </td>
-                    <td className="p-4 text-center font-bold text-gray-600">—</td>
-                  </tr>
+
                 </tbody>
               </table>
             </div>
