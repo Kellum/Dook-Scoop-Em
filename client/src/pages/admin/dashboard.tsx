@@ -12,7 +12,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { MapPin, Users, Plus, LogOut, AlertCircle, CheckCircle, Trash2, Home, Archive } from "lucide-react";
+import { MapPin, Users, Plus, LogOut, AlertCircle, CheckCircle, Trash2, Home, Archive, Layout } from "lucide-react";
 import { insertServiceLocationSchema, type ServiceLocation, type WaitlistSubmission } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
