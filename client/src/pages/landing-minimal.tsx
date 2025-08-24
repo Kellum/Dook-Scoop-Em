@@ -110,7 +110,7 @@ export default function LandingMinimal() {
             />
           </div>
           
-          <div className="inline-block bg-gradient-to-r from-orange-100 to-orange-200 px-6 py-3 rounded-lg mb-4 shadow-sm">
+          <div className="inline-block bg-gradient-to-b from-orange-100 to-orange-200 px-6 py-3 rounded-lg mb-4 shadow-sm">
             <p className="text-xl md:text-2xl text-gray-800 font-black">
               Professional Pet Waste Removal Service
             </p>
