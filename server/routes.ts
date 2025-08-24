@@ -577,29 +577,74 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get page content by slug for public access
+  app.get("/api/cms/content/:slug", async (req, res) => {
+    try {
+      const { slug } = req.params;
+      const page = await storage.getPageBySlug(slug);
+      const content = await storage.getPageContentByPage(page.id);
+      
+      // Format content for easy lookup
+      const contentMap: Record<string, any> = {};
+      content.forEach(block => {
+        contentMap[block.elementId] = {
+          id: block.id,
+          content: block.content,
+          contentType: block.contentType,
+          metadata: block.metadata
+        };
+      });
+
+      res.json({ page, content: contentMap });
+    } catch (error) {
+      console.error("Error fetching page content:", error);
+      res.status(404).json({ error: "Page not found" });
+    }
+  });
+
+  // Update content block by element
+  app.put("/api/cms/content/element/:pageId/:elementId", requireAuth, async (req, res) => {
+    try {
+      const { pageId, elementId } = req.params;
+      const { content } = req.body;
+      
+      await storage.updatePageContent({
+        pageId,
+        elementId,
+        content,
+        contentType: "text" // Default, can be expanded
+      });
+      
+      res.json({ message: "Content updated successfully" });
+    } catch (error) {
+      console.error("Error updating content:", error);
+      res.status(500).json({ error: "Failed to update content" });
+    }
+  });
+
   // Initialize sample CMS data
   app.post("/api/cms/initialize", requireAuth, async (req, res) => {
     try {
       // Check if homepage already exists
-      const existingPage = await storage.getPage("/");
-      if (existingPage) {
-        return res.json({ message: "CMS data already initialized" });
+      let homepage;
+      try {
+        homepage = await storage.getPageBySlug("home");
+      } catch (error) {
+        // Create homepage if it doesn't exist
+        homepage = await storage.createPage({
+          slug: "home",
+          title: "Dook Scoop 'Em - Homepage",
+          status: "published"
+        });
       }
 
-      // Create homepage
-      const homepage = await storage.createPage({
-        slug: "/",
-        title: "Dook Scoop 'Em - Professional Pet Waste Removal",
-        status: "published"
-      });
-
-      // Create sample content for homepage
+      // Create sample content for homepage editable elements
       const sampleContent = [
         {
           pageId: homepage.id,
           elementId: "hero-title",
           contentType: "text" as const,
-          content: "WE FEAR NO PILE",
+          content: "DOOK SCOOP 'EM",
         },
         {
           pageId: homepage.id,
@@ -610,19 +655,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         {
           pageId: homepage.id,
           elementId: "service-description",
-          contentType: "text" as const,
-          content: "Starting in Yulee, Fernandina, Oceanway & Nassau County with plans to expand across Northeast Florida in 2025.",
-        },
-        {
-          pageId: homepage.id,
-          elementId: "pricing-regular",
-          contentType: "text" as const,
-          content: "$100",
-        },
-        {
-          pageId: homepage.id,
-          elementId: "pricing-founding",
-          contentType: "text" as const,
+          contentType: "html" as const,
+          content: 'Starting in Yulee, Fernandina, Oceanway & Nassau County. Founding members <a href="#perks" class="text-orange-600 hover:text-orange-700 font-bold transition-colors">get perks</a>.',
           content: "$85",
         }
       ];

@@ -149,6 +149,16 @@ export class DatabaseStorage implements IStorage {
     return page;
   }
 
+  async getPageBySlug(slug: string): Promise<Page> {
+    const [page] = await db.select().from(pages).where(eq(pages.slug, slug));
+    if (!page) throw new Error("Page not found");
+    return page;
+  }
+
+  async getPageContentByPage(pageId: string): Promise<PageContent[]> {
+    return await db.select().from(pageContent).where(eq(pageContent.pageId, pageId));
+  }
+
   async getPageById(id: string): Promise<Page | undefined> {
     const [page] = await db.select().from(pages).where(eq(pages.id, id));
     return page;

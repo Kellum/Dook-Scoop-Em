@@ -44,6 +44,23 @@ export default function CMSDashboard() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
+  // Load visual editor state from localStorage
+  useEffect(() => {
+    const enabled = localStorage.getItem("visual-editor-enabled") === "true";
+    setVisualEditMode(enabled);
+  }, []);
+
+  // Toggle visual editor
+  const toggleVisualEditor = () => {
+    const newState = !visualEditMode;
+    setVisualEditMode(newState);
+    localStorage.setItem("visual-editor-enabled", newState.toString());
+    toast({
+      title: newState ? "Visual Editor Enabled" : "Visual Editor Disabled",
+      description: newState ? "Visit your homepage to click and edit elements." : "Visual editing has been disabled.",
+    });
+  };
+
   // Check authentication
   useEffect(() => {
     const token = localStorage.getItem("admin-token");
