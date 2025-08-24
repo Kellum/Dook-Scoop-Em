@@ -1,7 +1,15 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertWaitlistSubmissionSchema, insertServiceLocationSchema, insertUserSchema } from "@shared/schema";
+import { 
+  insertWaitlistSubmissionSchema, 
+  insertServiceLocationSchema, 
+  insertUserSchema,
+  insertPageSchema,
+  insertPageContentSchema,
+  insertSeoSettingsSchema,
+  insertMediaAssetSchema
+} from "@shared/schema";
 import { hashPassword, verifyPassword, generateToken, requireAuth } from "./auth";
 import { handleSweepAndGoWebhook, sweepAndGoAPI } from "./sweepandgo";
 import nodemailer from "nodemailer";
@@ -425,6 +433,269 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ 
         message: "Failed to process waitlist submission" 
       });
+    }
+  });
+
+  // ===== CMS API ROUTES =====
+  
+  // Page Management Routes
+  app.get("/api/cms/pages", requireAuth, async (req, res) => {
+    try {
+      const pages = await storage.getAllPages();
+      res.json({ pages });
+    } catch (error) {
+      console.error("Error fetching pages:", error);
+      res.status(500).json({ error: "Failed to fetch pages" });
+    }
+  });
+
+  app.get("/api/cms/pages/:slug", requireAuth, async (req, res) => {
+    try {
+      const { slug } = req.params;
+      const page = await storage.getPage(slug);
+      if (!page) {
+        return res.status(404).json({ error: "Page not found" });
+      }
+      const content = await storage.getPageContent(page.id);
+      const seoSettings = await storage.getPageSeoSettings(page.id);
+      res.json({ page, content, seoSettings });
+    } catch (error) {
+      console.error("Error fetching page:", error);
+      res.status(500).json({ error: "Failed to fetch page" });
+    }
+  });
+
+  app.post("/api/cms/pages", requireAuth, async (req, res) => {
+    try {
+      const validatedData = insertPageSchema.parse(req.body);
+      const page = await storage.createPage(validatedData);
+      res.json({ page });
+    } catch (error) {
+      console.error("Error creating page:", error);
+      if (error instanceof Error && error.name === 'ZodError') {
+        return res.status(400).json({ 
+          message: "Validation error", 
+          errors: (error as any).errors 
+        });
+      }
+      res.status(500).json({ message: "Failed to create page" });
+    }
+  });
+
+  app.patch("/api/cms/pages/:id", requireAuth, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const validatedData = insertPageSchema.partial().parse(req.body);
+      const page = await storage.updatePage(id, validatedData);
+      if (!page) {
+        return res.status(404).json({ error: "Page not found" });
+      }
+      res.json({ page });
+    } catch (error) {
+      console.error("Error updating page:", error);
+      res.status(500).json({ message: "Failed to update page" });
+    }
+  });
+
+  app.delete("/api/cms/pages/:id", requireAuth, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deletePage(id);
+      res.json({ message: "Page deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting page:", error);
+      res.status(500).json({ message: "Failed to delete page" });
+    }
+  });
+
+  // Content Management Routes
+  app.post("/api/cms/content", requireAuth, async (req, res) => {
+    try {
+      const validatedData = insertPageContentSchema.parse(req.body);
+      const content = await storage.updatePageContent(validatedData);
+      res.json({ content });
+    } catch (error) {
+      console.error("Error updating content:", error);
+      if (error instanceof Error && error.name === 'ZodError') {
+        return res.status(400).json({ 
+          message: "Validation error", 
+          errors: (error as any).errors 
+        });
+      }
+      res.status(500).json({ message: "Failed to update content" });
+    }
+  });
+
+  app.get("/api/cms/content/:pageId", requireAuth, async (req, res) => {
+    try {
+      const { pageId } = req.params;
+      const content = await storage.getPageContent(pageId);
+      res.json({ content });
+    } catch (error) {
+      console.error("Error fetching page content:", error);
+      res.status(500).json({ error: "Failed to fetch content" });
+    }
+  });
+
+  app.delete("/api/cms/content/:pageId/:elementId", requireAuth, async (req, res) => {
+    try {
+      const { pageId, elementId } = req.params;
+      await storage.deletePageContent(pageId, elementId);
+      res.json({ message: "Content deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting content:", error);
+      res.status(500).json({ message: "Failed to delete content" });
+    }
+  });
+
+  // SEO Management Routes
+  app.post("/api/cms/seo", requireAuth, async (req, res) => {
+    try {
+      const validatedData = insertSeoSettingsSchema.parse(req.body);
+      const settings = await storage.updatePageSeoSettings(validatedData);
+      res.json({ settings });
+    } catch (error) {
+      console.error("Error updating SEO settings:", error);
+      if (error instanceof Error && error.name === 'ZodError') {
+        return res.status(400).json({ 
+          message: "Validation error", 
+          errors: (error as any).errors 
+        });
+      }
+      res.status(500).json({ message: "Failed to update SEO settings" });
+    }
+  });
+
+  app.get("/api/cms/seo/:pageId", requireAuth, async (req, res) => {
+    try {
+      const { pageId } = req.params;
+      const settings = await storage.getPageSeoSettings(pageId);
+      res.json({ settings });
+    } catch (error) {
+      console.error("Error fetching SEO settings:", error);
+      res.status(500).json({ error: "Failed to fetch SEO settings" });
+    }
+  });
+
+  // Initialize sample CMS data
+  app.post("/api/cms/initialize", requireAuth, async (req, res) => {
+    try {
+      // Check if homepage already exists
+      const existingPage = await storage.getPage("/");
+      if (existingPage) {
+        return res.json({ message: "CMS data already initialized" });
+      }
+
+      // Create homepage
+      const homepage = await storage.createPage({
+        slug: "/",
+        title: "Dook Scoop 'Em - Professional Pet Waste Removal",
+        status: "published"
+      });
+
+      // Create sample content for homepage
+      const sampleContent = [
+        {
+          pageId: homepage.id,
+          elementId: "hero-title",
+          contentType: "text" as const,
+          content: "WE FEAR NO PILE",
+        },
+        {
+          pageId: homepage.id,
+          elementId: "hero-subtitle", 
+          contentType: "text" as const,
+          content: "Professional Pet Waste Removal Service",
+        },
+        {
+          pageId: homepage.id,
+          elementId: "service-description",
+          contentType: "text" as const,
+          content: "Starting in Yulee, Fernandina, Oceanway & Nassau County with plans to expand across Northeast Florida in 2025.",
+        },
+        {
+          pageId: homepage.id,
+          elementId: "pricing-regular",
+          contentType: "text" as const,
+          content: "$100",
+        },
+        {
+          pageId: homepage.id,
+          elementId: "pricing-founding",
+          contentType: "text" as const,
+          content: "$85",
+        }
+      ];
+
+      // Insert sample content
+      for (const content of sampleContent) {
+        await storage.updatePageContent(content);
+      }
+
+      // Create SEO settings
+      await storage.updatePageSeoSettings({
+        pageId: homepage.id,
+        metaTitle: "Dook Scoop 'Em - Professional Pet Waste Removal Service",
+        metaDescription: "Professional dog poop cleanup service in Nassau County. Starting in Yulee, Fernandina Beach, and Oceanway. We fear no pile!",
+        ogTitle: "Dook Scoop 'Em - We Fear No Pile",
+        ogDescription: "Professional pet waste removal service coming to Northeast Florida in 2025.",
+        structuredData: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          "name": "Dook Scoop 'Em",
+          "description": "Professional pet waste removal service",
+          "address": {
+            "@type": "PostalAddress",
+            "addressRegion": "FL",
+            "addressCountry": "US"
+          },
+          "serviceArea": ["Nassau County", "Yulee", "Fernandina Beach", "Oceanway"]
+        })
+      });
+
+      res.json({ message: "CMS data initialized successfully", page: homepage });
+    } catch (error) {
+      console.error("Error initializing CMS data:", error);
+      res.status(500).json({ message: "Failed to initialize CMS data" });
+    }
+  });
+
+  // Media Management Routes
+  app.get("/api/cms/media", requireAuth, async (req, res) => {
+    try {
+      const assets = await storage.getAllMediaAssets();
+      res.json({ assets });
+    } catch (error) {
+      console.error("Error fetching media assets:", error);
+      res.status(500).json({ error: "Failed to fetch media assets" });
+    }
+  });
+
+  app.post("/api/cms/media", requireAuth, async (req, res) => {
+    try {
+      const validatedData = insertMediaAssetSchema.parse(req.body);
+      const asset = await storage.createMediaAsset(validatedData);
+      res.json({ asset });
+    } catch (error) {
+      console.error("Error creating media asset:", error);
+      if (error instanceof Error && error.name === 'ZodError') {
+        return res.status(400).json({ 
+          message: "Validation error", 
+          errors: (error as any).errors 
+        });
+      }
+      res.status(500).json({ message: "Failed to create media asset" });
+    }
+  });
+
+  app.delete("/api/cms/media/:id", requireAuth, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteMediaAsset(id);
+      res.json({ message: "Media asset deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting media asset:", error);
+      res.status(500).json({ message: "Failed to delete media asset" });
     }
   });
 

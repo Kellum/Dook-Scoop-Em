@@ -238,6 +238,14 @@ export default function AdminDashboard() {
             <div className="flex items-center space-x-3">
               <Button 
                 variant="ghost" 
+                onClick={() => setLocation("/admin/cms")} 
+                className="gap-2 neu-flat"
+              >
+                <Layout className="h-4 w-4" />
+                Content Manager
+              </Button>
+              <Button 
+                variant="ghost" 
                 onClick={() => window.open("/", "_blank")} 
                 className="gap-2"
               >

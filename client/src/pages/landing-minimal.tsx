@@ -95,8 +95,12 @@ export default function LandingMinimal() {
       <header className="w-full py-8 px-4">
         <div className="max-w-4xl mx-auto text-center">
           {/* Company Name */}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black mb-6 text-gray-800" 
-              style={{ fontFamily: 'var(--font-90s)', letterSpacing: '0.05em' }}>
+          <h1 
+            className="text-3xl md:text-4xl lg:text-5xl font-black mb-6 text-gray-800" 
+            style={{ fontFamily: 'var(--font-90s)', letterSpacing: '0.05em' }}
+            data-editable="hero-title"
+            data-content-type="text"
+          >
             DOOK SCOOP 'EM
           </h1>
           
@@ -111,12 +115,20 @@ export default function LandingMinimal() {
           </div>
           
           <div className="inline-block bg-gradient-to-b from-orange-100 to-orange-200 px-6 py-3 rounded-lg mb-4 shadow-sm">
-            <p className="text-xl md:text-2xl text-gray-800 font-black">
+            <p 
+              className="text-xl md:text-2xl text-gray-800 font-black"
+              data-editable="hero-subtitle"
+              data-content-type="text"
+            >
               Professional Pet Waste Removal Service
             </p>
           </div>
           
-          <p className="text-lg md:text-xl text-gray-700 mb-2 font-bold">
+          <p 
+            className="text-lg md:text-xl text-gray-700 mb-2 font-bold"
+            data-editable="service-description"
+            data-content-type="html"
+          >
             Starting in Yulee, Fernandina, Oceanway & Nassau County. Founding members <a href="#perks" className="text-orange-600 hover:text-orange-700 font-bold transition-colors">get perks</a>.
           </p>
           

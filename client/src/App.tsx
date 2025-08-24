@@ -8,6 +8,7 @@ import LandingMinimal from "@/pages/landing-minimal";
 import Locations from "@/pages/locations-neu";
 import AdminLogin from "@/pages/admin/login-neu";
 import AdminDashboard from "@/pages/admin/dashboard";
+import CMSDashboard from "@/pages/admin/cms-dashboard";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/locations" component={Locations} />
       <Route path="/admin/login" component={AdminLogin} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
+      <Route path="/admin/cms" component={CMSDashboard} />
       <Route component={NotFound} />
     </Switch>
   );
