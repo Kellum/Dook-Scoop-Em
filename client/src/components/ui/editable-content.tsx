@@ -36,8 +36,10 @@ export function EditableContent({
   const [editValue, setEditValue] = useState(defaultContent);
   const queryClient = useQueryClient();
 
-  // Check if visual editor is enabled
-  const isVisualEditorEnabled = localStorage.getItem("visual-editor-enabled") === "true";
+  // Check if visual editor is enabled for this specific page
+  const isVisualEditorEnabled = localStorage.getItem("visual-editor-enabled") === "true" &&
+    (localStorage.getItem("visual-editor-page") === pageSlug || 
+     (pageSlug === "home" && localStorage.getItem("visual-editor-page") === "/"));
 
   // Load page content
   const { data: contentData } = useQuery<ContentData>({

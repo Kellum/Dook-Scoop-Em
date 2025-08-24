@@ -98,7 +98,7 @@ export default function LandingMinimal() {
           {/* Company Name */}
           <EditableContent
             elementId="hero-title"
-            pageSlug="home"
+            pageSlug="/"
             defaultContent="DOOK SCOOP 'EM"
             tag="h1"
             className="text-3xl md:text-4xl lg:text-5xl font-black mb-6 text-gray-800"
@@ -118,7 +118,7 @@ export default function LandingMinimal() {
           <div className="inline-block bg-gradient-to-b from-orange-100 to-orange-200 px-6 py-3 rounded-lg mb-4 shadow-sm">
             <EditableContent
               elementId="hero-subtitle"
-              pageSlug="home"
+              pageSlug="/"
               defaultContent="Professional Pet Waste Removal Service"
               tag="p"
               className="text-xl md:text-2xl text-gray-800 font-black"
@@ -127,7 +127,7 @@ export default function LandingMinimal() {
           
           <EditableContent
             elementId="service-description"
-            pageSlug="home"
+            pageSlug="/"
             defaultContent='Starting in Yulee, Fernandina, Oceanway & Nassau County. Founding members <a href="#perks" class="text-orange-600 hover:text-orange-700 font-bold transition-colors">get perks</a>.'
             contentType="html"
             tag="p"

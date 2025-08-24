@@ -40,6 +40,7 @@ export default function CMSDashboard() {
   const [, setLocation] = useLocation();
   const [visualEditMode, setVisualEditMode] = useState(false);
   const [selectedPageId, setSelectedPageId] = useState<string>("");
+  const [selectedPageSlug, setSelectedPageSlug] = useState<string>("");
   const [previewMode, setPreviewMode] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -52,13 +53,38 @@ export default function CMSDashboard() {
 
   // Toggle visual editor
   const toggleVisualEditor = () => {
+    if (!selectedPageSlug) {
+      toast({
+        title: "Select a Page First",
+        description: "Please select a page to edit from the dropdown.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     const newState = !visualEditMode;
     setVisualEditMode(newState);
     localStorage.setItem("visual-editor-enabled", newState.toString());
+    localStorage.setItem("visual-editor-page", selectedPageSlug);
+    
     toast({
       title: newState ? "Visual Editor Enabled" : "Visual Editor Disabled",
-      description: newState ? "Visit your homepage to click and edit elements." : "Visual editing has been disabled.",
+      description: newState ? `Navigate to the ${selectedPageSlug} page to edit elements.` : "Visual editing has been disabled.",
     });
+  };
+
+  // Handle page selection
+  const handlePageSelect = (pageId: string, pageSlug: string) => {
+    setSelectedPageId(pageId);
+    setSelectedPageSlug(pageSlug);
+    // Disable visual editor when switching pages
+    setVisualEditMode(false);
+    localStorage.setItem("visual-editor-enabled", "false");
+    
+    // Handle special case for homepage
+    if (pageId === "homepage") {
+      setSelectedPageSlug("/");
+    }
   };
 
   // Check authentication
@@ -214,11 +240,7 @@ export default function CMSDashboard() {
 
   return (
     <div className="min-h-screen gradient-bg">
-      <VisualEditor
-        isEnabled={visualEditMode}
-        onToggleEdit={() => setVisualEditMode(!visualEditMode)}
-        onSave={handleVisualEdit}
-      />
+      {/* Remove visual editor overlay from CMS dashboard - it should only show on actual pages */}
 
       <div className="container mx-auto p-6">
         {/* Header */}
@@ -244,14 +266,53 @@ export default function CMSDashboard() {
           </div>
 
           <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
+              <Label htmlFor="page-select" className="text-sm font-medium">
+                Edit Page:
+              </Label>
+              <select
+                id="page-select"
+                value={selectedPageId}
+                onChange={(e) => {
+                  const page = pagesData?.pages.find(p => p.id === e.target.value);
+                  if (page) {
+                    handlePageSelect(page.id, page.slug);
+                  }
+                }}
+                className="px-3 py-1 border rounded bg-background text-foreground"
+              >
+                <option value="">Select a page...</option>
+                {/* Add default homepage option */}
+                <option value="homepage">Homepage (/)</option>
+                {pagesData?.pages.map(page => (
+                  <option key={page.id} value={page.id}>
+                    {page.title} ({page.slug})
+                  </option>
+                ))}
+              </select>
+            </div>
             <Button
-              onClick={() => setVisualEditMode(!visualEditMode)}
+              onClick={toggleVisualEditor}
               variant={visualEditMode ? "default" : "outline"}
               className="neu-flat flex items-center gap-2"
+              disabled={!selectedPageSlug}
             >
               <Edit3 className="h-4 w-4" />
               {visualEditMode ? "Exit Visual Edit" : "Visual Editor"}
             </Button>
+            {visualEditMode && selectedPageSlug && (
+              <Button
+                onClick={() => {
+                  const url = selectedPageSlug === "homepage" || selectedPageSlug === "/" ? "/" : selectedPageSlug;
+                  window.open(url, "_blank");
+                }}
+                variant="outline"
+                className="neu-flat flex items-center gap-2"
+              >
+                <ExternalLink className="h-4 w-4" />
+                Edit Live
+              </Button>
+            )}
           </div>
         </div>
 
