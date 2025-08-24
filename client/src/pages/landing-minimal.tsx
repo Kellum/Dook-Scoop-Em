@@ -105,7 +105,7 @@ export default function LandingMinimal() {
             <img 
               src={heroLogoImage} 
               alt="Dook Scoop Em Hero Logo" 
-              className="w-64 h-64 mx-auto object-contain pixel-perfect"
+              className="w-80 h-80 md:w-96 md:h-96 mx-auto object-contain pixel-perfect"
               style={{ imageRendering: 'pixelated' }}
             />
           </div>
