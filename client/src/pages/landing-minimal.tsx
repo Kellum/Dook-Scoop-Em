@@ -110,9 +110,11 @@ export default function LandingMinimal() {
             />
           </div>
           
-          <p className="text-xl md:text-2xl text-gray-600 mb-4 font-black">
-            Professional Pet Waste Removal Service
-          </p>
+          <div className="inline-block bg-gradient-to-r from-orange-100 to-yellow-100 px-6 py-3 rounded-lg mb-4 shadow-sm">
+            <p className="text-xl md:text-2xl text-gray-800 font-black">
+              Professional Pet Waste Removal Service
+            </p>
+          </div>
           
           <p className="text-lg md:text-xl text-gray-700 mb-2 font-bold">
             Starting in Yulee, Fernandina, Oceanway & Nassau County. Founding members <a href="#perks" className="text-orange-600 hover:text-orange-700 font-bold transition-colors">get perks</a>.
