@@ -238,11 +238,11 @@ export default function AdminDashboard() {
             <div className="flex items-center space-x-3">
               <Button 
                 variant="ghost" 
-                onClick={() => setLocation("/admin/cms")} 
+                onClick={() => setLocation("/admin/edit-website")} 
                 className="gap-2 neu-flat"
               >
                 <Layout className="h-4 w-4" />
-                Content Manager
+                Edit Website
               </Button>
               <Button 
                 variant="ghost" 

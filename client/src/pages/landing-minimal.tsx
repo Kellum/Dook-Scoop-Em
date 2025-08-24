@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { EditableContent } from "@/components/ui/editable-content";
+import { InlineEditor } from "@/components/ui/inline-editor";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -96,9 +96,8 @@ export default function LandingMinimal() {
       <header className="w-full py-8 px-4">
         <div className="max-w-4xl mx-auto text-center">
           {/* Company Name */}
-          <EditableContent
+          <InlineEditor
             elementId="hero-title"
-            pageSlug="/"
             defaultContent="DOOK SCOOP 'EM"
             tag="h1"
             className="text-3xl md:text-4xl lg:text-5xl font-black mb-6 text-gray-800"
@@ -116,27 +115,28 @@ export default function LandingMinimal() {
           </div>
           
           <div className="inline-block bg-gradient-to-b from-orange-100 to-orange-200 px-6 py-3 rounded-lg mb-4 shadow-sm">
-            <EditableContent
+            <InlineEditor
               elementId="hero-subtitle"
-              pageSlug="/"
               defaultContent="Professional Pet Waste Removal Service"
               tag="p"
               className="text-xl md:text-2xl text-gray-800 font-black"
             />
           </div>
           
-          <EditableContent
+          <InlineEditor
             elementId="service-description"
-            pageSlug="/"
             defaultContent='Starting in Yulee, Fernandina, Oceanway & Nassau County. Founding members <a href="#perks" class="text-orange-600 hover:text-orange-700 font-bold transition-colors">get perks</a>.'
             contentType="html"
             tag="p"
             className="text-lg md:text-xl text-gray-700 mb-2 font-bold"
           />
           
-          <p className="text-base md:text-lg text-gray-500 mb-8 font-medium italic">
-            coming to the rest of North East Florida very soon...
-          </p>
+          <InlineEditor
+            elementId="expansion-text"
+            defaultContent="coming to the rest of North East Florida very soon..."
+            tag="p"
+            className="text-base md:text-lg text-gray-500 mb-8 font-medium italic"
+          />
         </div>
       </header>
 
