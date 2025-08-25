@@ -35,6 +35,7 @@ export default function LandingMinimal() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [numberOfDogs, setNumberOfDogs] = useState([2]);
+  const [submitted, setSubmitted] = useState(false);
 
   const form = useForm<WaitlistFormData>({
     resolver: zodResolver(waitlistFormSchema),
@@ -69,12 +70,7 @@ export default function LandingMinimal() {
       return apiRequest("POST", "/api/waitlist", submitData);
     },
     onSuccess: () => {
-      toast({
-        title: "Welcome to the pack!",
-        description: "You've successfully joined our waitlist. We'll be in touch soon!",
-      });
-      form.reset();
-      setNumberOfDogs([2]);
+      setSubmitted(true);
       queryClient.invalidateQueries({ queryKey: ["/api/admin/waitlist"] });
     },
     onError: (error) => {
@@ -88,6 +84,13 @@ export default function LandingMinimal() {
 
   const onSubmit = (data: WaitlistFormData) => {
     joinWaitlistMutation.mutate({ ...data, numberOfDogs: numberOfDogs[0] });
+  };
+
+  const scrollToPerks = () => {
+    const perksSection = document.getElementById('perks');
+    if (perksSection) {
+      perksSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -131,17 +134,19 @@ export default function LandingMinimal() {
 
       {/* Main Content */}
       <main className="max-w-2xl mx-auto px-4 pb-16">
-        {/* Waitlist Form */}
+        {/* Waitlist Form / Success State */}
         <Card id="waitlist-form" className="neu-raised shadow-2xl">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl md:text-3xl font-black text-gray-800">
-              Join Our Waitlist
-            </CardTitle>
-            <p className="text-gray-600 mt-2">
-              We may already be scooping in your area!
-            </p>
-          </CardHeader>
-          <CardContent>
+          {!submitted ? (
+            <>
+              <CardHeader className="text-center">
+                <CardTitle className="text-2xl md:text-3xl font-black text-gray-800">
+                  Join Our Waitlist
+                </CardTitle>
+                <p className="text-gray-600 mt-2">
+                  We may already be scooping in your area!
+                </p>
+              </CardHeader>
+              <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 {/* Name Fields */}
@@ -365,7 +370,69 @@ export default function LandingMinimal() {
                 </Button>
               </form>
             </Form>
-          </CardContent>
+              </CardContent>
+            </>
+          ) : (
+            /* Success State */
+            <div className="success-appear p-8 text-center">
+              {/* Animated Checkmark */}
+              <div className="mb-6 flex justify-center">
+                <div className="w-24 h-24 rounded-full flex items-center justify-center" style={{background: 'hsl(29 100% 64%)'}}>
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path 
+                      d="M20 6L9 17L4 12" 
+                      stroke="white" 
+                      strokeWidth="3" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                      className="checkmark-animate"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Success Content */}
+              <h2 className="text-3xl md:text-4xl font-black text-gray-800 mb-6">
+                🚀 Nice Scoop! You're In.
+              </h2>
+              
+              <div className="text-gray-700 text-lg mb-8 space-y-4">
+                <p className="font-medium">
+                  We'll be reaching out soon to confirm your details and set you up.
+                </p>
+                
+                <p className="font-bold">
+                  Because you joined the Founding Members Waitlist, you've unlocked:
+                </p>
+                
+                <ul className="text-left max-w-md mx-auto space-y-2 text-base">
+                  <li className="flex items-center">
+                    <span className="text-orange-600 font-black mr-3">✓</span>
+                    Special perks built for early supporters
+                  </li>
+                  <li className="flex items-center">
+                    <span className="text-orange-600 font-black mr-3">✓</span>
+                    Locked-in pricing for your first 12 months
+                  </li>
+                  <li className="flex items-center">
+                    <span className="text-orange-600 font-black mr-3">✓</span>
+                    Priority onboarding when routes open in your area
+                  </li>
+                </ul>
+              </div>
+              
+              <p className="text-gray-600 font-medium italic mb-8">
+                Consider yourself part of the elite squad that fears no pile. 🐾
+              </p>
+              
+              <Button 
+                onClick={scrollToPerks}
+                className="neu-button text-lg font-black py-4 px-8"
+              >
+                See Your Founding Member Perks ↓
+              </Button>
+            </div>
+          )}
         </Card>
       </main>
 

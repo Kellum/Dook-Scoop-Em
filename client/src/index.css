@@ -231,6 +231,31 @@ body {
   animation: bounce-subtle 2s infinite;
 }
 
+.checkmark-animate {
+  animation: checkmark-draw 1s ease-out forwards;
+  stroke-dasharray: 52;
+  stroke-dashoffset: 52;
+}
+
+@keyframes checkmark-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.success-appear {
+  animation: success-appear 0.6s ease-out forwards;
+  opacity: 0;
+  transform: scale(0.95) translateY(10px);
+}
+
+@keyframes success-appear {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
 @keyframes bounce-subtle {
   0%, 20%, 50%, 80%, 100% {
     transform: translateY(0);
