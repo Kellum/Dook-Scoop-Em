@@ -417,6 +417,10 @@ export default function LandingMinimal() {
                   We'll be reaching out soon to confirm your details and set you up.
                 </p>
                 
+                <p className="text-gray-600 text-base">
+                  📧 We just sent you an email — it may take a few minutes to show up.
+                </p>
+                
                 <p className="font-bold">
                   Because you joined the Founding Members Waitlist, you've unlocked:
                 </p>
