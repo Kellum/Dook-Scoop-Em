@@ -98,7 +98,13 @@ export default function LandingMinimal() {
     if (submitted) {
       const waitlistCard = document.getElementById('waitlist-form');
       if (waitlistCard) {
-        waitlistCard.scrollIntoView({ behavior: 'smooth' });
+        const elementPosition = waitlistCard.offsetTop;
+        const offsetPosition = elementPosition - 50; // 50px below viewport top
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
       }
     }
   }, [submitted]);
