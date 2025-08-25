@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -92,6 +92,16 @@ export default function LandingMinimal() {
       perksSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  // Auto-scroll to success message when form is submitted
+  useEffect(() => {
+    if (submitted) {
+      const waitlistCard = document.getElementById('waitlist-form');
+      if (waitlistCard) {
+        waitlistCard.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [submitted]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
