@@ -358,6 +358,145 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
             if (mailersendResponse.ok) {
               console.log("Email sent successfully via MailerSend API");
+              
+              // Now send confirmation email to customer
+              try {
+                const customerEmailResponse = await fetch('https://api.mailersend.com/v1/email', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${process.env.MAILERSEND_API_KEY}`
+                  },
+                  body: JSON.stringify({
+                    from: {
+                      email: "noreply@dookscoopem.com",
+                      name: "Dook Scoop Em"
+                    },
+                    to: [
+                      {
+                        email: submission.email,
+                        name: submission.name
+                      }
+                    ],
+                    subject: `🚀 Nice Scoop! You're officially in the pack`,
+                    html: `
+                      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #f8f9fa; padding: 20px;">
+                        
+                        <!-- Header -->
+                        <div style="background: linear-gradient(135deg, #ff7b00, #ff9500); padding: 30px; text-align: center; border-radius: 20px 20px 0 0; margin-bottom: 0;">
+                          <h1 style="color: white; font-size: 32px; font-weight: 900; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                            🚀 NICE SCOOP!
+                          </h1>
+                          <h2 style="color: white; font-size: 24px; font-weight: 800; margin: 10px 0 0 0;">
+                            You're In.
+                          </h2>
+                        </div>
+
+                        <!-- Main Content -->
+                        <div style="background: white; padding: 40px 30px; border-radius: 0 0 20px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                          
+                          <p style="font-size: 18px; line-height: 1.6; color: #333; margin-bottom: 25px;">
+                            <strong>Hey ${submission.name.split(' ')[0]}!</strong> 👋
+                          </p>
+                          
+                          <p style="font-size: 16px; line-height: 1.6; color: #555; margin-bottom: 25px;">
+                            This email just landed in your inbox like a perfectly aimed poop scoop — with precision and purpose! 
+                            We'll be reaching out soon to confirm your details and get you set up.
+                          </p>
+
+                          <!-- Founding Member Benefits -->
+                          <div style="background: #e8f4fd; padding: 25px; border-radius: 15px; margin: 25px 0; border-left: 5px solid #2563eb;">
+                            <h3 style="color: #1d4ed8; font-size: 20px; font-weight: 800; margin: 0 0 15px 0;">
+                              🎉 Founding Member Perks Unlocked:
+                            </h3>
+                            <ul style="margin: 0; padding-left: 20px; color: #374151;">
+                              <li style="margin-bottom: 8px;"><strong>✓ Special perks built for early supporters</strong></li>
+                              <li style="margin-bottom: 8px;"><strong>✓ Locked-in pricing ($85/mo) for your first 12 months</strong></li>
+                              <li style="margin-bottom: 8px;"><strong>✓ Priority onboarding when routes open in your area</strong></li>
+                              <li style="margin-bottom: 8px;"><strong>✓ Free month credit after 3 consecutive paid months</strong></li>
+                              <li style="margin-bottom: 8px;"><strong>✓ FREE sanitization add-on (normally paid)</strong></li>
+                              <li><strong>✓ Always free waste haul-away</strong></li>
+                            </ul>
+                          </div>
+
+                          <!-- Your Submitted Info -->
+                          <div style="background: #f9f9f9; padding: 25px; border-radius: 15px; margin: 25px 0;">
+                            <h3 style="color: #374151; font-size: 18px; font-weight: 800; margin: 0 0 15px 0;">
+                              📋 Your Submission Details:
+                            </h3>
+                            <table style="width: 100%; color: #555;">
+                              <tr><td style="padding: 5px 0; font-weight: 600;">Name:</td><td style="padding: 5px 0;">${submission.name}</td></tr>
+                              <tr><td style="padding: 5px 0; font-weight: 600;">Email:</td><td style="padding: 5px 0;">${submission.email}</td></tr>
+                              <tr><td style="padding: 5px 0; font-weight: 600;">Phone:</td><td style="padding: 5px 0;">${submission.phone}</td></tr>
+                              <tr><td style="padding: 5px 0; font-weight: 600;">Zip Code:</td><td style="padding: 5px 0;">${submission.zipCode}</td></tr>
+                              <tr><td style="padding: 5px 0; font-weight: 600;">Number of Dogs:</td><td style="padding: 5px 0;">${submission.numberOfDogs}</td></tr>
+                              ${submission.referralSource ? `<tr><td style="padding: 5px 0; font-weight: 600;">How you heard about us:</td><td style="padding: 5px 0;">${submission.referralSource}</td></tr>` : ''}
+                              ${submission.urgency ? `<tr><td style="padding: 5px 0; font-weight: 600;">Service urgency:</td><td style="padding: 5px 0;">${submission.urgency}</td></tr>` : ''}
+                              <tr><td style="padding: 5px 0; font-weight: 600;">Can text updates:</td><td style="padding: 5px 0;">${submission.canText ? 'YES ✓' : 'NO'}</td></tr>
+                            </table>
+                          </div>
+
+                          <!-- Elite Squad Message -->
+                          <div style="text-align: center; background: linear-gradient(135deg, #ff7b00, #ff9500); color: white; padding: 20px; border-radius: 15px; margin-top: 30px;">
+                            <p style="font-size: 18px; font-weight: 700; margin: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+                              Consider yourself part of the elite squad that fears no pile. 🐾
+                            </p>
+                          </div>
+
+                          <!-- Footer -->
+                          <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px solid #e5e5e5;">
+                            <p style="color: #888; font-size: 14px; margin: 0;">
+                              Questions? Just reply to this email — we're here to help!<br>
+                              <strong>Dook Scoop 'Em</strong> | Professional Pet Waste Removal
+                            </p>
+                          </div>
+
+                        </div>
+                      </div>
+                    `,
+                    text: `
+🚀 NICE SCOOP! You're In.
+
+Hey ${submission.name.split(' ')[0]}! 
+
+This email just landed in your inbox like a perfectly aimed poop scoop — with precision and purpose! 
+We'll be reaching out soon to confirm your details and get you set up.
+
+🎉 FOUNDING MEMBER PERKS UNLOCKED:
+✓ Special perks built for early supporters
+✓ Locked-in pricing ($85/mo) for your first 12 months  
+✓ Priority onboarding when routes open in your area
+✓ Free month credit after 3 consecutive paid months
+✓ FREE sanitization add-on (normally paid)
+✓ Always free waste haul-away
+
+📋 YOUR SUBMISSION DETAILS:
+Name: ${submission.name}
+Email: ${submission.email}
+Phone: ${submission.phone}
+Zip Code: ${submission.zipCode}
+Number of Dogs: ${submission.numberOfDogs}
+${submission.referralSource ? `How you heard about us: ${submission.referralSource}` : ''}
+${submission.urgency ? `Service urgency: ${submission.urgency}` : ''}
+Can text updates: ${submission.canText ? 'YES' : 'NO'}
+
+Consider yourself part of the elite squad that fears no pile. 🐾
+
+Questions? Just reply to this email — we're here to help!
+Dook Scoop 'Em | Professional Pet Waste Removal
+                    `
+                  })
+                });
+
+                if (customerEmailResponse.ok) {
+                  console.log("Customer confirmation email sent successfully");
+                } else {
+                  console.log("Customer confirmation email failed:", await customerEmailResponse.text());
+                }
+              } catch (customerEmailError) {
+                console.log("Failed to send customer confirmation email:", customerEmailError.message);
+              }
+              
             } else {
               const errorData = await mailersendResponse.text();
               console.log("MailerSend API failed:", errorData);
