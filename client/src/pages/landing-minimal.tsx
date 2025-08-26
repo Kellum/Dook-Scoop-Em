@@ -621,7 +621,7 @@ export default function LandingMinimal() {
             </Card>
 
             {/* Regular Plan Card */}
-            <Card className="neu-raised cursor-pointer relative opacity-60" onClick={() => toggleCardExpansion('regular')}>
+            <Card className="neu-raised cursor-pointer relative" onClick={() => toggleCardExpansion('regular')}>
               {/* Red Stamped Overlay */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
                 <div className="transform rotate-12 text-center">
