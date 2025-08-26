@@ -621,7 +621,17 @@ export default function LandingMinimal() {
             </Card>
 
             {/* Regular Plan Card */}
-            <Card className="neu-raised cursor-pointer" onClick={() => toggleCardExpansion('regular')}>
+            <Card className="neu-raised cursor-pointer relative opacity-60" onClick={() => toggleCardExpansion('regular')}>
+              {/* Red Stamped Overlay */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                <div className="transform rotate-12 text-center">
+                  <div className="bg-red-600 text-white px-4 py-2 rounded-lg border-4 border-red-700 shadow-lg">
+                    <div className="font-black text-lg uppercase tracking-wider">NOT AVAILABLE</div>
+                    <div className="text-xs font-bold mt-1">You're a founding member,</div>
+                    <div className="text-xs font-bold">you deserve better</div>
+                  </div>
+                </div>
+              </div>
               <div className="p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div>
