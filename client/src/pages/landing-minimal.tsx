@@ -104,7 +104,26 @@ export default function LandingMinimal() {
   const scrollToPerks = () => {
     const perksSection = document.getElementById('perks');
     if (perksSection) {
-      perksSection.scrollIntoView({ behavior: 'smooth' });
+      const elementPosition = perksSection.offsetTop;
+      const offsetPosition = elementPosition - 50; // 50px buffer from top
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const scrollToWaitlistForm = () => {
+    const waitlistForm = document.getElementById('waitlist-form');
+    if (waitlistForm) {
+      const elementPosition = waitlistForm.offsetTop;
+      const offsetPosition = elementPosition - 50; // 50px buffer from top
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -901,12 +920,12 @@ export default function LandingMinimal() {
 
           {/* CTA Button */}
           <div className="text-center mt-8">
-            <a 
-              href="#waitlist-form" 
+            <button 
+              onClick={scrollToWaitlistForm}
               className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-black py-4 px-8 rounded-lg text-lg transition-colors"
             >
               Join the Founding Members!
-            </a>
+            </button>
           </div>
         </div>
       </section>
