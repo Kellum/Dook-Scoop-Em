@@ -638,7 +638,7 @@ export default function LandingMinimal() {
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="font-black text-lg text-blue-600">Founding Monthly</h3>
-                      <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">MOST POPULAR</span>
+                      <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">POPULAR</span>
                     </div>
                     <p className="text-sm text-blue-700 font-bold">(Us - 10% off)</p>
                     <p className="font-black text-xl text-blue-600 mt-1">$90/mo</p>
