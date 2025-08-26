@@ -405,7 +405,7 @@ export default function LandingMinimal() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="regular">Regular - $100/mo</SelectItem>
+                          <SelectItem value="regular" disabled className="text-gray-400 italic">Regular - $100/mo (Not available for founding members)</SelectItem>
                           <SelectItem value="founding_monthly">Founding Monthly - $90/mo (Popular)</SelectItem>
                           <SelectItem value="founding_annual">Founding Annual - $85/mo (Best Value)</SelectItem>
                           <SelectItem value="unsure">Not sure yet</SelectItem>
