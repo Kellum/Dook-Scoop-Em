@@ -510,23 +510,25 @@ export default function LandingMinimal() {
                     <th className="text-center p-3 md:p-4 font-black text-gray-600 min-w-[120px]">
                       <div className="flex flex-col">
                         <span className="text-base md:text-lg">Competitors</span>
+                        <span className="text-xs font-bold text-gray-500">(Them)</span>
                       </div>
                     </th>
                     <th className="text-center p-3 md:p-4 font-black text-gray-600 min-w-[120px]">
                       <div className="flex flex-col">
                         <span className="text-base md:text-lg">Regular</span>
+                        <span className="text-xs font-bold text-gray-500">(Us)</span>
                       </div>
                     </th>
                     <th className="text-center p-3 md:p-4 font-black text-blue-600 bg-blue-50 min-w-[140px]">
                       <div className="flex flex-col">
                         <span className="text-base md:text-lg">Founding Monthly</span>
-                        <span className="text-xs font-bold text-blue-700">(10% off)</span>
+                        <span className="text-xs font-bold text-blue-700">(Us - 10% off)</span>
                       </div>
                     </th>
                     <th className="text-center p-3 md:p-4 font-black text-orange-600 bg-orange-50 min-w-[140px]">
                       <div className="flex flex-col">
                         <span className="text-base md:text-lg">Founding Annual</span>
-                        <span className="text-xs font-bold text-orange-700">(15% off)</span>
+                        <span className="text-xs font-bold text-orange-700">(Us - 15% off)</span>
                       </div>
                     </th>
                   </tr>
@@ -594,7 +596,7 @@ export default function LandingMinimal() {
                     </td>
                   </tr>
                   <tr className="border-b border-gray-200 bg-gray-50">
-                    <td className="p-3 md:p-4 font-bold text-gray-800">Multiple Areas<br/><span className="text-xs font-normal">(front, side, garden)</span></td>
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Multiple Areas<br/><span className="text-xs font-normal">(front, side, back, garden, etc.)</span></td>
                     <td className="p-3 md:p-4 text-center font-bold text-gray-600">+$3–5 each</td>
                     <td className="p-3 md:p-4 text-center">
                       <span className="text-green-600 font-black">Included</span>
@@ -608,8 +610,10 @@ export default function LandingMinimal() {
                   </tr>
                   <tr className="border-b border-gray-200">
                     <td className="p-3 md:p-4 font-bold text-gray-800">Priority Scheduling</td>
-                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">–</td>
-                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">–</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">?</td>
+                    <td className="p-3 md:p-4 text-center">
+                      <span className="text-green-600 font-black text-xl">✓</span>
+                    </td>
                     <td className="p-3 md:p-4 text-center bg-blue-50">
                       <span className="text-green-600 font-black text-xl">✓</span>
                     </td>
