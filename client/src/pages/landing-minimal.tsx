@@ -536,8 +536,12 @@ export default function LandingMinimal() {
                 </ul>
               </div>
               
-              <p className="text-gray-600 font-medium italic mb-8">
+              <p className="text-gray-600 font-medium italic mb-4">
                 Consider yourself part of the elite squad that fears no pile. 🐾
+              </p>
+              
+              <p className="text-gray-600 font-medium mb-8">
+                Check us out on our socials while you wait! Follow us on Facebook and Instagram for updates and behind-the-scenes content.
               </p>
               
               <Button 
@@ -947,7 +951,7 @@ export default function LandingMinimal() {
             <p className="text-gray-600 font-bold mb-4">Follow Us</p>
             <div className="flex justify-center space-x-6">
               <a 
-                href="https://facebook.com" 
+                href="https://www.facebook.com/dookscoopem/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-800 hover:text-gray-600 transition-colors"
@@ -955,7 +959,7 @@ export default function LandingMinimal() {
                 <Facebook size={32} />
               </a>
               <a 
-                href="https://instagram.com" 
+                href="https://www.instagram.com/dookscoopem" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-gray-800 hover:text-gray-600 transition-colors"
