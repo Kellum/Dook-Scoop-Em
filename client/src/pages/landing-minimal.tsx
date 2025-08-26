@@ -153,9 +153,16 @@ export default function LandingMinimal() {
             </p>
           </div>
           
-          <p className="text-lg md:text-xl text-gray-700 mb-2 font-bold">
-            Starting in Yulee, Fernandina, Oceanway & Nassau County. Founding members <a href="#perks" className="text-orange-600 hover:text-orange-700 font-bold transition-colors">get perks</a>.
+          <p className="text-lg md:text-xl text-gray-700 mb-4 font-bold">
+            Starting in Yulee, Fernandina, Oceanway & Nassau County. Founding members get perks.
           </p>
+          
+          <Button 
+            onClick={scrollToPerks}
+            className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-2 mb-6 transition-all duration-200 transform hover:scale-105"
+          >
+            View Perks
+          </Button>
           
           <p className="text-base md:text-lg text-gray-500 mb-8 font-medium italic">
             coming to the rest of North East Florida very soon...
