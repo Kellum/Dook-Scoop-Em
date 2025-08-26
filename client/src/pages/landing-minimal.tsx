@@ -556,7 +556,8 @@ export default function LandingMinimal() {
                     <p className="font-black text-xl text-gray-600 mt-1">$95–115/mo</p>
                     <p className="text-xs text-gray-500">(realistic all-in)</p>
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-500 font-medium">View Features</span>
                     {expandedCards.competitors ? <ChevronUp size={20} className="text-gray-600" /> : <ChevronDown size={20} className="text-gray-600" />}
                   </div>
                 </div>
@@ -609,7 +610,8 @@ export default function LandingMinimal() {
                     <p className="text-sm text-gray-500 font-bold">(Us)</p>
                     <p className="font-black text-xl text-gray-600 mt-1">$100/mo</p>
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-500 font-medium">View Features</span>
                     {expandedCards.regular ? <ChevronUp size={20} className="text-gray-600" /> : <ChevronDown size={20} className="text-gray-600" />}
                   </div>
                 </div>
@@ -665,7 +667,8 @@ export default function LandingMinimal() {
                     <p className="text-sm text-blue-700 font-bold">(Us - 10% off)</p>
                     <p className="font-black text-xl text-blue-600 mt-1">$90/mo</p>
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-blue-600 font-medium">View Features</span>
                     {expandedCards.foundingMonthly ? <ChevronUp size={20} className="text-blue-600" /> : <ChevronDown size={20} className="text-blue-600" />}
                   </div>
                 </div>
@@ -721,7 +724,8 @@ export default function LandingMinimal() {
                     <p className="text-sm text-orange-700 font-bold">(Us - 15% off)</p>
                     <p className="font-black text-xl text-orange-600 mt-1">$85/mo</p>
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-orange-600 font-medium">View Features</span>
                     {expandedCards.foundingAnnual ? <ChevronUp size={20} className="text-orange-600" /> : <ChevronDown size={20} className="text-orange-600" />}
                   </div>
                 </div>
