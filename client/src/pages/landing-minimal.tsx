@@ -490,84 +490,133 @@ export default function LandingMinimal() {
 
       {/* Founding Member Perks Section */}
       <section id="perks" className="mt-20 mb-16">
-        <div className="max-w-4xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-black text-gray-800 mb-4">
-              Founding Member Perks
+              Dook Scoop 'Em Pricing Comparison
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Thanks for jumping in early! Here's how the Founders deal works—simple, transparent, and built to reward early supporters.
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              This chart shows how Dook Scoop 'Em stacks up against the biggest competitor. By bundling sanitization + deodorizing, hauling, and multiple areas into every package, founding members don't just get a discount — they get far more value for their money.
             </p>
           </div>
 
           {/* Comparison Table */}
           <Card className="neu-raised shadow-2xl overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full text-sm md:text-base">
                 <thead>
                   <tr className="bg-gray-100">
-                    <th className="text-left p-4 font-black text-gray-800"></th>
-                    <th className="text-center p-4 font-black text-blue-600 bg-blue-50">
+                    <th className="text-left p-3 md:p-4 font-black text-gray-800 min-w-[140px]">Feature</th>
+                    <th className="text-center p-3 md:p-4 font-black text-gray-600 min-w-[120px]">
                       <div className="flex flex-col">
-                        <span className="text-lg">Founders</span>
-                        <span className="text-sm font-bold text-blue-700">(Recommended)</span>
-                        <span className="text-xl font-black">$85/mo</span>
-                        <span className="text-xs">for first 12 months</span>
+                        <span className="text-base md:text-lg">Competitors</span>
                       </div>
                     </th>
-                    <th className="text-center p-4 font-black text-gray-600">
+                    <th className="text-center p-3 md:p-4 font-black text-gray-600 min-w-[120px]">
                       <div className="flex flex-col">
-                        <span className="text-lg">Typical</span>
-                        <span className="text-xl font-black">$100/mo</span>
+                        <span className="text-base md:text-lg">Regular</span>
+                      </div>
+                    </th>
+                    <th className="text-center p-3 md:p-4 font-black text-blue-600 bg-blue-50 min-w-[140px]">
+                      <div className="flex flex-col">
+                        <span className="text-base md:text-lg">Founding Monthly</span>
+                        <span className="text-xs font-bold text-blue-700">(10% off)</span>
+                      </div>
+                    </th>
+                    <th className="text-center p-3 md:p-4 font-black text-orange-600 bg-orange-50 min-w-[140px]">
+                      <div className="flex flex-col">
+                        <span className="text-base md:text-lg">Founding Annual</span>
+                        <span className="text-xs font-bold text-orange-700">(15% off)</span>
                       </div>
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr className="border-b border-gray-200">
-                    <td className="p-4 font-bold text-gray-800">Monthly Rate</td>
-                    <td className="p-4 text-center bg-blue-50 font-black text-blue-600">$85</td>
-                    <td className="p-4 text-center font-bold text-gray-600">$100</td>
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Weekly 1-dog Rate</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">$95–115/mo<br/><span className="text-xs">(realistic all-in)</span></td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">$100/mo</td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50 font-black text-blue-600">$90/mo</td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50 font-black text-orange-600">$85/mo</td>
                   </tr>
                   <tr className="border-b border-gray-200 bg-gray-50">
-                    <td className="p-4 font-bold text-gray-800">Approx. Cost per Visit</td>
-                    <td className="p-4 text-center bg-blue-50 font-black text-blue-600">~$19.62</td>
-                    <td className="p-4 text-center font-bold text-gray-600">~$23.08</td>
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Approx. Cost Per Visit</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">$22–27</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">~$23</td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50 font-black text-blue-600">~$20.77</td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50 font-black text-orange-600">~$19.62</td>
                   </tr>
                   <tr className="border-b border-gray-200">
-                    <td className="p-4 font-bold text-gray-800">Free Month*</td>
-                    <td className="p-4 text-center bg-blue-50">
-                      <span className="text-green-600 font-black text-xl">✓</span>
-                    </td>
-                    <td className="p-4 text-center">
-                      <span className="text-red-500 font-black text-xl">✗</span>
-                    </td>
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Rate Lock</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">–</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">–</td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50 font-black text-blue-600">12 months</td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50 font-black text-orange-600">12 months</td>
                   </tr>
                   <tr className="border-b border-gray-200 bg-gray-50">
-                    <td className="p-4 font-bold text-gray-800">Rate Lock</td>
-                    <td className="p-4 text-center bg-blue-50 font-black text-blue-600">12 months</td>
-                    <td className="p-4 text-center font-bold text-gray-600">—</td>
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Free Month Credit</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">–</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">–</td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50 font-black text-blue-600">Month 4</td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50 font-black text-orange-600">Month 13<br/><span className="text-xs">(bonus)</span></td>
                   </tr>
                   <tr className="border-b border-gray-200">
-                    <td className="p-4 font-bold text-gray-800">Add'l Dog Fee</td>
-                    <td className="p-4 text-center bg-blue-50 font-bold text-gray-700">+$5/visit/dog</td>
-                    <td className="p-4 text-center font-bold text-gray-600">+$5/visit/dog</td>
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Add'l Dog Fee</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">$5–7 per visit</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">+$10/mo</td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50 font-bold text-gray-700">+$10/mo</td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50 font-bold text-gray-700">+$10/mo</td>
                   </tr>
                   <tr className="border-b border-gray-200 bg-gray-50">
-                    <td className="p-4 font-bold text-gray-800">Sanitization Add-On</td>
-                    <td className="p-4 text-center bg-blue-50">
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Sanitization + Deodorizing</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">Paid add-on<br/><span className="text-xs">(+$10/visit)</span></td>
+                    <td className="p-3 md:p-4 text-center">
                       <span className="text-green-600 font-black">Included</span>
                     </td>
-                    <td className="p-4 text-center font-bold text-gray-600">Paid add-on</td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
                   </tr>
                   <tr className="border-b border-gray-200">
-                    <td className="p-4 font-bold text-gray-800">Waste Haul-Away</td>
-                    <td className="p-4 text-center bg-blue-50">
-                      <span className="text-green-600 font-black">Always free</span>
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Waste Haul-Away</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">Often left in your bin</td>
+                    <td className="p-3 md:p-4 text-center">
+                      <span className="text-green-600 font-black">Included</span>
                     </td>
-                    <td className="p-4 text-center font-bold text-gray-600">Varies by company</td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
                   </tr>
-
+                  <tr className="border-b border-gray-200 bg-gray-50">
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Multiple Areas<br/><span className="text-xs font-normal">(front, side, garden)</span></td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">+$3–5 each</td>
+                    <td className="p-3 md:p-4 text-center">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
+                  </tr>
+                  <tr className="border-b border-gray-200">
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Priority Scheduling</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">–</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">–</td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50">
+                      <span className="text-green-600 font-black text-xl">✓</span>
+                    </td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50">
+                      <span className="text-green-600 font-black text-xl">✓</span>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -579,17 +628,8 @@ export default function LandingMinimal() {
               href="#waitlist-form" 
               className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-black py-4 px-8 rounded-lg text-lg transition-colors"
             >
-              Let's Do It!
+              Join the Founding Members!
             </a>
-          </div>
-
-          {/* Terms Details */}
-          <div className="mt-8 text-sm text-gray-600 space-y-2">
-            <p><strong>*</strong> "Free month" is delivered as a credit on month 4 after 3 consecutive paid months.</p>
-            <p>Cancellation takes effect next billing cycle; cancelling before 3 months forfeits the credit.</p>
-            <p>Rate lock lasts 12 months from first paid service date.</p>
-            <p>Weekly service assumed (~4.33 visits/month).</p>
-            <p className="font-bold text-gray-800 mt-4">Small print, big clarity: we keep it fair, and we keep it clean—literally.</p>
           </div>
         </div>
       </section>
