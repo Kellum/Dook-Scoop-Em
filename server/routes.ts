@@ -268,6 +268,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("Number of Dogs:", submission.numberOfDogs);
       console.log("Referral Source:", submission.referralSource);
       console.log("Urgency:", submission.urgency);
+      console.log("Last Cleanup:", submission.lastCleanup);
       console.log("Can Text:", submission.canText ? "YES" : "NO");
       console.log("Submitted At:", submission.submittedAt);
       console.log("================================");
@@ -284,6 +285,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           numberOfDogs: submission.numberOfDogs,
           referralSource: submission.referralSource,
           urgency: submission.urgency,
+          lastCleanup: submission.lastCleanup,
           canText: submission.canText,
           submittedAt: submission.submittedAt,
           timestamp: new Date().toISOString()
@@ -336,6 +338,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                   <p><strong>Number of Dogs:</strong> ${submission.numberOfDogs}</p>
                   ${submission.referralSource ? `<p><strong>How they heard about us:</strong> ${submission.referralSource}</p>` : ''}
                   ${submission.urgency ? `<p><strong>Service urgency:</strong> ${submission.urgency}</p>` : ''}
+                  ${submission.lastCleanup ? `<p><strong>Last cleanup:</strong> ${submission.lastCleanup}</p>` : ''}
                   <p><strong>Can Text Updates:</strong> ${submission.canText ? 'YES ✓' : 'NO'}</p>
                   <p><strong>Submitted At:</strong> ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}</p>
                 `,
@@ -350,6 +353,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                   Number of Dogs: ${submission.numberOfDogs}
                   ${submission.referralSource ? `How they heard about us: ${submission.referralSource}` : ''}
                   ${submission.urgency ? `Service urgency: ${submission.urgency}` : ''}
+                  ${submission.lastCleanup ? `Last cleanup: ${submission.lastCleanup}` : ''}
                   Can Text Updates: ${submission.canText ? 'YES' : 'NO'}
                   Submitted At: ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}
                 `
@@ -432,6 +436,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                               <tr><td style="padding: 5px 0; font-weight: 600;">Number of Dogs:</td><td style="padding: 5px 0;">${submission.numberOfDogs}</td></tr>
                               ${submission.referralSource ? `<tr><td style="padding: 5px 0; font-weight: 600;">How you heard about us:</td><td style="padding: 5px 0;">${submission.referralSource}</td></tr>` : ''}
                               ${submission.urgency ? `<tr><td style="padding: 5px 0; font-weight: 600;">Service urgency:</td><td style="padding: 5px 0;">${submission.urgency}</td></tr>` : ''}
+                              ${submission.lastCleanup ? `<tr><td style="padding: 5px 0; font-weight: 600;">Last cleanup:</td><td style="padding: 5px 0;">${submission.lastCleanup}</td></tr>` : ''}
                               <tr><td style="padding: 5px 0; font-weight: 600;">Can text updates:</td><td style="padding: 5px 0;">${submission.canText ? 'YES ✓' : 'NO'}</td></tr>
                             </table>
                           </div>
@@ -478,6 +483,7 @@ Zip Code: ${submission.zipCode}
 Number of Dogs: ${submission.numberOfDogs}
 ${submission.referralSource ? `How you heard about us: ${submission.referralSource}` : ''}
 ${submission.urgency ? `Service urgency: ${submission.urgency}` : ''}
+${submission.lastCleanup ? `Last cleanup: ${submission.lastCleanup}` : ''}
 Can text updates: ${submission.canText ? 'YES' : 'NO'}
 
 Consider yourself part of the elite squad that fears no pile. 🐾
@@ -525,6 +531,7 @@ Dook Scoop 'Em | Professional Pet Waste Removal
                   <p><strong>Number of Dogs:</strong> ${submission.numberOfDogs}</p>
                   ${submission.referralSource ? `<p><strong>How they heard about us:</strong> ${submission.referralSource}</p>` : ''}
                   ${submission.urgency ? `<p><strong>Service urgency:</strong> ${submission.urgency}</p>` : ''}
+                  ${submission.lastCleanup ? `<p><strong>Last cleanup:</strong> ${submission.lastCleanup}</p>` : ''}
                   <p><strong>Can Text Updates:</strong> ${submission.canText ? 'YES ✓' : 'NO'}</p>
                   <p><strong>Submitted At:</strong> ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}</p>
                 `,
@@ -539,6 +546,7 @@ Dook Scoop 'Em | Professional Pet Waste Removal
                   Number of Dogs: ${submission.numberOfDogs}
                   ${submission.referralSource ? `How they heard about us: ${submission.referralSource}` : ''}
                   ${submission.urgency ? `Service urgency: ${submission.urgency}` : ''}
+                  ${submission.lastCleanup ? `Last cleanup: ${submission.lastCleanup}` : ''}
                   Can Text Updates: ${submission.canText ? 'YES' : 'NO'}
                   Submitted At: ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}
                 `

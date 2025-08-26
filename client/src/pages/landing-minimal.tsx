@@ -26,6 +26,7 @@ const waitlistFormSchema = z.object({
   numberOfDogs: z.number().min(1).max(4),
   referralSource: z.string().min(1, "Please tell us how you heard about us"),
   urgency: z.string().min(1, "Please let us know your timing needs"),
+  lastCleanup: z.string().min(1, "Please let us know when your last cleanup was"),
   canText: z.boolean().default(false),
 });
 
@@ -48,6 +49,7 @@ export default function LandingMinimal() {
       numberOfDogs: 2,
       referralSource: "",
       urgency: "",
+      lastCleanup: "",
       canText: false,
     },
   });
@@ -64,6 +66,7 @@ export default function LandingMinimal() {
         numberOfDogs: data.numberOfDogs.toString(),
         referralSource: data.referralSource,
         urgency: data.urgency,
+        lastCleanup: data.lastCleanup,
         canText: data.canText,
       };
 
@@ -369,6 +372,35 @@ export default function LandingMinimal() {
                           <SelectItem value="within_month">Within the month</SelectItem>
                           <SelectItem value="whenever">Whenever - no rush</SelectItem>
                           <SelectItem value="planning_ahead">Just planning ahead</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Last Cleanup */}
+                <FormField
+                  control={form.control}
+                  name="lastCleanup"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-bold">When was your last clean up?</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="neu-input bg-gray-100">
+                            <SelectValue placeholder="Select your last cleanup timeframe" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="yesterday">Yesterday (impressive!)</SelectItem>
+                          <SelectItem value="last_week">Last week</SelectItem>
+                          <SelectItem value="last_month">Last month</SelectItem>
+                          <SelectItem value="few_months">A few months ago</SelectItem>
+                          <SelectItem value="long_time">Oh God, it's been forever</SelectItem>
+                          <SelectItem value="what_cleanup">What's a cleanup? 😅</SelectItem>
+                          <SelectItem value="new_dog">Just got my dog(s)</SelectItem>
+                          <SelectItem value="never">Never (we fear no pile!)</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
