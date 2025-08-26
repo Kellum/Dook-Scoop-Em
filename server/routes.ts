@@ -806,6 +806,11 @@ Dook Scoop 'Em | Professional Pet Waste Removal
           elementId: "service-description",
           contentType: "html" as const,
           content: 'Starting in Yulee, Fernandina, Oceanway & Nassau County. Founding members <a href="#perks" class="text-orange-600 hover:text-orange-700 font-bold transition-colors">get perks</a>.',
+        },
+        {
+          pageId: homepage.id,
+          elementId: "service-price",
+          contentType: "text" as const,
           content: "$85",
         }
       ];
