@@ -269,6 +269,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("Referral Source:", submission.referralSource);
       console.log("Urgency:", submission.urgency);
       console.log("Last Cleanup:", submission.lastCleanup);
+      console.log("Preferred Plan:", submission.preferredPlan);
       console.log("Can Text:", submission.canText ? "YES" : "NO");
       console.log("Submitted At:", submission.submittedAt);
       console.log("================================");
@@ -286,6 +287,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           referralSource: submission.referralSource,
           urgency: submission.urgency,
           lastCleanup: submission.lastCleanup,
+          preferredPlan: submission.preferredPlan,
           canText: submission.canText,
           submittedAt: submission.submittedAt,
           timestamp: new Date().toISOString()

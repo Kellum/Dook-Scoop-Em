@@ -27,6 +27,7 @@ const waitlistFormSchema = z.object({
   referralSource: z.string().min(1, "Please tell us how you heard about us"),
   urgency: z.string().min(1, "Please let us know your timing needs"),
   lastCleanup: z.string().min(1, "Please let us know when your last cleanup was"),
+  preferredPlan: z.string().min(1, "Please select your preferred plan"),
   canText: z.boolean().default(false),
 });
 
@@ -60,6 +61,7 @@ export default function LandingMinimal() {
       referralSource: "",
       urgency: "",
       lastCleanup: "",
+      preferredPlan: "",
       canText: false,
     },
   });
@@ -382,6 +384,31 @@ export default function LandingMinimal() {
                           <SelectItem value="within_month">Within the month</SelectItem>
                           <SelectItem value="whenever">Whenever - no rush</SelectItem>
                           <SelectItem value="planning_ahead">Just planning ahead</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Preferred Plan */}
+                <FormField
+                  control={form.control}
+                  name="preferredPlan"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-bold">Which plan interests you most?</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="neu-input bg-gray-100">
+                            <SelectValue placeholder="Select your preferred plan" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="regular">Regular - $100/mo</SelectItem>
+                          <SelectItem value="founding_monthly">Founding Monthly - $90/mo (Popular)</SelectItem>
+                          <SelectItem value="founding_annual">Founding Annual - $85/mo (Best Value)</SelectItem>
+                          <SelectItem value="unsure">Not sure yet</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

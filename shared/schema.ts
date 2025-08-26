@@ -20,6 +20,7 @@ export const waitlistSubmissions = pgTable("waitlist_submissions", {
   referralSource: text("referral_source").notNull(),
   urgency: text("urgency").notNull(),
   lastCleanup: text("last_cleanup").default("unknown"),
+  preferredPlan: text("preferred_plan").default("unknown"),
   canText: boolean("can_text").default(false).notNull(),
   status: text("status").default("active"), // active, archived, deleted
   submittedAt: text("submitted_at").default(sql`CURRENT_TIMESTAMP`),
@@ -101,6 +102,7 @@ export const insertWaitlistSubmissionSchema = createInsertSchema(waitlistSubmiss
   referralSource: z.string().min(1, "Please select how you heard about us"),
   urgency: z.string().min(1, "Please select your preferred timeline"),
   lastCleanup: z.string().min(1, "Please let us know when your last cleanup was"),
+  preferredPlan: z.string().min(1, "Please select your preferred plan"),
   canText: z.boolean().default(false),
 });
 
