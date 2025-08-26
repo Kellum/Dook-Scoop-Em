@@ -547,7 +547,7 @@ export default function LandingMinimal() {
           {/* Mobile Cards - Hidden on desktop */}
           <div className="md:hidden space-y-4 mb-8">
             {/* Competitors Card */}
-            <Card className="neu-raised">
+            <Card className="neu-raised cursor-pointer" onClick={() => toggleCardExpansion('competitors')}>
               <div className="p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div>
@@ -556,15 +556,9 @@ export default function LandingMinimal() {
                     <p className="font-black text-xl text-gray-600 mt-1">$95–115/mo</p>
                     <p className="text-xs text-gray-500">(realistic all-in)</p>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => toggleCardExpansion('competitors')}
-                    className="flex items-center gap-1"
-                  >
-                    View Features
-                    {expandedCards.competitors ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                  </Button>
+                  <div className="flex items-center">
+                    {expandedCards.competitors ? <ChevronUp size={20} className="text-gray-600" /> : <ChevronDown size={20} className="text-gray-600" />}
+                  </div>
                 </div>
                 
                 {expandedCards.competitors && (
@@ -607,7 +601,7 @@ export default function LandingMinimal() {
             </Card>
 
             {/* Regular Plan Card */}
-            <Card className="neu-raised">
+            <Card className="neu-raised cursor-pointer" onClick={() => toggleCardExpansion('regular')}>
               <div className="p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div>
@@ -615,15 +609,9 @@ export default function LandingMinimal() {
                     <p className="text-sm text-gray-500 font-bold">(Us)</p>
                     <p className="font-black text-xl text-gray-600 mt-1">$100/mo</p>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => toggleCardExpansion('regular')}
-                    className="flex items-center gap-1"
-                  >
-                    View Features
-                    {expandedCards.regular ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                  </Button>
+                  <div className="flex items-center">
+                    {expandedCards.regular ? <ChevronUp size={20} className="text-gray-600" /> : <ChevronDown size={20} className="text-gray-600" />}
+                  </div>
                 </div>
                 
                 {expandedCards.regular && (
@@ -666,7 +654,7 @@ export default function LandingMinimal() {
             </Card>
 
             {/* Founding Monthly Card */}
-            <Card className="neu-raised border-2 border-blue-200 bg-blue-50">
+            <Card className="neu-raised border-2 border-blue-200 bg-blue-50 cursor-pointer" onClick={() => toggleCardExpansion('foundingMonthly')}>
               <div className="p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div>
@@ -677,15 +665,9 @@ export default function LandingMinimal() {
                     <p className="text-sm text-blue-700 font-bold">(Us - 10% off)</p>
                     <p className="font-black text-xl text-blue-600 mt-1">$90/mo</p>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => toggleCardExpansion('foundingMonthly')}
-                    className="flex items-center gap-1"
-                  >
-                    View Features
-                    {expandedCards.foundingMonthly ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                  </Button>
+                  <div className="flex items-center">
+                    {expandedCards.foundingMonthly ? <ChevronUp size={20} className="text-blue-600" /> : <ChevronDown size={20} className="text-blue-600" />}
+                  </div>
                 </div>
                 
                 {expandedCards.foundingMonthly && (
@@ -728,7 +710,7 @@ export default function LandingMinimal() {
             </Card>
 
             {/* Founding Annual Card */}
-            <Card className="neu-raised border-2 border-orange-200 bg-orange-50">
+            <Card className="neu-raised border-2 border-orange-200 bg-orange-50 cursor-pointer" onClick={() => toggleCardExpansion('foundingAnnual')}>
               <div className="p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div>
@@ -739,15 +721,9 @@ export default function LandingMinimal() {
                     <p className="text-sm text-orange-700 font-bold">(Us - 15% off)</p>
                     <p className="font-black text-xl text-orange-600 mt-1">$85/mo</p>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => toggleCardExpansion('foundingAnnual')}
-                    className="flex items-center gap-1"
-                  >
-                    View Features
-                    {expandedCards.foundingAnnual ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                  </Button>
+                  <div className="flex items-center">
+                    {expandedCards.foundingAnnual ? <ChevronUp size={20} className="text-orange-600" /> : <ChevronDown size={20} className="text-orange-600" />}
+                  </div>
                 </div>
                 
                 {expandedCards.foundingAnnual && (
