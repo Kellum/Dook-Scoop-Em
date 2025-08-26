@@ -540,7 +540,7 @@ export default function LandingMinimal() {
               Dook Scoop 'Em Pricing Comparison
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              This chart shows how Dook Scoop 'Em stacks up against the biggest competitor. By bundling sanitization + deodorizing, hauling, and multiple areas into every package, founding members don't just get a discount — they get far more value for their money.
+              This chart shows how Dook Scoop 'Em stacks up against competitors. By bundling sanitization + deodorizing, hauling, and multiple areas into every package, founding members don't just get a discount — they get far more value for their money.
             </p>
           </div>
 
