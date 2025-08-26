@@ -582,7 +582,7 @@ export default function LandingMinimal() {
                   </tr>
                   <tr className="border-b border-gray-200">
                     <td className="p-3 md:p-4 font-bold text-gray-800">Waste Haul-Away</td>
-                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">Often left in your bin</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">Often left in your bin 🤢</td>
                     <td className="p-3 md:p-4 text-center">
                       <span className="text-green-600 font-black">Included</span>
                     </td>
