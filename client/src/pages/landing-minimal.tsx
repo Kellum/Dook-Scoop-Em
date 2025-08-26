@@ -636,7 +636,10 @@ export default function LandingMinimal() {
               <div className="p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div>
-                    <h3 className="font-black text-lg text-blue-600">Founding Monthly</h3>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-black text-lg text-blue-600">Founding Monthly</h3>
+                      <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">MOST POPULAR</span>
+                    </div>
                     <p className="text-sm text-blue-700 font-bold">(Us - 10% off)</p>
                     <p className="font-black text-xl text-blue-600 mt-1">$90/mo</p>
                   </div>
@@ -774,7 +777,10 @@ export default function LandingMinimal() {
                     </th>
                     <th className="text-center p-3 md:p-4 font-black text-blue-600 bg-blue-50 min-w-[140px]">
                       <div className="flex flex-col">
-                        <span className="text-base md:text-lg">Founding Monthly</span>
+                        <div className="flex items-center gap-1 justify-center">
+                          <span className="text-base md:text-lg">Founding Monthly</span>
+                          <span className="bg-blue-600 text-white text-xs font-bold px-1.5 py-0.5 rounded">POPULAR</span>
+                        </div>
                         <span className="text-xs font-bold text-blue-700">(Us - 10% off)</span>
                       </div>
                     </th>
