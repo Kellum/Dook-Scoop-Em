@@ -78,6 +78,7 @@ export default function LandingMinimal() {
         numberOfDogs: data.numberOfDogs.toString(),
         referralSource: data.referralSource,
         urgency: data.urgency,
+        preferredPlan: data.preferredPlan,
         lastCleanup: data.lastCleanup,
         canText: data.canText,
       };
