@@ -367,7 +367,7 @@ export default function LandingMinimal() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-bold">How did you hear about us?</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger className="neu-input bg-gray-100">
                             <SelectValue placeholder="Select an option" />
@@ -396,7 +396,7 @@ export default function LandingMinimal() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-bold">How soon do you need service?</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger className="neu-input bg-gray-100">
                             <SelectValue placeholder="Select your urgency level" />
@@ -424,7 +424,7 @@ export default function LandingMinimal() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-bold">Which plan interests you most?</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger className="neu-input bg-gray-100">
                             <SelectValue placeholder="Select your preferred plan" />
@@ -449,7 +449,7 @@ export default function LandingMinimal() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="font-bold">When was your last clean up?</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger className="neu-input bg-gray-100">
                             <SelectValue placeholder="Select your last cleanup timeframe" />
