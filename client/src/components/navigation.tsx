@@ -20,7 +20,7 @@ export default function Navigation() {
   const isActivePath = (path: string) => location === path;
 
   return (
-    <nav className="bg-white sticky top-0 z-50 border-b border-gray-200 neu-raised">
+    <nav className="bg-white sticky top-0 z-50 border-b border-gray-200 shadow-md">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo/Brand */}
