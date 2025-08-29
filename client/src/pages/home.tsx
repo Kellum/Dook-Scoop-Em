@@ -18,7 +18,7 @@ export default function Home() {
             <span className="text-orange-600">You Don't Have To</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Professional pet waste removal service in Nassau County, Florida.<br />
+            Professional pet waste removal service in Jacksonville, Florida.<br />
             <span className="font-bold text-orange-600">We fear no pile!</span>
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -40,29 +40,29 @@ export default function Home() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="neu-raised text-center">
-              <CardContent className="pt-8 pb-6">
+            <div className="neu-raised text-center border-0">
+              <div className="pt-8 pb-6">
                 <Shield className="w-16 h-16 text-orange-600 mx-auto mb-4" />
                 <h3 className="text-xl font-black text-gray-800 mb-2">Licensed & Insured</h3>
                 <p className="text-gray-600">Professional service you can trust with full liability coverage.</p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
             
-            <Card className="neu-raised text-center">
-              <CardContent className="pt-8 pb-6">
+            <div className="neu-raised text-center border-0">
+              <div className="pt-8 pb-6">
                 <Clock className="w-16 h-16 text-orange-600 mx-auto mb-4" />
                 <h3 className="text-xl font-black text-gray-800 mb-2">Reliable Schedule</h3>
                 <p className="text-gray-600">Weekly, bi-weekly, or one-time cleanups. Always on time.</p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
             
-            <Card className="neu-raised text-center">
-              <CardContent className="pt-8 pb-6">
+            <div className="neu-raised text-center border-0">
+              <div className="pt-8 pb-6">
                 <Heart className="w-16 h-16 text-orange-600 mx-auto mb-4" />
                 <h3 className="text-xl font-black text-gray-800 mb-2">Pet Safe Methods</h3>
                 <p className="text-gray-600">Eco-friendly products that are safe for your furry family.</p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -132,11 +132,9 @@ export default function Home() {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="neu-raised hover:transform hover:scale-105 transition-all duration-300">
-              <CardHeader>
-                <CardTitle className="text-xl font-black text-gray-800">Weekly Service</CardTitle>
-              </CardHeader>
-              <CardContent>
+            <div className="neu-raised hover:transform hover:scale-105 transition-all duration-300 border-0">
+              <div className="p-6">
+                <h3 className="text-xl font-black text-gray-800 mb-4">Weekly Service</h3>
                 <p className="text-gray-600 mb-4">Perfect for busy pet parents. We'll keep your yard clean every week.</p>
                 <div className="text-2xl font-black text-orange-600 mb-4">Starting at $15/visit</div>
                 <Link href="/residential">
@@ -144,14 +142,12 @@ export default function Home() {
                     Learn More
                   </Button>
                 </Link>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            <Card className="neu-raised hover:transform hover:scale-105 transition-all duration-300">
-              <CardHeader>
-                <CardTitle className="text-xl font-black text-gray-800">Bi-Weekly Service</CardTitle>
-              </CardHeader>
-              <CardContent>
+            <div className="neu-raised hover:transform hover:scale-105 transition-all duration-300 border-0">
+              <div className="p-6">
+                <h3 className="text-xl font-black text-gray-800 mb-4">Bi-Weekly Service</h3>
                 <p className="text-gray-600 mb-4">Great value option for smaller dogs or less frequent needs.</p>
                 <div className="text-2xl font-black text-orange-600 mb-4">Starting at $18/visit</div>
                 <Link href="/residential">
@@ -159,14 +155,12 @@ export default function Home() {
                     Learn More
                   </Button>
                 </Link>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            <Card className="neu-raised hover:transform hover:scale-105 transition-all duration-300">
-              <CardHeader>
-                <CardTitle className="text-xl font-black text-gray-800">One-Time Cleanup</CardTitle>
-              </CardHeader>
-              <CardContent>
+            <div className="neu-raised hover:transform hover:scale-105 transition-all duration-300 border-0">
+              <div className="p-6">
+                <h3 className="text-xl font-black text-gray-800 mb-4">One-Time Cleanup</h3>
                 <p className="text-gray-600 mb-4">Moving in? Spring cleaning? We'll get your yard pristine.</p>
                 <div className="text-2xl font-black text-orange-600 mb-4">Starting at $75</div>
                 <Link href="/contact">
@@ -174,8 +168,8 @@ export default function Home() {
                     Get Quote
                   </Button>
                 </Link>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </section>
