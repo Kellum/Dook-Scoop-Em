@@ -1,420 +1,280 @@
-import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "wouter";
-import { insertWaitlistSubmissionSchema, type InsertWaitlistSubmission } from "@shared/schema";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
-import { Calendar, MapPin, Shield, Clock, Phone, Mail, Menu, X } from "lucide-react";
-import logoImage from "@assets/ChatGPT Image Aug 15, 2025, 06_49_12 PM_1755298579638.png";
-
-type WaitlistForm = InsertWaitlistSubmission;
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "wouter";
+import { Shield, Clock, Heart, MapPin, CheckCircle, Users, Star } from "lucide-react";
+import Navigation from "@/components/navigation";
+import Footer from "@/components/footer";
 
 export default function Home() {
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const form = useForm<WaitlistForm>({
-    resolver: zodResolver(insertWaitlistSubmissionSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      address: "",
-      zipCode: "",
-      phone: "",
-      numberOfDogs: "1",
-    },
-  });
-
-  const submitMutation = useMutation({
-    mutationFn: async (data: WaitlistForm) => {
-      const response = await apiRequest("POST", "/api/waitlist", data);
-      return response.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "You're on the list! 🎉",
-        description: "We'll notify you when we launch in your area. Thanks for joining!",
-        variant: "default",
-      });
-      form.reset();
-      queryClient.invalidateQueries({ queryKey: ["/api/notifications"] });
-    },
-    onError: (error) => {
-      toast({
-        title: "Something went wrong",
-        description: error.message || "Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const onSubmit = (data: WaitlistForm) => {
-    submitMutation.mutate(data);
-  };
-
-  const scrollToWaitlist = (e: React.MouseEvent) => {
-    e.preventDefault();
-    document.getElementById('waitlist')?.scrollIntoView({ 
-      behavior: 'smooth' 
-    });
-  };
-
   return (
-    <div className="min-h-screen gradient-bg">
-      {/* Navigation */}
-      <nav className="neu-flat sticky top-0 z-50 bg-background/80 backdrop-blur-lg">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div className="logo-container">
-              <img 
-                src={logoImage} 
-                alt="Dook Scoop 'Em - We Fear No Pile" 
-                className="h-16 w-auto pixel-art"
-              />
-            </div>
-            
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-6">
-              <Link href="/locations">
-                <button className="text-primary hover:text-accent transition-colors font-medium">
-                  Service Areas
-                </button>
-              </Link>
-              <a 
-                href="#waitlist" 
-                onClick={scrollToWaitlist}
-                className="text-primary hover:text-accent transition-colors font-medium"
-              >
-                Join Waitlist
-              </a>
-              <button className="neu-button">
-                Book My Scoop
-              </button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button 
-              className="md:hidden p-3 rounded-2xl hover:bg-muted transition-colors"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle mobile menu"
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6 text-primary" />
-              ) : (
-                <Menu className="w-6 h-6 text-primary" />
-              )}
-            </button>
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      <Navigation />
+      
+      {/* Hero Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-6xl mx-auto text-center">
+          <h1 className="text-5xl md:text-7xl font-black text-gray-800 mb-6 leading-tight">
+            We Scoop Poop So<br />
+            <span className="text-orange-600">You Don't Have To</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            Professional pet waste removal service in Nassau County, Florida.<br />
+            <span className="font-bold text-orange-600">We fear no pile!</span>
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link href="/">
+              <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
+                Join Our Waitlist
+              </Button>
+            </Link>
+            <Link href="/contact">
+              <Button variant="outline" className="neu-button border-orange-600 text-orange-600 hover:bg-orange-50 font-bold px-8 py-4 text-lg">
+                Get Quote
+              </Button>
+            </Link>
           </div>
+        </div>
+      </section>
 
-          {/* Mobile Menu */}
-          {isMobileMenuOpen && (
-            <div className="md:hidden mt-6 neu-pressed p-6 rounded-2xl slide-down">
+      {/* Trust Indicators */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="neu-raised text-center">
+              <CardContent className="pt-8 pb-6">
+                <Shield className="w-16 h-16 text-orange-600 mx-auto mb-4" />
+                <h3 className="text-xl font-black text-gray-800 mb-2">Licensed & Insured</h3>
+                <p className="text-gray-600">Professional service you can trust with full liability coverage.</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="neu-raised text-center">
+              <CardContent className="pt-8 pb-6">
+                <Clock className="w-16 h-16 text-orange-600 mx-auto mb-4" />
+                <h3 className="text-xl font-black text-gray-800 mb-2">Reliable Schedule</h3>
+                <p className="text-gray-600">Weekly, bi-weekly, or one-time cleanups. Always on time.</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="neu-raised text-center">
+              <CardContent className="pt-8 pb-6">
+                <Heart className="w-16 h-16 text-orange-600 mx-auto mb-4" />
+                <h3 className="text-xl font-black text-gray-800 mb-2">Pet Safe Methods</h3>
+                <p className="text-gray-600">Eco-friendly products that are safe for your furry family.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Nassau County Service Area */}
+      <section className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-6">
+                Nassau County Pet Waste Removal Services
+              </h2>
+              <p className="text-lg text-gray-600 mb-6">
+                Starting strong in Yulee, Fernandina Beach, and Oceanway. We're bringing professional, 
+                reliable pet waste removal to Nassau County with plans to expand throughout North East Florida.
+              </p>
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center gap-3">
+                  <CheckCircle className="w-6 h-6 text-orange-600" />
+                  <span className="text-gray-700 font-medium">Weekly & bi-weekly service plans</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <CheckCircle className="w-6 h-6 text-orange-600" />
+                  <span className="text-gray-700 font-medium">One-time cleanup available</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <CheckCircle className="w-6 h-6 text-orange-600" />
+                  <span className="text-gray-700 font-medium">Commercial property services</span>
+                </div>
+              </div>
+              <Link href="/residential">
+                <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-3">
+                  View Residential Services
+                </Button>
+              </Link>
+            </div>
+            <div className="neu-raised p-8 bg-gradient-to-br from-orange-50 to-orange-100">
+              <MapPin className="w-20 h-20 text-orange-600 mx-auto mb-4" />
+              <h3 className="text-2xl font-black text-gray-800 text-center mb-4">Current Service Areas</h3>
               <div className="space-y-3">
-                <Link href="/locations">
-                  <button 
-                    className="mobile-menu-item w-full text-left py-4 px-4 text-primary hover:text-accent font-medium neu-flat rounded-xl"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <MapPin className="w-5 h-5 text-accent" />
-                      <span>Service Areas</span>
-                    </div>
-                  </button>
-                </Link>
-                
-                <a 
-                  href="#waitlist" 
-                  onClick={(e) => {
-                    scrollToWaitlist(e);
-                    setIsMobileMenuOpen(false);
-                  }}
-                >
-                  <button className="mobile-menu-item w-full text-left py-4 px-4 text-primary hover:text-accent font-medium neu-flat rounded-xl">
-                    <div className="flex items-center space-x-3">
-                      <Calendar className="w-5 h-5 text-accent" />
-                      <span>Join Waitlist</span>
-                    </div>
-                  </button>
-                </a>
+                <div className="bg-white rounded-lg p-4 text-center">
+                  <span className="font-bold text-gray-800">Yulee</span>
+                </div>
+                <div className="bg-white rounded-lg p-4 text-center">
+                  <span className="font-bold text-gray-800">Fernandina Beach</span>
+                </div>
+                <div className="bg-white rounded-lg p-4 text-center">
+                  <span className="font-bold text-gray-800">Oceanway</span>
+                </div>
+              </div>
+              <p className="text-sm text-gray-600 text-center mt-4 italic">
+                More Nassau County areas coming soon!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                <div className="pt-2">
-                  <button 
-                    className="w-full neu-button py-4 text-lg flex items-center justify-center space-x-3"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <span className="pixel-art text-xl">⚒️</span>
-                    <span>Book My Scoop</span>
-                  </button>
+      {/* Our Services */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-6">Our Services</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Professional pet waste removal for homes and businesses. No pile too big, no yard too small.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="neu-raised hover:transform hover:scale-105 transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="text-xl font-black text-gray-800">Weekly Service</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 mb-4">Perfect for busy pet parents. We'll keep your yard clean every week.</p>
+                <div className="text-2xl font-black text-orange-600 mb-4">Starting at $15/visit</div>
+                <Link href="/residential">
+                  <Button className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
+                    Learn More
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+
+            <Card className="neu-raised hover:transform hover:scale-105 transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="text-xl font-black text-gray-800">Bi-Weekly Service</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 mb-4">Great value option for smaller dogs or less frequent needs.</p>
+                <div className="text-2xl font-black text-orange-600 mb-4">Starting at $18/visit</div>
+                <Link href="/residential">
+                  <Button className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
+                    Learn More
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+
+            <Card className="neu-raised hover:transform hover:scale-105 transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="text-xl font-black text-gray-800">One-Time Cleanup</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 mb-4">Moving in? Spring cleaning? We'll get your yard pristine.</p>
+                <div className="text-2xl font-black text-orange-600 mb-4">Starting at $75</div>
+                <Link href="/contact">
+                  <Button className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
+                    Get Quote
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* The Dook Scoop 'Em Difference */}
+      <section className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-8">
+                The Dook Scoop 'Em Difference
+              </h2>
+              
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-orange-600 flex items-center justify-center flex-shrink-0 mt-1">
+                    <CheckCircle className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-gray-800 mb-2">We Actually Show Up</h3>
+                    <p className="text-gray-600">Reliable service you can count on. No more wondering if your yard will be clean.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-orange-600 flex items-center justify-center flex-shrink-0 mt-1">
+                    <CheckCircle className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-gray-800 mb-2">Thorough & Professional</h3>
+                    <p className="text-gray-600">We don't just grab the obvious stuff. Every square inch gets checked.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-orange-600 flex items-center justify-center flex-shrink-0 mt-1">
+                    <CheckCircle className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-gray-800 mb-2">Local Nassau County Business</h3>
+                    <p className="text-gray-600">We live here, work here, and care about our community.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-orange-600 flex items-center justify-center flex-shrink-0 mt-1">
+                    <CheckCircle className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-gray-800 mb-2">Fair Pricing, No Surprises</h3>
+                    <p className="text-gray-600">Transparent pricing. What we quote is what you pay.</p>
+                  </div>
                 </div>
               </div>
             </div>
-          )}
-        </div>
-      </nav>
-
-      {/* Hero Section */}
-      <section className="max-w-6xl mx-auto px-6 py-20 text-center fade-in">
-        <div className="inline-block neu-flat px-6 py-3 mb-8">
-          <div className="flex items-center justify-center space-x-2">
-            <Clock className="w-5 h-5 text-accent" />
-            <span className="vcr-text text-accent font-medium">Coming Soon</span>
-          </div>
-        </div>
-        
-        <h1 className="text-6xl md:text-8xl font-bold text-primary mb-8 leading-tight">
-          Professional
-          <br />
-          <span className="text-accent">Pet Waste</span>
-          <br />
-          Removal
-        </h1>
-        
-        <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
-          Keep your yard clean and healthy with our reliable, professional pet waste removal service. 
-          We're launching soon in your area!
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <a 
-            href="#waitlist" 
-            onClick={scrollToWaitlist}
-            className="neu-button text-lg px-8 py-4 inline-flex items-center"
-          >
-            Join Our Waitlist
-          </a>
-          <Link href="/locations">
-            <button className="neu-flat px-8 py-4 text-lg font-medium text-primary hover:text-accent transition-colors">
-              View Service Areas
-            </button>
-          </Link>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="max-w-6xl mx-auto px-6 py-20">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-            Why Choose Us?
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Professional, reliable, and affordable pet waste removal services that keep your yard clean.
-          </p>
-        </div>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div className="neu-card text-center">
-            <div className="w-20 h-20 neu-flat rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <Calendar className="w-8 h-8 text-accent" />
+            
+            <div className="neu-raised p-8 bg-gradient-to-br from-orange-50 to-orange-100 text-center">
+              <div className="text-6xl mb-4">🐕</div>
+              <h3 className="text-2xl font-black text-gray-800 mb-4">We Fear No Pile!</h3>
+              <p className="text-gray-600 mb-6">
+                From tiny terrier droppings to Great Dane disasters, we handle it all with a smile 
+                (hidden behind our professional equipment, of course).
+              </p>
+              <Link href="/how-we-scoop">
+                <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-3">
+                  See How We Work
+                </Button>
+              </Link>
             </div>
-            <h3 className="text-2xl font-bold text-primary mb-4">Reliable Schedule</h3>
-            <p className="text-muted-foreground">
-              Weekly, bi-weekly, or monthly service options that fit your needs and budget.
-            </p>
-          </div>
-
-          <div className="neu-card text-center">
-            <div className="w-20 h-20 neu-flat rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <Shield className="w-8 h-8 text-accent" />
-            </div>
-            <h3 className="text-2xl font-bold text-primary mb-4">Professional Team</h3>
-            <p className="text-muted-foreground">
-              Trained specialists who are insured and bonded. Your yard is in expert hands.
-            </p>
-          </div>
-
-          <div className="neu-card text-center">
-            <div className="w-20 h-20 neu-flat rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <span className="text-3xl pixel-art">⚒️</span>
-            </div>
-            <h3 className="text-2xl font-bold text-primary mb-4">Quick Service</h3>
-            <p className="text-muted-foreground">
-              Fast and efficient cleanup service. Your yard stays healthy and beautiful.
-            </p>
           </div>
         </div>
       </section>
 
-      {/* Waitlist Section */}
-      <section id="waitlist" className="max-w-4xl mx-auto px-6 py-20">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-            Join Our Waitlist
+      {/* Get Started Section */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-6">
+            Ready to Reclaim Your Yard?
           </h2>
-          <p className="text-xl text-muted-foreground">
-            Be the first to know when we launch in your area. Simple signup, no commitment.
+          <p className="text-xl text-gray-600 mb-8">
+            Join our waitlist to be among the first to experience professional pet waste removal in Nassau County.
+            Founding members get exclusive perks!
           </p>
-        </div>
-
-        <div className="neu-card max-w-2xl mx-auto">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="form-label">Your Name</FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="Enter your name" 
-                          {...field} 
-                          className="neu-input"
-                        />
-                      </FormControl>
-                      <FormMessage className="text-destructive text-sm" />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="form-label">Email Address</FormLabel>
-                      <FormControl>
-                        <Input 
-                          type="email" 
-                          placeholder="your.email@example.com" 
-                          {...field} 
-                          className="neu-input"
-                        />
-                      </FormControl>
-                      <FormMessage className="text-destructive text-sm" />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              
-              <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="form-label">Your Address</FormLabel>
-                    <FormControl>
-                      <Input 
-                        placeholder="123 Main Street, Austin, TX" 
-                        {...field} 
-                        className="neu-input"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-destructive text-sm" />
-                  </FormItem>
-                )}
-              />
-              
-              <div className="grid md:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="zipCode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="form-label">Zip Code</FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="78701" 
-                          {...field} 
-                          className="neu-input"
-                        />
-                      </FormControl>
-                      <FormMessage className="text-destructive text-sm" />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="form-label">Phone Number</FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="(555) 123-4567" 
-                          {...field} 
-                          className="neu-input"
-                        />
-                      </FormControl>
-                      <FormMessage className="text-destructive text-sm" />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              
-              <FormField
-                control={form.control}
-                name="numberOfDogs"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="form-label">Number of Dogs</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="neu-input">
-                          <SelectValue placeholder="Select number of dogs" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="bg-background border-border">
-                        <SelectItem value="1">1 Dog</SelectItem>
-                        <SelectItem value="2">2 Dogs</SelectItem>
-                        <SelectItem value="3">3 Dogs</SelectItem>
-                        <SelectItem value="4+">4+ Dogs</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage className="text-destructive text-sm" />
-                  </FormItem>
-                )}
-              />
-              
-              <Button 
-                type="submit" 
-                className="w-full neu-button py-4 text-lg"
-                disabled={submitMutation.isPending}
-              >
-                {submitMutation.isPending ? "Joining..." : "Join Waitlist"}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link href="/">
+              <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
+                Join Waitlist Today
               </Button>
-            </form>
-          </Form>
+            </Link>
+            <Link href="/contact">
+              <Button variant="outline" className="neu-button border-orange-600 text-orange-600 hover:bg-orange-50 font-bold px-8 py-4 text-lg">
+                Ask Questions
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="neu-flat mt-20 py-12">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <div className="flex justify-center mb-6">
-            <img 
-              src={logoImage} 
-              alt="Dook Scoop 'Em - We Fear No Pile" 
-              className="h-20 w-auto pixel-art"
-            />
-          </div>
-          
-          <p className="text-muted-foreground mb-4">
-            Professional pet waste removal services. Licensed, insured, and ready to serve your community.
-          </p>
-          
-          <div className="flex justify-center space-x-6 mb-6">
-            <div className="flex items-center space-x-2 text-muted-foreground">
-              <Mail className="w-4 h-4" />
-              <span>contact@dookscoop.com</span>
-            </div>
-            <div className="flex items-center space-x-2 text-muted-foreground">
-              <Phone className="w-4 h-4" />
-              <span>(555) 123-POOP</span>
-            </div>
-          </div>
-          
-          <p className="text-sm text-muted-foreground">
-            © 2025 Dook Scoop 'Em. Keeping your yard clean and healthy.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
