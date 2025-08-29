@@ -7,33 +7,33 @@
 @tailwind utilities;
 
 :root {
-  /* Neumorphic Color Palette */
-  --background: hsl(0 0% 98%);
-  --foreground: hsl(0 0% 23%);
-  --card: hsl(0 0% 100%);
-  --card-foreground: hsl(0 0% 23%);
-  --popover: hsl(0 0% 100%);
-  --popover-foreground: hsl(0 0% 23%);
-  --primary: hsl(0 0% 23%);
-  --primary-foreground: hsl(0 0% 100%);
-  --secondary: hsl(0 0% 69%);
-  --secondary-foreground: hsl(0 0% 23%);
-  --muted: hsl(0 0% 96%);
-  --muted-foreground: hsl(0 0% 46%);
-  --accent: hsl(29 100% 64%);
-  --accent-foreground: hsl(0 0% 0%);
+  /* Black Theme Color Palette */
+  --background: hsl(0 0% 8%);
+  --foreground: hsl(0 0% 98%);
+  --card: hsl(0 0% 12%);
+  --card-foreground: hsl(0 0% 98%);
+  --popover: hsl(0 0% 12%);
+  --popover-foreground: hsl(0 0% 98%);
+  --primary: hsl(0 0% 98%);
+  --primary-foreground: hsl(0 0% 8%);
+  --secondary: hsl(0 0% 20%);
+  --secondary-foreground: hsl(0 0% 98%);
+  --muted: hsl(0 0% 15%);
+  --muted-foreground: hsl(0 0% 65%);
+  --accent: hsl(25 85% 65%);
+  --accent-foreground: hsl(0 0% 8%);
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(0 0% 100%);
-  --border: hsl(0 0% 89%);
-  --input: hsl(0 0% 96%);
-  --ring: hsl(29 100% 64%);
+  --border: hsl(0 0% 25%);
+  --input: hsl(0 0% 15%);
+  --ring: hsl(25 85% 65%);
   --earth-tone: hsl(30 43% 31%);
-  --soft-grey: hsl(0 0% 69%);
+  --soft-grey: hsl(0 0% 40%);
   --radius: 1rem;
   
-  /* Neumorphic shadows */
-  --neu-shadow-light: rgba(255, 255, 255, 0.7);
-  --neu-shadow-dark: rgba(0, 0, 0, 0.15);
+  /* Dark Neumorphic shadows */
+  --neu-shadow-light: rgba(255, 255, 255, 0.05);
+  --neu-shadow-dark: rgba(0, 0, 0, 0.6);
   
   /* Fonts */
   --font-pixel: 'Press Start 2P', monospace;
@@ -118,8 +118,8 @@ body {
   background: hsl(var(--accent));
   color: hsl(var(--accent-foreground));
   box-shadow: 
-    -4px -4px 8px rgba(255, 179, 71, 0.3),
-    4px 4px 8px rgba(255, 179, 71, 0.8);
+    -4px -4px 8px rgba(255, 154, 65, 0.2),
+    4px 4px 8px rgba(0, 0, 0, 0.8);
   border-radius: 16px;
   padding: 12px 24px;
   font-family: var(--font-system);
@@ -131,23 +131,23 @@ body {
 
 .neu-button:hover {
   transform: translateY(-2px);
-  background: hsl(29 100% 68%);
+  background: hsl(25 85% 70%);
   box-shadow: 
-    -6px -6px 12px rgba(255, 179, 71, 0.4),
-    6px 6px 16px rgba(255, 179, 71, 0.9);
+    -6px -6px 12px rgba(255, 154, 65, 0.3),
+    6px 6px 16px rgba(0, 0, 0, 0.9);
 }
 
 .neu-button:active {
   transform: translateY(1px);
   box-shadow: 
-    -2px -2px 4px rgba(255, 179, 71, 0.2),
-    2px 2px 6px rgba(255, 179, 71, 0.6);
+    -2px -2px 4px rgba(255, 154, 65, 0.1),
+    2px 2px 6px rgba(0, 0, 0, 0.7);
 }
 
 .neu-input {
-  background: hsl(var(--background));
+  background: hsl(var(--input));
   border-radius: 16px;
-  border: 1px solid hsl(0 0% 85%); /* Light grey border */
+  border: 1px solid hsl(var(--border));
   padding: 16px 20px;
   font-family: var(--font-primary);
   font-size: 16px;
@@ -159,7 +159,7 @@ body {
   outline: none;
   border-color: hsl(var(--accent));
   box-shadow: 
-    0 0 0 3px rgba(255, 179, 71, 0.2),
+    0 0 0 3px rgba(255, 154, 65, 0.3),
     -2px -2px 4px var(--neu-shadow-light),
     2px 2px 4px var(--neu-shadow-dark);
 }

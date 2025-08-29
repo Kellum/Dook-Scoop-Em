@@ -5,16 +5,16 @@ import Footer from "@/components/footer";
 
 export default function AboutUs() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-100 via-orange-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
       <Navigation />
       
       <main className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <section className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-black text-gray-800 mb-6">
+          <h1 className="text-4xl md:text-6xl font-black text-white mb-6">
             About Dook Scoop 'Em
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
             We're the people who decided to make a living cleaning up after dogs. And honestly? We couldn't be happier about it.
           </p>
         </section>
@@ -23,7 +23,7 @@ export default function AboutUs() {
         <section className="mb-16">
           <Card className="neu-raised">
             <CardContent className="p-8">
-              <h2 className="text-3xl font-black text-gray-800 mb-6 text-center">Our Story</h2>
+              <h2 className="text-3xl font-black text-white mb-6 text-center">Our Story</h2>
               <div className="max-w-4xl mx-auto text-lg text-gray-600 space-y-6">
                 <p>
                   It started with a simple realization: people love their dogs, but nobody loves cleaning up after them. And frankly, most people aren't doing it right anyway.
@@ -47,7 +47,7 @@ export default function AboutUs() {
           <Card className="neu-raised text-center">
             <CardHeader>
               <div className="text-4xl mb-4">🎯</div>
-              <CardTitle className="text-xl font-black text-gray-800">We Do It Right</CardTitle>
+              <CardTitle className="text-xl font-black text-white">We Do It Right</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
@@ -59,7 +59,7 @@ export default function AboutUs() {
           <Card className="neu-raised text-center">
             <CardHeader>
               <div className="text-4xl mb-4">😄</div>
-              <CardTitle className="text-xl font-black text-gray-800">We Keep It Fun</CardTitle>
+              <CardTitle className="text-xl font-black text-white">We Keep It Fun</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
@@ -71,7 +71,7 @@ export default function AboutUs() {
           <Card className="neu-raised text-center">
             <CardHeader>
               <div className="text-4xl mb-4">🤝</div>
-              <CardTitle className="text-xl font-black text-gray-800">We Build Trust</CardTitle>
+              <CardTitle className="text-xl font-black text-white">We Build Trust</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">

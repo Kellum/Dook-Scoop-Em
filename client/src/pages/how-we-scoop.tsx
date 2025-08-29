@@ -5,16 +5,16 @@ import Footer from "@/components/footer";
 
 export default function HowWeScoop() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-100 via-orange-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
       <Navigation />
       
       <main className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <section className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-black text-gray-800 mb-6">
+          <h1 className="text-4xl md:text-6xl font-black text-white mb-6">
             How We Scoop
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
             It's not just about picking up poop (though we're really good at that). It's about creating a system that works.
           </p>
         </section>
@@ -24,7 +24,7 @@ export default function HowWeScoop() {
           <Card className="neu-raised text-center">
             <CardHeader>
               <div className="text-4xl mb-4">🚪</div>
-              <CardTitle className="text-xl font-black text-gray-800">1. We Arrive</CardTitle>
+              <CardTitle className="text-xl font-black text-white">1. We Arrive</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
@@ -36,7 +36,7 @@ export default function HowWeScoop() {
           <Card className="neu-raised text-center">
             <CardHeader>
               <div className="text-4xl mb-4">🔍</div>
-              <CardTitle className="text-xl font-black text-gray-800">2. We Search</CardTitle>
+              <CardTitle className="text-xl font-black text-white">2. We Search</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
@@ -48,7 +48,7 @@ export default function HowWeScoop() {
           <Card className="neu-raised text-center">
             <CardHeader>
               <div className="text-4xl mb-4">🧹</div>
-              <CardTitle className="text-xl font-black text-gray-800">3. We Clean</CardTitle>
+              <CardTitle className="text-xl font-black text-white">3. We Clean</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
@@ -60,7 +60,7 @@ export default function HowWeScoop() {
           <Card className="neu-raised text-center">
             <CardHeader>
               <div className="text-4xl mb-4">🚛</div>
-              <CardTitle className="text-xl font-black text-gray-800">4. We Haul</CardTitle>
+              <CardTitle className="text-xl font-black text-white">4. We Haul</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">

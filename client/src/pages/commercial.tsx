@@ -5,16 +5,16 @@ import Footer from "@/components/footer";
 
 export default function Commercial() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-100 via-orange-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
       <Navigation />
       
       <main className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <section className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-black text-gray-800 mb-6">
+          <h1 className="text-4xl md:text-6xl font-black text-white mb-6">
             Commercial Poop Scooping
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
             Keep your business property professional and pristine. We handle everything from apartment complexes to office parks.
           </p>
           <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
@@ -26,7 +26,7 @@ export default function Commercial() {
         <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           <Card className="neu-raised">
             <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">Apartment Complexes</CardTitle>
+              <CardTitle className="text-xl font-black text-white">Apartment Complexes</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
@@ -37,7 +37,7 @@ export default function Commercial() {
 
           <Card className="neu-raised">
             <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">Office Buildings</CardTitle>
+              <CardTitle className="text-xl font-black text-white">Office Buildings</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
@@ -48,7 +48,7 @@ export default function Commercial() {
 
           <Card className="neu-raised">
             <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">HOA Communities</CardTitle>
+              <CardTitle className="text-xl font-black text-white">HOA Communities</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
@@ -59,7 +59,7 @@ export default function Commercial() {
 
           <Card className="neu-raised">
             <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">Dog Parks & Facilities</CardTitle>
+              <CardTitle className="text-xl font-black text-white">Dog Parks & Facilities</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
@@ -70,7 +70,7 @@ export default function Commercial() {
 
           <Card className="neu-raised">
             <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">Retail Centers</CardTitle>
+              <CardTitle className="text-xl font-black text-white">Retail Centers</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">

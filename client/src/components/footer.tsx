@@ -54,19 +54,19 @@ export default function Footer() {
               <div className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-orange-400" />
                 <a 
-                  href="tel:+19045557667" 
+                  href="tel:+19043122422" 
                   className="text-gray-300 hover:text-orange-400 transition-colors"
                 >
-                  (904) 555-POOP
+                  (904) 312-2422
                 </a>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-orange-400" />
                 <a 
-                  href="mailto:hello@dookscoopem.com" 
+                  href="mailto:ryan@dookscoop.com" 
                   className="text-gray-300 hover:text-orange-400 transition-colors"
                 >
-                  hello@dookscoopem.com
+                  ryan@dookscoop.com
                 </a>
               </div>
               <div className="text-gray-300 text-sm">

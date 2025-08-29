@@ -5,16 +5,16 @@ import Footer from "@/components/footer";
 
 export default function Residential() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-100 via-orange-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
       <Navigation />
       
       <main className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <section className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-black text-gray-800 mb-6">
+          <h1 className="text-4xl md:text-6xl font-black text-white mb-6">
             Residential Poop Scooping
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
             We fear no pile in your backyard! Our residential service keeps your lawn pristine and your shoes clean.
           </p>
           <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
@@ -26,7 +26,7 @@ export default function Residential() {
         <section className="grid md:grid-cols-3 gap-8 mb-16">
           <Card className="neu-raised">
             <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">Weekly Service</CardTitle>
+              <CardTitle className="text-xl font-black text-white">Weekly Service</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
@@ -37,7 +37,7 @@ export default function Residential() {
 
           <Card className="neu-raised">
             <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">Bi-Weekly Service</CardTitle>
+              <CardTitle className="text-xl font-black text-white">Bi-Weekly Service</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
@@ -48,7 +48,7 @@ export default function Residential() {
 
           <Card className="neu-raised">
             <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">One-Time Cleanups</CardTitle>
+              <CardTitle className="text-xl font-black text-white">One-Time Cleanups</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
