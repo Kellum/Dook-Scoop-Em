@@ -5,16 +5,16 @@ import Footer from "@/components/footer";
 
 export default function ProductsWeUse() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <Navigation />
       
       <main className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <section className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-6">
+          <h1 className="text-4xl md:text-6xl font-black text-gray-800 mb-6">
             Products We Use
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             We don't mess around with cheap tools or harsh chemicals. Here's exactly what we use to keep your yard pristine and your pets safe.
           </p>
         </section>
@@ -23,7 +23,7 @@ export default function ProductsWeUse() {
         <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           <Card className="neu-raised">
             <CardHeader>
-              <CardTitle className="text-xl font-black text-white">🛠️ Cleanup Tools</CardTitle>
+              <CardTitle className="text-xl font-black text-gray-800">🛠️ Cleanup Tools</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
@@ -54,7 +54,7 @@ export default function ProductsWeUse() {
 
           <Card className="neu-raised">
             <CardHeader>
-              <CardTitle className="text-xl font-black text-white">🧼 Sanitizers</CardTitle>
+              <CardTitle className="text-xl font-black text-gray-800">🧼 Sanitizers</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">

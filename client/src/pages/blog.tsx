@@ -26,16 +26,16 @@ export default function Blog() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <Navigation />
       
       <main className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <section className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-6">
+          <h1 className="text-4xl md:text-6xl font-black text-gray-800 mb-6">
             The Scoop Blog
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Insights, tips, and probably more poop facts than you expected. We're here to educate and entertain.
           </p>
         </section>
@@ -48,7 +48,7 @@ export default function Blog() {
                 <span className="bg-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full">FEATURED</span>
                 <span className="text-orange-600 font-bold text-sm">March 15, 2025 • 5 min read</span>
               </div>
-              <h2 className="text-3xl font-black text-white mb-4">
+              <h2 className="text-3xl font-black text-gray-800 mb-4">
                 The Science of Poop: Why Professional Cleanup Matters
               </h2>
               <p className="text-lg text-gray-600 mb-6">
@@ -69,7 +69,7 @@ export default function Blog() {
                 <div className="text-sm text-orange-600 font-bold mb-2">
                   {post.date} • {post.readTime}
                 </div>
-                <CardTitle className="text-xl font-black text-white leading-tight">
+                <CardTitle className="text-xl font-black text-gray-800 leading-tight">
                   {post.title}
                 </CardTitle>
               </CardHeader>

@@ -7,33 +7,33 @@
 @tailwind utilities;
 
 :root {
-  /* Balanced Dark Theme Color Palette */
-  --background: hsl(0 0% 8%);
-  --foreground: hsl(0 0% 95%);
-  --card: hsl(0 0% 18%);
-  --card-foreground: hsl(0 0% 95%);
-  --popover: hsl(0 0% 18%);
-  --popover-foreground: hsl(0 0% 95%);
-  --primary: hsl(0 0% 95%);
-  --primary-foreground: hsl(0 0% 8%);
-  --secondary: hsl(0 0% 25%);
-  --secondary-foreground: hsl(0 0% 95%);
-  --muted: hsl(0 0% 22%);
-  --muted-foreground: hsl(0 0% 70%);
+  /* Light Theme Color Palette - Matching Waitlist Page */
+  --background: hsl(0 0% 98%);
+  --foreground: hsl(0 0% 23%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(0 0% 23%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(0 0% 23%);
+  --primary: hsl(0 0% 23%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(0 0% 69%);
+  --secondary-foreground: hsl(0 0% 23%);
+  --muted: hsl(0 0% 96%);
+  --muted-foreground: hsl(0 0% 46%);
   --accent: hsl(25 85% 65%);
-  --accent-foreground: hsl(0 0% 8%);
+  --accent-foreground: hsl(0 0% 0%);
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(0 0% 100%);
-  --border: hsl(0 0% 30%);
-  --input: hsl(0 0% 22%);
+  --border: hsl(0 0% 89%);
+  --input: hsl(0 0% 96%);
   --ring: hsl(25 85% 65%);
   --earth-tone: hsl(30 43% 31%);
-  --soft-grey: hsl(0 0% 45%);
+  --soft-grey: hsl(0 0% 69%);
   --radius: 1rem;
   
-  /* Balanced Neumorphic shadows */
-  --neu-shadow-light: rgba(255, 255, 255, 0.08);
-  --neu-shadow-dark: rgba(0, 0, 0, 0.6);
+  /* Light Neumorphic shadows */
+  --neu-shadow-light: rgba(255, 255, 255, 0.7);
+  --neu-shadow-dark: rgba(0, 0, 0, 0.15);
   
   /* Fonts */
   --font-pixel: 'Press Start 2P', monospace;
@@ -147,7 +147,7 @@ body {
 .neu-input {
   background: hsl(var(--input));
   border-radius: 16px;
-  border: 1px solid hsl(var(--border));
+  border: 1px solid hsl(0 0% 85%);
   padding: 16px 20px;
   font-family: var(--font-primary);
   font-size: 16px;

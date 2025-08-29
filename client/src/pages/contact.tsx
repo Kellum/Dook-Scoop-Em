@@ -30,16 +30,16 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <Navigation />
       
       <main className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <section className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-6">
+          <h1 className="text-4xl md:text-6xl font-black text-gray-800 mb-6">
             Get In Touch
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Questions? Comments? Poop emergencies? We're here to help. Seriously, we love talking about this stuff.
           </p>
         </section>
@@ -50,13 +50,13 @@ export default function Contact() {
           <div className="space-y-8">
             <Card className="neu-raised">
               <CardHeader>
-                <CardTitle className="text-2xl font-black text-white">Let's Talk Business</CardTitle>
+                <CardTitle className="text-2xl font-black text-gray-800">Let's Talk Business</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="flex items-center space-x-4">
                   <Phone className="w-6 h-6 text-orange-600" />
                   <div>
-                    <p className="font-bold text-white">Phone</p>
+                    <p className="font-bold text-gray-800">Phone</p>
                     <p className="text-gray-600">(904) 312-2422</p>
                     <p className="text-sm text-gray-500">Call or text anytime</p>
                   </div>
@@ -65,7 +65,7 @@ export default function Contact() {
                 <div className="flex items-center space-x-4">
                   <Mail className="w-6 h-6 text-orange-600" />
                   <div>
-                    <p className="font-bold text-white">Email</p>
+                    <p className="font-bold text-gray-800">Email</p>
                     <p className="text-gray-600">ryan@dookscoop.com</p>
                     <p className="text-sm text-gray-500">We respond within 24 hours</p>
                   </div>
@@ -74,7 +74,7 @@ export default function Contact() {
                 <div className="flex items-center space-x-4">
                   <MapPin className="w-6 h-6 text-orange-600" />
                   <div>
-                    <p className="font-bold text-white">Service Area</p>
+                    <p className="font-bold text-gray-800">Service Area</p>
                     <p className="text-gray-600">Nassau County, FL</p>
                     <p className="text-sm text-gray-500">Yulee, Fernandina Beach, Oceanway</p>
                   </div>
@@ -83,7 +83,7 @@ export default function Contact() {
                 <div className="flex items-center space-x-4">
                   <Clock className="w-6 h-6 text-orange-600" />
                   <div>
-                    <p className="font-bold text-white">Business Hours</p>
+                    <p className="font-bold text-gray-800">Business Hours</p>
                     <p className="text-gray-600">Mon-Fri: 8AM-6PM</p>
                     <p className="text-gray-600">Saturday: 9AM-4PM</p>
                     <p className="text-sm text-gray-500">Emergency service available</p>
@@ -95,7 +95,7 @@ export default function Contact() {
             {/* Quick Questions */}
             <Card className="neu-raised">
               <CardHeader>
-                <CardTitle className="text-xl font-black text-white">Quick Questions?</CardTitle>
+                <CardTitle className="text-xl font-black text-gray-800">Quick Questions?</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
