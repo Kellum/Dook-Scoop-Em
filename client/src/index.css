@@ -7,32 +7,32 @@
 @tailwind utilities;
 
 :root {
-  /* Black Theme Color Palette */
+  /* Balanced Dark Theme Color Palette */
   --background: hsl(0 0% 8%);
-  --foreground: hsl(0 0% 98%);
-  --card: hsl(0 0% 12%);
-  --card-foreground: hsl(0 0% 98%);
-  --popover: hsl(0 0% 12%);
-  --popover-foreground: hsl(0 0% 98%);
-  --primary: hsl(0 0% 98%);
+  --foreground: hsl(0 0% 95%);
+  --card: hsl(0 0% 18%);
+  --card-foreground: hsl(0 0% 95%);
+  --popover: hsl(0 0% 18%);
+  --popover-foreground: hsl(0 0% 95%);
+  --primary: hsl(0 0% 95%);
   --primary-foreground: hsl(0 0% 8%);
-  --secondary: hsl(0 0% 20%);
-  --secondary-foreground: hsl(0 0% 98%);
-  --muted: hsl(0 0% 15%);
-  --muted-foreground: hsl(0 0% 65%);
+  --secondary: hsl(0 0% 25%);
+  --secondary-foreground: hsl(0 0% 95%);
+  --muted: hsl(0 0% 22%);
+  --muted-foreground: hsl(0 0% 70%);
   --accent: hsl(25 85% 65%);
   --accent-foreground: hsl(0 0% 8%);
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(0 0% 100%);
-  --border: hsl(0 0% 25%);
-  --input: hsl(0 0% 15%);
+  --border: hsl(0 0% 30%);
+  --input: hsl(0 0% 22%);
   --ring: hsl(25 85% 65%);
   --earth-tone: hsl(30 43% 31%);
-  --soft-grey: hsl(0 0% 40%);
+  --soft-grey: hsl(0 0% 45%);
   --radius: 1rem;
   
-  /* Dark Neumorphic shadows */
-  --neu-shadow-light: rgba(255, 255, 255, 0.05);
+  /* Balanced Neumorphic shadows */
+  --neu-shadow-light: rgba(255, 255, 255, 0.08);
   --neu-shadow-dark: rgba(0, 0, 0, 0.6);
   
   /* Fonts */
@@ -90,7 +90,7 @@ body {
 
 /* Neumorphic Components */
 .neu-raised {
-  background: hsl(var(--background));
+  background: hsl(var(--card));
   box-shadow: 
     -6px -6px 12px var(--neu-shadow-light),
     6px 6px 12px var(--neu-shadow-dark);
@@ -165,7 +165,7 @@ body {
 }
 
 .neu-card {
-  background: hsl(var(--background));
+  background: hsl(var(--card));
   box-shadow: 
     -6px -6px 12px var(--neu-shadow-light),
     6px 6px 12px var(--neu-shadow-dark);
