@@ -73,32 +73,35 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Google Analytics - Production Ready Implementation -->
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=C9GESDP6BV"></script>
     <script>
-      // Set up dataLayer immediately for Google detection
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      window.gtag = gtag;
-      
-      // We'll set the measurement ID from React app
-      window.initGoogleAnalytics = function(measurementId) {
-        if (measurementId && !window.ga_initialized) {
-          // Load the Google Analytics script
-          const script = document.createElement('script');
-          script.async = true;
-          script.src = 'https://www.googletagmanager.com/gtag/js?id=' + measurementId;
-          document.head.appendChild(script);
-          
-          // Initialize with measurement ID
-          gtag('js', new Date());
-          gtag('config', measurementId);
-          window.ga_initialized = true;
-          console.log('Google Analytics initialized for production:', measurementId);
-        }
-      };
+      gtag('js', new Date());
+      gtag('config', 'C9GESDP6BV');
+    </script>
+    
+    <!-- Facebook Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '786314387209998');
+      fbq('track', 'PageView');
     </script>
   </head>
   <body>
+    <!-- Facebook Pixel noscript fallback -->
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=786314387209998&ev=PageView&noscript=1"
+    /></noscript>
+    
     <!-- React App Mount Point -->
     <div id="root"></div>
     

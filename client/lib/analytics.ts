@@ -1,30 +1,19 @@
-// Simplified analytics implementation for reliable production deployment
-
-// Type declarations
+// Simple analytics functions for hardcoded tracking
 declare global {
   interface Window {
-    dataLayer: any[];
     gtag: (...args: any[]) => void;
     fbq: any;
-    _fbq: any;
-    initGoogleAnalytics: (measurementId: string) => void;
-    ga_initialized: boolean;
   }
 }
 
 // Track page views
 export const trackPageView = (url?: string) => {
-  // Google Analytics
   if (typeof window !== 'undefined' && window.gtag) {
-    const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
-    if (measurementId) {
-      window.gtag('config', measurementId, {
-        page_path: url || window.location.pathname
-      });
-    }
+    window.gtag('config', 'C9GESDP6BV', {
+      page_path: url || window.location.pathname
+    });
   }
 
-  // Facebook Pixel
   if (typeof window !== 'undefined' && window.fbq) {
     window.fbq('track', 'PageView');
   }
@@ -37,7 +26,6 @@ export const trackEvent = (
   label?: string, 
   value?: number
 ) => {
-  // Google Analytics
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', action, {
       event_category: category,
@@ -46,7 +34,6 @@ export const trackEvent = (
     });
   }
 
-  // Facebook Pixel - map common events
   if (typeof window !== 'undefined' && window.fbq) {
     switch (action.toLowerCase()) {
       case 'sign_up':
@@ -76,7 +63,7 @@ export const trackEvent = (
 export const trackConversion = (eventName: string, data?: any) => {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', 'conversion', {
-      send_to: import.meta.env.VITE_GA_MEASUREMENT_ID,
+      send_to: 'C9GESDP6BV',
       event_name: eventName,
       ...data
     });

@@ -92,7 +92,7 @@ export default function LandingMinimal() {
       // Track successful waitlist signup
       if (typeof window !== 'undefined') {
         // Import analytics functions dynamically to avoid SSR issues
-        import('../../lib/analytics-simple').then(({ trackEvent, trackConversion }) => {
+        import('../../lib/analytics').then(({ trackEvent, trackConversion }) => {
           trackEvent('sign_up', 'waitlist', 'waitlist_form');
           trackConversion('Lead', {
             content_name: 'Waitlist Signup',

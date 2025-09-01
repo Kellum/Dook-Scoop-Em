@@ -23,7 +23,7 @@ export default function Contact() {
     
     // Track contact form submission
     if (typeof window !== 'undefined') {
-      import('../../lib/analytics-simple').then(({ trackEvent }) => {
+      import('../../lib/analytics').then(({ trackEvent }) => {
         trackEvent('contact', 'contact_form', 'contact_page');
       });
     }
