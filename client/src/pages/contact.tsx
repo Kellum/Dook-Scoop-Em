@@ -48,11 +48,9 @@ export default function Contact() {
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
           {/* Contact Information */}
           <div className="space-y-8">
-            <Card className="neu-raised">
-              <CardHeader>
-                <CardTitle className="text-2xl font-black text-gray-800">Let's Talk Business</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
+            <div className="bg-white rounded-lg p-6">
+              <h3 className="text-2xl font-black text-gray-800 mb-6">Let's Talk Business</h3>
+              <div className="space-y-6">
                 <div className="flex items-center space-x-4">
                   <Phone className="w-6 h-6 text-orange-600" />
                   <div>
@@ -75,8 +73,8 @@ export default function Contact() {
                   <MapPin className="w-6 h-6 text-orange-600" />
                   <div>
                     <p className="font-bold text-gray-800">Service Area</p>
-                    <p className="text-gray-600">Nassau County, FL</p>
-                    <p className="text-sm text-gray-500">Yulee, Fernandina Beach, Oceanway</p>
+                    <p className="text-gray-600">Jacksonville, FL</p>
+                    <p className="text-sm text-gray-500">Greater Jacksonville Area</p>
                   </div>
                 </div>
 
@@ -89,44 +87,37 @@ export default function Contact() {
                     <p className="text-sm text-gray-500">Emergency service available</p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Quick Questions */}
-            <Card className="neu-raised">
-              <CardHeader>
-                <CardTitle className="text-xl font-black text-gray-800">Quick Questions?</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <p className="text-sm">
-                    <strong>💰 Pricing:</strong> Starting at $85/month for founding members
-                  </p>
-                  <p className="text-sm">
-                    <strong>🗓️ Scheduling:</strong> Weekly or bi-weekly service available
-                  </p>
-                  <p className="text-sm">
-                    <strong>🔑 Access:</strong> Gate codes or keys - we're fully insured
-                  </p>
-                  <p className="text-sm">
-                    <strong>🐕 Pets:</strong> Don't need to be home during service
-                  </p>
-                  <p className="text-sm">
-                    <strong>🌧️ Weather:</strong> We work rain or shine (unless it's dangerous)
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="bg-white rounded-lg p-6">
+              <h3 className="text-xl font-black text-gray-800 mb-4">Quick Questions?</h3>
+              <div className="space-y-3">
+                <p className="text-sm">
+                  <strong>💰 Pricing:</strong> Starting at $85/month for founding members
+                </p>
+                <p className="text-sm">
+                  <strong>🗓️ Scheduling:</strong> Weekly or bi-weekly service available
+                </p>
+                <p className="text-sm">
+                  <strong>🔑 Access:</strong> Gate codes or keys - we're fully insured
+                </p>
+                <p className="text-sm">
+                  <strong>🐕 Pets:</strong> Don't need to be home during service
+                </p>
+                <p className="text-sm">
+                  <strong>🌧️ Weather:</strong> We work rain or shine (unless it's dangerous)
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Contact Form */}
-          <Card className="neu-raised">
-            <CardHeader>
-              <CardTitle className="text-2xl font-black text-gray-800">Send Us a Message</CardTitle>
-              <p className="text-gray-600">We'll get back to you faster than your dog can make a new mess.</p>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="bg-white rounded-lg p-6">
+            <h3 className="text-2xl font-black text-gray-800 mb-2">Send Us a Message</h3>
+            <p className="text-gray-600 mb-6">We'll get back to you faster than your dog can make a new mess.</p>
+            <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-bold text-gray-700 mb-2">Name</label>
@@ -196,23 +187,20 @@ export default function Contact() {
                   Send Message
                 </Button>
               </form>
-            </CardContent>
-          </Card>
+          </div>
         </div>
 
         {/* Emergency Contact */}
         <section className="text-center">
-          <Card className="neu-raised bg-red-50 border-2 border-red-200 max-w-2xl mx-auto">
-            <CardContent className="p-6">
-              <h3 className="text-xl font-black text-red-800 mb-4">🚨 Poop Emergency?</h3>
-              <p className="text-red-700 mb-4">
-                Unexpected guests coming over? Last-minute party? We offer same-day emergency service for those "oh no" moments.
-              </p>
-              <Button className="bg-red-600 hover:bg-red-700 text-white font-bold">
-                Call Emergency Line: (904) 312-2422
-              </Button>
-            </CardContent>
-          </Card>
+          <div className="bg-red-50 border-2 border-red-200 rounded-lg p-6 max-w-2xl mx-auto">
+            <h3 className="text-xl font-black text-red-800 mb-4">🚨 Poop Emergency?</h3>
+            <p className="text-red-700 mb-4">
+              Unexpected guests coming over? Last-minute party? We offer same-day emergency service for those "oh no" moments.
+            </p>
+            <Button className="bg-red-600 hover:bg-red-700 text-white font-bold">
+              Call Emergency Line: (904) 312-2422
+            </Button>
+          </div>
         </section>
       </main>
 

@@ -21,9 +21,8 @@ export default function AboutUs() {
 
         {/* Our Story */}
         <section className="mb-16">
-          <Card className="neu-raised">
-            <CardContent className="p-8">
-              <h2 className="text-3xl font-black text-gray-800 mb-6 text-center">Our Story</h2>
+          <div className="bg-white rounded-lg p-8">
+            <h2 className="text-3xl font-black text-gray-800 mb-6 text-center">Our Story</h2>
               <div className="max-w-4xl mx-auto text-lg text-gray-600 space-y-6">
                 <p>
                   It started with a simple realization: people love their dogs, but nobody loves cleaning up after them. And frankly, most people aren't doing it right anyway.
@@ -38,51 +37,39 @@ export default function AboutUs() {
                   Today, we're proud to be the elite squad that fears no pile. And our customers' yards prove it.
                 </p>
               </div>
-            </CardContent>
-          </Card>
+
+          </div>
         </section>
 
         {/* Our Values */}
         <section className="grid md:grid-cols-3 gap-8 mb-16">
-          <Card className="neu-raised text-center">
-            <CardHeader>
-              <div className="text-4xl mb-4">🎯</div>
-              <CardTitle className="text-xl font-black text-gray-800">We Do It Right</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">
-                No shortcuts, no "good enough" - we clean every yard like it's our own. Because your family deserves better than half-measures.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg p-6 text-center">
+            <div className="text-4xl mb-4">🎯</div>
+            <h3 className="text-xl font-black text-gray-800 mb-4">We Do It Right</h3>
+            <p className="text-gray-600">
+              No shortcuts, no "good enough" - we clean every yard like it's our own. Because your family deserves better than half-measures.
+            </p>
+          </div>
 
-          <Card className="neu-raised text-center">
-            <CardHeader>
-              <div className="text-4xl mb-4">😄</div>
-              <CardTitle className="text-xl font-black text-gray-800">We Keep It Fun</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">
-                This job could be gross and depressing. Instead, we choose to find the humor and take pride in solving a real problem for real families.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg p-6 text-center">
+            <div className="text-4xl mb-4">😄</div>
+            <h3 className="text-xl font-black text-gray-800 mb-4">We Keep It Fun</h3>
+            <p className="text-gray-600">
+              This job could be gross and depressing. Instead, we choose to find the humor and take pride in solving a real problem for real families.
+            </p>
+          </div>
 
-          <Card className="neu-raised text-center">
-            <CardHeader>
-              <div className="text-4xl mb-4">🤝</div>
-              <CardTitle className="text-xl font-black text-gray-800">We Build Trust</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">
-                Your pets, your property, your family's safety - we take it all seriously. Trust is earned through consistency, not promises.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg p-6 text-center">
+            <div className="text-4xl mb-4">🤝</div>
+            <h3 className="text-xl font-black text-gray-800 mb-4">We Build Trust</h3>
+            <p className="text-gray-600">
+              Your pets, your property, your family's safety - we take it all seriously. Trust is earned through consistency, not promises.
+            </p>
+          </div>
         </section>
 
         {/* Why We're Different */}
-        <section className="bg-white rounded-2xl p-8 neu-raised mb-16">
+        <section className="bg-white rounded-lg p-8 mb-16">
           <h2 className="text-3xl font-black text-gray-800 mb-8 text-center">Why We're Different</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
@@ -112,37 +99,33 @@ export default function AboutUs() {
 
         {/* Service Area */}
         <section className="mb-16">
-          <Card className="neu-raised bg-orange-50 border-2 border-orange-200">
-            <CardContent className="p-8 text-center">
-              <h2 className="text-3xl font-black text-gray-800 mb-6">Currently Serving Northeast Florida</h2>
-              <p className="text-lg text-gray-600 mb-6">
-                Starting in Yulee, Fernandina Beach, Oceanway, and Nassau County. Growing thoughtfully to maintain our quality standards.
-              </p>
-              <div className="grid md:grid-cols-4 gap-4 text-center">
-                <div className="font-bold text-gray-800">Yulee</div>
-                <div className="font-bold text-gray-800">Fernandina Beach</div>
-                <div className="font-bold text-gray-800">Oceanway</div>
-                <div className="font-bold text-gray-800">Nassau County</div>
-              </div>
-              <p className="text-sm text-gray-600 mt-6">
-                Not in our service area yet? Join our waitlist and we'll let you know when we're coming to your neighborhood.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="bg-orange-50 border-2 border-orange-200 rounded-lg p-8 text-center">
+            <h2 className="text-3xl font-black text-gray-800 mb-6">Currently Serving Northeast Florida</h2>
+            <p className="text-lg text-gray-600 mb-6">
+              Starting in Yulee, Fernandina Beach, Oceanway, and Nassau County. Growing thoughtfully to maintain our quality standards.
+            </p>
+            <div className="grid md:grid-cols-4 gap-4 text-center">
+              <div className="font-bold text-gray-800">Yulee</div>
+              <div className="font-bold text-gray-800">Fernandina Beach</div>
+              <div className="font-bold text-gray-800">Oceanway</div>
+              <div className="font-bold text-gray-800">Nassau County</div>
+            </div>
+            <p className="text-sm text-gray-600 mt-6">
+              Not in our service area yet? Join our waitlist and we'll let you know when we're coming to your neighborhood.
+            </p>
+          </div>
         </section>
 
         {/* Team Section */}
         <section className="mb-16">
           <h2 className="text-3xl font-black text-gray-800 mb-8 text-center">The Squad</h2>
-          <Card className="neu-raised">
-            <CardContent className="p-8 text-center">
-              <div className="text-6xl mb-6">👷‍♂️👷‍♀️</div>
-              <h3 className="text-2xl font-black text-gray-800 mb-4">Professional. Trained. Ready.</h3>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Our team is currently small but growing. Every team member is background-checked, trained in our methods, and committed to the same standards that built this company. Quality over quantity, always.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg p-8 text-center">
+            <div className="text-6xl mb-6">👷‍♂️👷‍♀️</div>
+            <h3 className="text-2xl font-black text-gray-800 mb-4">Professional. Trained. Ready.</h3>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Our team is currently small but growing. Every team member is background-checked, trained in our methods, and committed to the same standards that built this company. Quality over quantity, always.
+            </p>
+          </div>
         </section>
 
         {/* CTA */}

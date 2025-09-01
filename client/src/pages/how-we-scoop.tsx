@@ -21,57 +21,57 @@ export default function HowWeScoop() {
 
         {/* Process Steps */}
         <section className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          <Card className="neu-raised text-center">
-            <CardHeader>
+          <div className="bg-white rounded-lg p-6 text-center">
+
               <div className="text-4xl mb-4">🚪</div>
-              <CardTitle className="text-xl font-black text-gray-800">1. We Arrive</CardTitle>
-            </CardHeader>
-            <CardContent>
+            <h3 className="text-xl font-black text-gray-800 mb-4">1. We Arrive</h3>
+
+
               <p className="text-gray-600">
                 Scheduled service with text notifications. We'll let you know when we're on our way and when we're done.
               </p>
-            </CardContent>
-          </Card>
 
-          <Card className="neu-raised text-center">
-            <CardHeader>
+          </div>
+
+          <div className="bg-white rounded-lg p-6 text-center">
+
               <div className="text-4xl mb-4">🔍</div>
-              <CardTitle className="text-xl font-black text-gray-800">2. We Search</CardTitle>
-            </CardHeader>
-            <CardContent>
+            <h3 className="text-xl font-black text-gray-800 mb-4">2. We Search</h3>
+
+
               <p className="text-gray-600">
                 Thorough yard inspection. We find every pile, even the ones hiding behind bushes or under leaves.
               </p>
-            </CardContent>
-          </Card>
 
-          <Card className="neu-raised text-center">
-            <CardHeader>
+          </div>
+
+          <div className="bg-white rounded-lg p-6 text-center">
+
               <div className="text-4xl mb-4">🧹</div>
-              <CardTitle className="text-xl font-black text-gray-800">3. We Clean</CardTitle>
-            </CardHeader>
-            <CardContent>
+            <h3 className="text-xl font-black text-gray-800 mb-4">3. We Clean</h3>
+
+
               <p className="text-gray-600">
                 Complete removal, sanitization, and deodorizing. We leave your yard cleaner than we found it.
               </p>
-            </CardContent>
-          </Card>
 
-          <Card className="neu-raised text-center">
-            <CardHeader>
+          </div>
+
+          <div className="bg-white rounded-lg p-6 text-center">
+
               <div className="text-4xl mb-4">🚛</div>
-              <CardTitle className="text-xl font-black text-gray-800">4. We Haul</CardTitle>
-            </CardHeader>
-            <CardContent>
+            <h3 className="text-xl font-black text-gray-800 mb-4">4. We Haul</h3>
+
+
               <p className="text-gray-600">
                 Everything gets taken away in our truck. Never left in your trash bins - that's just gross.
               </p>
-            </CardContent>
-          </Card>
+
+          </div>
         </section>
 
         {/* Our Standards */}
-        <section className="bg-white rounded-2xl p-8 neu-raised mb-16">
+        <section className="bg-white rounded-lg p-8 mb-16">
           <h2 className="text-3xl font-black text-gray-800 mb-8 text-center">Our Standards</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
@@ -101,8 +101,7 @@ export default function HowWeScoop() {
         {/* Equipment & Tools */}
         <section className="mb-16">
           <h2 className="text-3xl font-black text-gray-800 mb-8 text-center">Professional Equipment</h2>
-          <Card className="neu-raised">
-            <CardContent className="p-8">
+          <div className="bg-white rounded-lg p-8">
               <div className="grid md:grid-cols-2 gap-8">
                 <div>
                   <h3 className="text-2xl font-black text-gray-800 mb-4">What We Bring</h3>
@@ -147,8 +146,8 @@ export default function HowWeScoop() {
                   </ul>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+
+          </div>
         </section>
 
         {/* CTA */}

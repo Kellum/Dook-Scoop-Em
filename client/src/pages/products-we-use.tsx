@@ -21,11 +21,11 @@ export default function ProductsWeUse() {
 
         {/* Product Categories */}
         <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          <Card className="neu-raised">
-            <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">🛠️ Cleanup Tools</CardTitle>
-            </CardHeader>
-            <CardContent>
+          <div className="bg-white rounded-lg p-6">
+
+            <h3 className="text-xl font-black text-gray-800 mb-4">🛠️ Cleanup Tools</h3>
+
+
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <span className="text-orange-600 font-black mr-3 mt-1">•</span>
@@ -49,14 +49,14 @@ export default function ProductsWeUse() {
                   </div>
                 </li>
               </ul>
-            </CardContent>
-          </Card>
 
-          <Card className="neu-raised">
-            <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">🧼 Sanitizers</CardTitle>
-            </CardHeader>
-            <CardContent>
+          </div>
+
+          <div className="bg-white rounded-lg p-6">
+
+            <h3 className="text-xl font-black text-gray-800 mb-4">🧼 Sanitizers</h3>
+
+
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <span className="text-orange-600 font-black mr-3 mt-1">•</span>
@@ -80,14 +80,14 @@ export default function ProductsWeUse() {
                   </div>
                 </li>
               </ul>
-            </CardContent>
-          </Card>
 
-          <Card className="neu-raised">
-            <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">🌿 Deodorizers</CardTitle>
-            </CardHeader>
-            <CardContent>
+          </div>
+
+          <div className="bg-white rounded-lg p-6">
+
+            <h3 className="text-xl font-black text-gray-800 mb-4">🌿 Deodorizers</h3>
+
+
               <ul className="space-y-3">
                 <li className="flex items-start">
                   <span className="text-orange-600 font-black mr-3 mt-1">•</span>
@@ -111,8 +111,8 @@ export default function ProductsWeUse() {
                   </div>
                 </li>
               </ul>
-            </CardContent>
-          </Card>
+
+          </div>
         </section>
 
         {/* Why These Products Matter */}
@@ -148,38 +148,26 @@ export default function ProductsWeUse() {
         <section className="mb-16">
           <h2 className="text-3xl font-black text-gray-800 mb-8 text-center">The Science Behind Clean</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="neu-raised">
-              <CardHeader>
-                <CardTitle className="text-lg font-black text-gray-800">Step 1: Physical Removal</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  Complete waste removal using precision tools. You can't sanitize what's still there, so we get everything first.
-                </p>
-              </CardContent>
-            </Card>
+            <div className="bg-white rounded-lg p-6">
+              <h3 className="text-lg font-black text-gray-800 mb-4">Step 1: Physical Removal</h3>
+              <p className="text-gray-600">
+                Complete waste removal using precision tools. You can't sanitize what's still there, so we get everything first.
+              </p>
+            </div>
 
-            <Card className="neu-raised">
-              <CardHeader>
-                <CardTitle className="text-lg font-black text-gray-800">Step 2: Biological Breakdown</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  Enzyme cleaners break down remaining organic matter at the molecular level, eliminating the source of odors.
-                </p>
-              </CardContent>
-            </Card>
+            <div className="bg-white rounded-lg p-6">
+              <h3 className="text-lg font-black text-gray-800 mb-4">Step 2: Biological Breakdown</h3>
+              <p className="text-gray-600">
+                Enzyme cleaners break down remaining organic matter at the molecular level, eliminating the source of odors.
+              </p>
+            </div>
 
-            <Card className="neu-raised">
-              <CardHeader>
-                <CardTitle className="text-lg font-black text-gray-800">Step 3: Sanitization & Protection</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  Antimicrobial treatment kills harmful bacteria and creates a protective barrier that lasts between visits.
-                </p>
-              </CardContent>
-            </Card>
+            <div className="bg-white rounded-lg p-6">
+              <h3 className="text-lg font-black text-gray-800 mb-4">Step 3: Sanitization & Protection</h3>
+              <p className="text-gray-600">
+                Antimicrobial treatment kills harmful bacteria and creates a protective barrier that lasts between visits.
+              </p>
+            </div>
           </div>
         </section>
 

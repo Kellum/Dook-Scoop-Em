@@ -42,49 +42,43 @@ export default function Blog() {
 
         {/* Featured Post */}
         <section className="mb-16">
-          <Card className="neu-raised">
-            <CardContent className="p-8">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="bg-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full">FEATURED</span>
-                <span className="text-orange-600 font-bold text-sm">March 15, 2025 • 5 min read</span>
-              </div>
-              <h2 className="text-3xl font-black text-gray-800 mb-4">
-                The Science of Poop: Why Professional Cleanup Matters
-              </h2>
-              <p className="text-lg text-gray-600 mb-6">
-                You might think all poop cleanup is the same. You'd be wrong. Here's the scientific breakdown of why professional service isn't just about convenience - it's about health, safety, and actually getting the job done right.
-              </p>
-              <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
-                Read Full Article
-              </Button>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg p-8">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="bg-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full">FEATURED</span>
+              <span className="text-orange-600 font-bold text-sm">March 15, 2025 • 5 min read</span>
+            </div>
+            <h2 className="text-3xl font-black text-gray-800 mb-4">
+              The Science of Poop: Why Professional Cleanup Matters
+            </h2>
+            <p className="text-lg text-gray-600 mb-6">
+              You might think all poop cleanup is the same. You'd be wrong. Here's the scientific breakdown of why professional service isn't just about convenience - it's about health, safety, and actually getting the job done right.
+            </p>
+            <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
+              Read Full Article
+            </Button>
+          </div>
         </section>
 
         {/* Blog Posts Grid */}
         <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {blogPosts.map((post, index) => (
-            <Card key={index} className="neu-raised hover:shadow-lg transition-shadow cursor-pointer">
-              <CardHeader>
-                <div className="text-sm text-orange-600 font-bold mb-2">
-                  {post.date} • {post.readTime}
-                </div>
-                <CardTitle className="text-xl font-black text-gray-800 leading-tight">
-                  {post.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 mb-4">{post.excerpt}</p>
-                <Button variant="outline" className="font-bold">
-                  Read More
-                </Button>
-              </CardContent>
-            </Card>
+            <div key={index} className="bg-white rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer">
+              <div className="text-sm text-orange-600 font-bold mb-2">
+                {post.date} • {post.readTime}
+              </div>
+              <h3 className="text-xl font-black text-gray-800 leading-tight mb-4">
+                {post.title}
+              </h3>
+              <p className="text-gray-600 mb-4">{post.excerpt}</p>
+              <Button variant="outline" className="font-bold">
+                Read More
+              </Button>
+            </div>
           ))}
         </section>
 
         {/* Topics We Cover */}
-        <section className="bg-white rounded-2xl p-8 neu-raised mb-16">
+        <section className="bg-white rounded-lg p-8 mb-16">
           <h2 className="text-3xl font-black text-gray-800 mb-8 text-center">Topics We Cover</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="text-center">
@@ -112,8 +106,7 @@ export default function Blog() {
 
         {/* Newsletter Signup */}
         <section className="text-center">
-          <Card className="neu-raised max-w-2xl mx-auto">
-            <CardContent className="p-8">
+          <div className="bg-white rounded-lg p-8 max-w-2xl mx-auto">
               <h2 className="text-2xl font-black text-gray-800 mb-4">Stay in the Loop</h2>
               <p className="text-gray-600 mb-6">
                 Get the latest posts, tips, and exclusive content delivered to your inbox. We promise not to spam you (unlike some dogs we know).
@@ -128,8 +121,7 @@ export default function Blog() {
                   Subscribe
                 </Button>
               </div>
-            </CardContent>
-          </Card>
+          </div>
         </section>
       </main>
 

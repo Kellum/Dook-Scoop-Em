@@ -40,28 +40,22 @@ export default function Home() {
       <section className="py-16 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="neu-raised text-center border-0">
-              <div className="pt-8 pb-6">
-                <Shield className="w-16 h-16 text-orange-600 mx-auto mb-4" />
-                <h3 className="text-xl font-black text-gray-800 mb-2">Licensed & Insured</h3>
-                <p className="text-gray-600">Professional service you can trust with full liability coverage.</p>
-              </div>
+            <div className="bg-white rounded-lg p-8 text-center">
+              <Shield className="w-16 h-16 text-orange-600 mx-auto mb-4" />
+              <h3 className="text-xl font-black text-gray-800 mb-2">Licensed & Insured</h3>
+              <p className="text-gray-600">Professional service you can trust with full liability coverage.</p>
             </div>
             
-            <div className="neu-raised text-center border-0">
-              <div className="pt-8 pb-6">
-                <Clock className="w-16 h-16 text-orange-600 mx-auto mb-4" />
-                <h3 className="text-xl font-black text-gray-800 mb-2">Reliable Schedule</h3>
-                <p className="text-gray-600">Weekly, bi-weekly, or one-time cleanups. Always on time.</p>
-              </div>
+            <div className="bg-white rounded-lg p-8 text-center">
+              <Clock className="w-16 h-16 text-orange-600 mx-auto mb-4" />
+              <h3 className="text-xl font-black text-gray-800 mb-2">Reliable Schedule</h3>
+              <p className="text-gray-600">Weekly, bi-weekly, or one-time cleanups. Always on time.</p>
             </div>
             
-            <div className="neu-raised text-center border-0">
-              <div className="pt-8 pb-6">
-                <Heart className="w-16 h-16 text-orange-600 mx-auto mb-4" />
-                <h3 className="text-xl font-black text-gray-800 mb-2">Pet Safe Methods</h3>
-                <p className="text-gray-600">Eco-friendly products that are safe for your furry family.</p>
-              </div>
+            <div className="bg-white rounded-lg p-8 text-center">
+              <Heart className="w-16 h-16 text-orange-600 mx-auto mb-4" />
+              <h3 className="text-xl font-black text-gray-800 mb-2">Pet Safe Methods</h3>
+              <p className="text-gray-600">Eco-friendly products that are safe for your furry family.</p>
             </div>
           </div>
         </div>
@@ -99,7 +93,7 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
-            <div className="neu-raised p-8 bg-gradient-to-br from-orange-50 to-orange-100">
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-8">
               <MapPin className="w-20 h-20 text-orange-600 mx-auto mb-4" />
               <h3 className="text-2xl font-black text-gray-800 text-center mb-4">Current Service Areas</h3>
               <div className="space-y-3">
@@ -132,43 +126,37 @@ export default function Home() {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="neu-raised hover:transform hover:scale-105 transition-all duration-300 border-0">
-              <div className="p-6">
-                <h3 className="text-xl font-black text-gray-800 mb-4">Weekly Service</h3>
-                <p className="text-gray-600 mb-4">Perfect for busy pet parents. We'll keep your yard clean every week.</p>
-                <div className="text-2xl font-black text-orange-600 mb-4">Starting at $15/visit</div>
-                <Link href="/residential">
-                  <Button className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
-                    Learn More
-                  </Button>
-                </Link>
-              </div>
+            <div className="bg-white rounded-lg p-6 hover:transform hover:scale-105 transition-all duration-300">
+              <h3 className="text-xl font-black text-gray-800 mb-4">Weekly Service</h3>
+              <p className="text-gray-600 mb-4">Perfect for busy pet parents. We'll keep your yard clean every week.</p>
+              <div className="text-2xl font-black text-orange-600 mb-4">Starting at $15/visit</div>
+              <Link href="/residential">
+                <Button className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
+                  Learn More
+                </Button>
+              </Link>
             </div>
 
-            <div className="neu-raised hover:transform hover:scale-105 transition-all duration-300 border-0">
-              <div className="p-6">
-                <h3 className="text-xl font-black text-gray-800 mb-4">Bi-Weekly Service</h3>
-                <p className="text-gray-600 mb-4">Great value option for smaller dogs or less frequent needs.</p>
-                <div className="text-2xl font-black text-orange-600 mb-4">Starting at $18/visit</div>
-                <Link href="/residential">
-                  <Button className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
-                    Learn More
-                  </Button>
-                </Link>
-              </div>
+            <div className="bg-white rounded-lg p-6 hover:transform hover:scale-105 transition-all duration-300">
+              <h3 className="text-xl font-black text-gray-800 mb-4">Bi-Weekly Service</h3>
+              <p className="text-gray-600 mb-4">Great value option for smaller dogs or less frequent needs.</p>
+              <div className="text-2xl font-black text-orange-600 mb-4">Starting at $18/visit</div>
+              <Link href="/residential">
+                <Button className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
+                  Learn More
+                </Button>
+              </Link>
             </div>
 
-            <div className="neu-raised hover:transform hover:scale-105 transition-all duration-300 border-0">
-              <div className="p-6">
-                <h3 className="text-xl font-black text-gray-800 mb-4">One-Time Cleanup</h3>
-                <p className="text-gray-600 mb-4">Moving in? Spring cleaning? We'll get your yard pristine.</p>
-                <div className="text-2xl font-black text-orange-600 mb-4">Starting at $75</div>
-                <Link href="/contact">
-                  <Button className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
-                    Get Quote
-                  </Button>
-                </Link>
-              </div>
+            <div className="bg-white rounded-lg p-6 hover:transform hover:scale-105 transition-all duration-300">
+              <h3 className="text-xl font-black text-gray-800 mb-4">One-Time Cleanup</h3>
+              <p className="text-gray-600 mb-4">Moving in? Spring cleaning? We'll get your yard pristine.</p>
+              <div className="text-2xl font-black text-orange-600 mb-4">Starting at $75</div>
+              <Link href="/contact">
+                <Button className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
+                  Get Quote
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -226,7 +214,7 @@ export default function Home() {
               </div>
             </div>
             
-            <div className="neu-raised p-8 bg-gradient-to-br from-orange-50 to-orange-100 text-center">
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-8 text-center">
               <div className="text-6xl mb-4">🐕</div>
               <h3 className="text-2xl font-black text-gray-800 mb-4">We Fear No Pile!</h3>
               <p className="text-gray-600 mb-6">

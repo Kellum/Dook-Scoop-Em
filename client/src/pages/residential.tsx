@@ -24,42 +24,30 @@ export default function Residential() {
 
         {/* Services Grid */}
         <section className="grid md:grid-cols-3 gap-8 mb-16">
-          <Card className="neu-raised">
-            <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">Weekly Service</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">
-                Regular weekly cleanups keep your yard consistently pristine. Perfect for most families with 1-2 dogs.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg p-6">
+            <h3 className="text-xl font-black text-gray-800 mb-4">Weekly Service</h3>
+            <p className="text-gray-600">
+              Regular weekly cleanups keep your yard consistently pristine. Perfect for most families with 1-2 dogs.
+            </p>
+          </div>
 
-          <Card className="neu-raised">
-            <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">Bi-Weekly Service</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">
-                Every other week service for lighter usage yards. Great for single dog households or well-trained pups.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg p-6">
+            <h3 className="text-xl font-black text-gray-800 mb-4">Bi-Weekly Service</h3>
+            <p className="text-gray-600">
+              Every other week service for lighter usage yards. Great for single dog households or well-trained pups.
+            </p>
+          </div>
 
-          <Card className="neu-raised">
-            <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">One-Time Cleanups</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">
-                Spring cleaning, pre-party cleanup, or "oh-god-when-did-it-get-this-bad" emergency service.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-lg p-6">
+            <h3 className="text-xl font-black text-gray-800 mb-4">One-Time Cleanups</h3>
+            <p className="text-gray-600">
+              Spring cleaning, pre-party cleanup, or "oh-god-when-did-it-get-this-bad" emergency service.
+            </p>
+          </div>
         </section>
 
         {/* What's Included */}
-        <section className="bg-white rounded-2xl p-8 neu-raised mb-16">
+        <section className="bg-white rounded-lg p-8 mb-16">
           <h2 className="text-3xl font-black text-gray-800 mb-8 text-center">What's Included</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-4">

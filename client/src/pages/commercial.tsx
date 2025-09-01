@@ -24,71 +24,71 @@ export default function Commercial() {
 
         {/* Commercial Services */}
         <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          <Card className="neu-raised">
-            <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">Apartment Complexes</CardTitle>
-            </CardHeader>
-            <CardContent>
+          <div className="bg-white rounded-lg p-6">
+
+            <h3 className="text-xl font-black text-gray-800 mb-4">Apartment Complexes</h3>
+
+
               <p className="text-gray-600">
                 Keep common areas clean and tenant-friendly. Regular service schedules that work with your property management.
               </p>
-            </CardContent>
-          </Card>
 
-          <Card className="neu-raised">
-            <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">Office Buildings</CardTitle>
-            </CardHeader>
-            <CardContent>
+          </div>
+
+          <div className="bg-white rounded-lg p-6">
+
+            <h3 className="text-xl font-black text-gray-800 mb-4">Office Buildings</h3>
+
+
               <p className="text-gray-600">
                 Professional appearance for your business property. Early morning or after-hours service available.
               </p>
-            </CardContent>
-          </Card>
 
-          <Card className="neu-raised">
-            <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">HOA Communities</CardTitle>
-            </CardHeader>
-            <CardContent>
+          </div>
+
+          <div className="bg-white rounded-lg p-6">
+
+            <h3 className="text-xl font-black text-gray-800 mb-4">HOA Communities</h3>
+
+
               <p className="text-gray-600">
                 Maintain property values and community standards. Flexible scheduling for common areas and walking paths.
               </p>
-            </CardContent>
-          </Card>
 
-          <Card className="neu-raised">
-            <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">Dog Parks & Facilities</CardTitle>
-            </CardHeader>
-            <CardContent>
+          </div>
+
+          <div className="bg-white rounded-lg p-6">
+
+            <h3 className="text-xl font-black text-gray-800 mb-4">Dog Parks & Facilities</h3>
+
+
               <p className="text-gray-600">
                 Specialized service for high-traffic dog areas. We know how to handle the heavy-duty situations.
               </p>
-            </CardContent>
-          </Card>
 
-          <Card className="neu-raised">
-            <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">Retail Centers</CardTitle>
-            </CardHeader>
-            <CardContent>
+          </div>
+
+          <div className="bg-white rounded-lg p-6">
+
+            <h3 className="text-xl font-black text-gray-800 mb-4">Retail Centers</h3>
+
+
               <p className="text-gray-600">
                 Keep shopping areas welcoming for customers. Regular maintenance that doesn't disrupt business operations.
               </p>
-            </CardContent>
-          </Card>
 
-          <Card className="neu-raised">
-            <CardHeader>
-              <CardTitle className="text-xl font-black text-gray-800">Special Events</CardTitle>
-            </CardHeader>
-            <CardContent>
+          </div>
+
+          <div className="bg-white rounded-lg p-6">
+
+            <h3 className="text-xl font-black text-gray-800 mb-4">Special Events</h3>
+
+
               <p className="text-gray-600">
                 Dog shows, outdoor festivals, farmers markets - we'll make sure your event stays clean and professional.
               </p>
-            </CardContent>
-          </Card>
+
+          </div>
         </section>
 
         {/* Why Choose Us for Commercial */}
