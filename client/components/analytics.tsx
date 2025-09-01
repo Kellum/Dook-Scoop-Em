@@ -15,33 +15,43 @@ export default function Analytics() {
     const gaId = import.meta.env.VITE_GA_MEASUREMENT_ID;
     const fbPixelId = import.meta.env.VITE_FACEBOOK_PIXEL_ID;
 
-    // Initialize Google Analytics
-    if (gaId && !window.gtag) {
-      // Add dataLayer
+    // Initialize Google Analytics with production-friendly pattern
+    if (gaId && !document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${gaId}"]`)) {
+      // Step 1: Initialize dataLayer FIRST (this is critical for Google's detection)
       window.dataLayer = window.dataLayer || [];
       window.gtag = function() {
         window.dataLayer.push(arguments);
       };
-
-      // Add Google Analytics script
+      
+      // Step 2: Add the js timestamp immediately
+      window.gtag('js', new Date());
+      
+      // Step 3: Add the script tag with exact Google recommended format
       const gaScript = document.createElement('script');
       gaScript.async = true;
       gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
       
+      // Step 4: Configure tracking immediately after script loads
       gaScript.onload = () => {
-        window.gtag('js', new Date());
         window.gtag('config', gaId, {
+          page_title: document.title,
+          page_location: window.location.href,
           send_page_view: true
         });
-        console.log('Google Analytics initialized successfully');
+        console.log('Google Analytics configured successfully for production');
       };
       
-      document.head.appendChild(gaScript);
+      // Insert at the very top of head for maximum priority
+      const firstScript = document.head.querySelector('script');
+      if (firstScript) {
+        document.head.insertBefore(gaScript, firstScript);
+      } else {
+        document.head.appendChild(gaScript);
+      }
     }
 
-    // Initialize Facebook Pixel
+    // Initialize Facebook Pixel (keep existing working implementation)
     if (fbPixelId && !window.fbq) {
-      // Standard Facebook Pixel implementation
       const fbScript = document.createElement('script');
       fbScript.innerHTML = `
         !function(f,b,e,v,n,t,s)
