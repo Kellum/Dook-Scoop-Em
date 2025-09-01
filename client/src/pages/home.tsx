@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { Shield, Clock, Heart, MapPin, CheckCircle, Users, Star } from "lucide-react";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
+import pixelDogImage from "@assets/i-need-a-dog-sitting-facing-the-camera-i_CeWrinRkQkeFM-vDFqiH5g_DfvpYeuGTnqT_kpSW2tBdg_1756742534075.png";
 
 export default function Home() {
   return (
@@ -11,12 +12,12 @@ export default function Home() {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative py-20 px-4 bg-cover bg-center bg-no-repeat" style={{backgroundImage: "linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80')"}}>
+      <section className="relative py-20 px-4 bg-cover bg-center bg-no-repeat" style={{backgroundImage: `linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.1)), url('${pixelDogImage}')`}}>
         <div className="max-w-6xl mx-auto text-center relative z-10">
-          <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight drop-shadow-lg">
+          <h1 className="text-5xl md:text-7xl font-black text-gray-800 mb-6 leading-tight drop-shadow-lg">
             We Fear No Pile.
           </h1>
-          <h2 className="text-xl md:text-2xl text-orange-200 mb-8 max-w-3xl mx-auto font-bold">
+          <h2 className="text-xl md:text-2xl text-orange-600 mb-8 max-w-3xl mx-auto font-bold">
             We scoop Jacksonville's poop so the First Coast stays fresh.
           </h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
