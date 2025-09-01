@@ -3,9 +3,8 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { useEffect } from "react";
-import { initGA, initFacebookPixel } from "../lib/analytics";
 import { useAnalytics } from "../hooks/use-analytics";
+import Analytics from "../components/analytics";
 import Home from "@/pages/home";
 import LandingMinimal from "@/pages/landing-minimal";
 import Residential from "@/pages/residential";
@@ -51,25 +50,10 @@ function Router() {
 }
 
 function App() {
-  // Initialize analytics when app loads
-  useEffect(() => {
-    // Check for required environment variables
-    if (!import.meta.env.VITE_GA_MEASUREMENT_ID) {
-      console.warn('Missing required Google Analytics key: VITE_GA_MEASUREMENT_ID');
-    } else {
-      initGA();
-    }
-    
-    if (!import.meta.env.VITE_FACEBOOK_PIXEL_ID) {
-      console.warn('Missing required Facebook Pixel ID: VITE_FACEBOOK_PIXEL_ID');
-    } else {
-      initFacebookPixel();
-    }
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <Analytics />
         <Toaster />
         <Router />
       </TooltipProvider>
