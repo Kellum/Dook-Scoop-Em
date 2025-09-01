@@ -11,16 +11,14 @@ export default function Home() {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-black text-gray-800 mb-6 leading-tight">
-            We Scoop Poop So<br />
-            <span className="text-orange-600">You Don't Have To</span>
+      <section className="relative py-20 px-4 bg-cover bg-center bg-no-repeat" style={{backgroundImage: "linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80')"}}>
+        <div className="max-w-6xl mx-auto text-center relative z-10">
+          <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight drop-shadow-lg">
+            We Fear No Pile.
           </h1>
-          <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Professional pet waste removal service in Jacksonville, Florida.<br />
-            <span className="font-bold text-orange-600">We fear no pile!</span>
-          </p>
+          <h2 className="text-xl md:text-2xl text-orange-200 mb-8 max-w-3xl mx-auto font-bold">
+            We scoop Jacksonville's poop so the First Coast stays fresh.
+          </h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link href="/">
               <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
