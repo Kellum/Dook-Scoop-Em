@@ -73,7 +73,30 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Google Analytics will be injected by Vite plugin -->
+    <!-- Google Analytics - Production Ready Implementation -->
+    <script>
+      // Set up dataLayer immediately for Google detection
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+      
+      // We'll set the measurement ID from React app
+      window.initGoogleAnalytics = function(measurementId) {
+        if (measurementId && !window.ga_initialized) {
+          // Load the Google Analytics script
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=' + measurementId;
+          document.head.appendChild(script);
+          
+          // Initialize with measurement ID
+          gtag('js', new Date());
+          gtag('config', measurementId);
+          window.ga_initialized = true;
+          console.log('Google Analytics initialized for production:', measurementId);
+        }
+      };
+    </script>
   </head>
   <body>
     <!-- React App Mount Point -->

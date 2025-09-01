@@ -15,39 +15,9 @@ export default function Analytics() {
     const gaId = import.meta.env.VITE_GA_MEASUREMENT_ID;
     const fbPixelId = import.meta.env.VITE_FACEBOOK_PIXEL_ID;
 
-    // Initialize Google Analytics with production-friendly pattern
-    if (gaId && !document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${gaId}"]`)) {
-      // Step 1: Initialize dataLayer FIRST (this is critical for Google's detection)
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function() {
-        window.dataLayer.push(arguments);
-      };
-      
-      // Step 2: Add the js timestamp immediately
-      window.gtag('js', new Date());
-      
-      // Step 3: Add the script tag with exact Google recommended format
-      const gaScript = document.createElement('script');
-      gaScript.async = true;
-      gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-      
-      // Step 4: Configure tracking immediately after script loads
-      gaScript.onload = () => {
-        window.gtag('config', gaId, {
-          page_title: document.title,
-          page_location: window.location.href,
-          send_page_view: true
-        });
-        console.log('Google Analytics configured successfully for production');
-      };
-      
-      // Insert at the very top of head for maximum priority
-      const firstScript = document.head.querySelector('script');
-      if (firstScript) {
-        document.head.insertBefore(gaScript, firstScript);
-      } else {
-        document.head.appendChild(gaScript);
-      }
+    // Initialize Google Analytics using the global function (set up in HTML)
+    if (gaId && typeof window.initGoogleAnalytics === 'function') {
+      window.initGoogleAnalytics(gaId);
     }
 
     // Initialize Facebook Pixel (keep existing working implementation)

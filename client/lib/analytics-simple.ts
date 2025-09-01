@@ -7,6 +7,8 @@ declare global {
     gtag: (...args: any[]) => void;
     fbq: any;
     _fbq: any;
+    initGoogleAnalytics: (measurementId: string) => void;
+    ga_initialized: boolean;
   }
 }
 
