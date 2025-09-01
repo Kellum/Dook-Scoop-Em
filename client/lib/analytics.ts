@@ -17,21 +17,36 @@ export const initGA = () => {
     return;
   }
 
+  console.log('Initializing Google Analytics with ID:', measurementId);
+
+  // Initialize dataLayer
+  window.dataLayer = window.dataLayer || [];
+  
+  // Define gtag function
+  window.gtag = function() {
+    window.dataLayer.push(arguments);
+  };
+
+  // Add timestamp
+  window.gtag('js', new Date());
+  
+  // Configure Google Analytics
+  window.gtag('config', measurementId, {
+    send_page_view: false // We'll handle page views manually
+  });
+
   // Add Google Analytics script to the head
   const script1 = document.createElement('script');
   script1.async = true;
   script1.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+  script1.onload = () => {
+    console.log('Google Analytics script loaded successfully');
+    // Send initial page view
+    window.gtag('config', measurementId, {
+      page_path: window.location.pathname
+    });
+  };
   document.head.appendChild(script1);
-
-  // Initialize gtag
-  const script2 = document.createElement('script');
-  script2.textContent = `
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', '${measurementId}');
-  `;
-  document.head.appendChild(script2);
 };
 
 // Initialize Facebook Pixel
