@@ -20,6 +20,13 @@ export default function Contact() {
     e.preventDefault();
     // TODO: Implement form submission
     console.log("Contact form submitted:", formData);
+    
+    // Track contact form submission
+    if (typeof window !== 'undefined') {
+      import('../../lib/analytics').then(({ trackEvent }) => {
+        trackEvent('contact', 'contact_form', 'contact_page');
+      });
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
