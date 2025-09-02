@@ -56,15 +56,15 @@ export default function Residential() {
                   </div>
                   <div className="text-center p-3 bg-gray-50 rounded">
                     <div className="text-sm font-bold text-gray-600">2 Dogs</div>
-                    <div className="text-xl font-black text-gray-900">$120</div>
+                    <div className="text-xl font-black text-gray-900">$105</div>
                   </div>
                   <div className="text-center p-3 bg-gray-50 rounded">
                     <div className="text-sm font-bold text-gray-600">3 Dogs</div>
-                    <div className="text-xl font-black text-gray-900">$140</div>
+                    <div className="text-xl font-black text-gray-900">$110</div>
                   </div>
                   <div className="text-center p-3 bg-gray-50 rounded">
                     <div className="text-sm font-bold text-gray-600">4 Dogs</div>
-                    <div className="text-xl font-black text-gray-900">$160</div>
+                    <div className="text-xl font-black text-gray-900">$115</div>
                   </div>
                 </div>
               </CardContent>
@@ -87,15 +87,15 @@ export default function Residential() {
                   </div>
                   <div className="text-center p-3 bg-white rounded">
                     <div className="text-sm font-bold text-gray-600">2 Dogs</div>
-                    <div className="text-xl font-black text-gray-900">$140</div>
+                    <div className="text-xl font-black text-gray-900">$125</div>
                   </div>
                   <div className="text-center p-3 bg-white rounded">
                     <div className="text-sm font-bold text-gray-600">3 Dogs</div>
-                    <div className="text-xl font-black text-gray-900">$160</div>
+                    <div className="text-xl font-black text-gray-900">$130</div>
                   </div>
                   <div className="text-center p-3 bg-white rounded">
                     <div className="text-sm font-bold text-gray-600">4 Dogs</div>
-                    <div className="text-xl font-black text-gray-900">$180</div>
+                    <div className="text-xl font-black text-gray-900">$135</div>
                   </div>
                 </div>
               </CardContent>
@@ -141,15 +141,15 @@ export default function Residential() {
                       <div className="text-sm text-gray-500">per month</div>
                     </td>
                     <td className="px-6 py-6 text-center">
-                      <div className="text-2xl font-black text-gray-900">$120</div>
+                      <div className="text-2xl font-black text-gray-900">$105</div>
                       <div className="text-sm text-gray-500">per month</div>
                     </td>
                     <td className="px-6 py-6 text-center">
-                      <div className="text-2xl font-black text-gray-900">$140</div>
+                      <div className="text-2xl font-black text-gray-900">$110</div>
                       <div className="text-sm text-gray-500">per month</div>
                     </td>
                     <td className="px-6 py-6 text-center">
-                      <div className="text-2xl font-black text-gray-900">$160</div>
+                      <div className="text-2xl font-black text-gray-900">$115</div>
                       <div className="text-sm text-gray-500">per month</div>
                     </td>
                   </tr>
@@ -168,15 +168,15 @@ export default function Residential() {
                       <div className="text-sm text-gray-500">per month</div>
                     </td>
                     <td className="px-6 py-6 text-center">
-                      <div className="text-2xl font-black text-gray-900">$140</div>
+                      <div className="text-2xl font-black text-gray-900">$125</div>
                       <div className="text-sm text-gray-500">per month</div>
                     </td>
                     <td className="px-6 py-6 text-center">
-                      <div className="text-2xl font-black text-gray-900">$160</div>
+                      <div className="text-2xl font-black text-gray-900">$130</div>
                       <div className="text-sm text-gray-500">per month</div>
                     </td>
                     <td className="px-6 py-6 text-center">
-                      <div className="text-2xl font-black text-gray-900">$180</div>
+                      <div className="text-2xl font-black text-gray-900">$135</div>
                       <div className="text-sm text-gray-500">per month</div>
                     </td>
                   </tr>
@@ -194,7 +194,7 @@ export default function Residential() {
                   More Dogs? No Problem!
                 </h4>
                 <p className="text-gray-600">
-                  Each additional dog adds just <span className="font-bold text-orange-600">$5 per visit</span>. 
+                  Each additional dog adds just <span className="font-bold text-orange-600">$5 per month</span>. 
                   Got a pack? We've got you covered.
                 </p>
               </CardContent>
