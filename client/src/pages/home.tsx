@@ -48,19 +48,19 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white rounded-lg p-8 text-center">
               <Shield className="w-16 h-16 text-orange-600 mx-auto mb-4" />
-              <h3 className="text-xl font-black text-gray-800 mb-2">Licensed & Insured</h3>
+              <h3 className="text-xl font-black text-gray-800 mb-2">Insured</h3>
               <p className="text-gray-600">The only thing risky here is stepping in it—don't worry, we're fully insured.</p>
             </div>
             
             <div className="bg-white rounded-lg p-8 text-center">
               <Clock className="w-16 h-16 text-orange-600 mx-auto mb-4" />
-              <h3 className="text-xl font-black text-gray-800 mb-2">Reliable Schedule</h3>
+              <h3 className="text-xl font-black text-gray-800 mb-2">Reliable</h3>
               <p className="text-gray-600">Weekly, bi-weekly, or one-time service. Think of us as your poop fairy, always there</p>
             </div>
             
             <div className="bg-white rounded-lg p-8 text-center">
               <Heart className="w-16 h-16 text-orange-600 mx-auto mb-4" />
-              <h3 className="text-xl font-black text-gray-800 mb-2">Pet Safe Methods</h3>
+              <h3 className="text-xl font-black text-gray-800 mb-2">Pet Safe</h3>
               <p className="text-gray-600">Safe for dogs, safe for lawns, safe for the planet. Now if only it worked on your neighbor's chihuahua.</p>
             </div>
           </div>
