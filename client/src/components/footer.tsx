@@ -70,8 +70,8 @@ export default function Footer() {
                 </a>
               </div>
               <div className="text-gray-300 text-sm">
-                <p>Nassau County, FL</p>
-                <p>Yulee • Fernandina Beach • Oceanway</p>
+                <p>Northeast Florida</p>
+                <p>Jacksonville • Yulee • Fernandina • Jacksonville Beach • Neptune Beach • Atlantic Beach • Ponte Vedre</p>
               </div>
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function Footer() {
           {/* Copyright & Legal */}
           <div className="text-center mt-8 pt-6 border-t border-gray-700">
             <p className="text-gray-400 text-sm">
-              © {currentYear} Dook Scoop 'Em. All rights reserved. | Licensed & Insured | Nassau County, FL
+              © {currentYear} Dook Scoop 'Em. All rights reserved. | Licensed & Insured | Jacksonville, FL
             </p>
             <p className="text-gray-500 text-xs mt-2">
               Professional pet waste removal service • We fear no pile
