@@ -12,8 +12,8 @@ export default function Home() {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative h-[80vh] md:h-screen w-full bg-contain md:bg-contain bg-center bg-no-repeat flex items-center justify-center" style={{backgroundImage: `linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.1)), url('${pixelDogImage}')`}}>
-        <div className="max-w-6xl mx-auto text-center relative z-10 px-4">
+      <section className="relative h-[80vh] md:h-screen w-full bg-cover md:bg-contain bg-center bg-no-repeat flex items-center justify-center" style={{backgroundImage: `linear-gradient(rgba(255,255,255,0.1), rgba(255,255,255,0.1)), url('${pixelDogImage}')`}}>
+        <div className="max-w-6xl mx-auto text-center relative z-20 px-4">
           <h1 className="text-5xl md:text-7xl font-black text-gray-800 mb-6 leading-tight drop-shadow-lg">
             We Fear No Pile.
           </h1>
