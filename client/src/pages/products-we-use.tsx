@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "wouter";
-import { Shield, Leaf, Eye, CheckCircle, Zap, RefreshCw } from "lucide-react";
+import { Shield, Leaf, Eye, CheckCircle, Zap, Star } from "lucide-react";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 
@@ -17,14 +17,64 @@ export default function ProductsWeUse() {
             Products We Use
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto mb-8 font-bold">
-            We don't mess around with mystery sprays or harsh chemicals. You deserve to know exactly what's being used in your yard — and more importantly, what your pets are walking (and rolling, and sniffing) through.
+            We're picky about what goes in your yard — and what goes into keeping our tools clean. That's why we use professional-grade products that are pet-safe, eco-friendly, and trusted in the animal care world.
           </p>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Everything we use is eco-friendly, pet-safe, and already included in your price. No upsells, no "sanitizer add-on," just peace of mind baked in.
+            Best of all? It's all included in your service price. No sneaky add-ons, no "extra sanitizer" fees.
           </p>
         </section>
 
-        {/* KennelSol Section */}
+        {/* On Stage: Simple Green Section */}
+        <section className="mb-20">
+          <Card className="neu-raised bg-white">
+            <CardHeader className="text-center">
+              <div className="flex justify-center mb-4">
+                <Star className="w-12 h-12 text-green-600" />
+              </div>
+              <CardTitle className="text-3xl md:text-4xl font-black text-gray-800 mb-2">
+                On Stage: Simple Green Outdoor Pet
+              </CardTitle>
+              <p className="text-lg text-gray-600 font-bold">
+                This is the product your yard sees.
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-8">
+              <div className="grid md:grid-cols-3 gap-6">
+                <Card className="neu-button bg-green-50">
+                  <CardContent className="p-6 text-center">
+                    <Leaf className="w-8 h-8 text-green-600 mx-auto mb-3" />
+                    <h4 className="font-black text-gray-800 mb-3">Eco-Friendly & Biodegradable</h4>
+                    <p className="text-gray-600 text-sm">
+                      Safe for pets, kids, lawns, and local wildlife. It breaks down naturally without leaving harmful residues.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="neu-button bg-green-50">
+                  <CardContent className="p-6 text-center">
+                    <Zap className="w-8 h-8 text-green-600 mx-auto mb-3" />
+                    <h4 className="font-black text-gray-800 mb-3">Odor Neutralizer</h4>
+                    <p className="text-gray-600 text-sm">
+                      It doesn't just cover smells — it breaks down odor-causing compounds at the source. Your yard smells fresh, not perfumed.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="neu-button bg-green-50">
+                  <CardContent className="p-6 text-center">
+                    <Shield className="w-8 h-8 text-green-600 mx-auto mb-3" />
+                    <h4 className="font-black text-gray-800 mb-3">Designed for Pets</h4>
+                    <p className="text-gray-600 text-sm">
+                      Specifically made for outdoor pet areas. If your dog sniffs, licks, or rolls in the grass (and let's be honest, they will), it's safe.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Backstage: KennelSol Section */}
         <section className="mb-20">
           <Card className="neu-raised bg-white">
             <CardHeader className="text-center">
@@ -32,17 +82,20 @@ export default function ProductsWeUse() {
                 <Shield className="w-12 h-12 text-blue-600" />
               </div>
               <CardTitle className="text-3xl md:text-4xl font-black text-gray-800 mb-2">
-                KennelSol – Kennel-Grade Sanitation
+                Backstage: KennelSol
               </CardTitle>
+              <p className="text-lg text-gray-600 font-bold">
+                This is what keeps our gear spotless between jobs. What we sanitize our tools with.
+              </p>
             </CardHeader>
             <CardContent className="space-y-8">
               <div className="grid md:grid-cols-3 gap-6">
                 <Card className="neu-button bg-blue-50">
                   <CardContent className="p-6 text-center">
                     <Shield className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-                    <h4 className="font-black text-gray-800 mb-3">Trusted by the Pros</h4>
+                    <h4 className="font-black text-gray-800 mb-3">Kennel-Grade Sanitation</h4>
                     <p className="text-gray-600 text-sm">
-                      KennelSol is the same disinfectant used in veterinary clinics, boarding facilities, and animal shelters. It wipes out bacteria, viruses, and funky germs that don't belong anywhere near your pets.
+                      The same disinfectant trusted in veterinary clinics, kennels, and shelters. It destroys bacteria, viruses, and other germs that could spread between yards.
                     </p>
                   </CardContent>
                 </Card>
@@ -52,7 +105,7 @@ export default function ProductsWeUse() {
                     <Zap className="w-8 h-8 text-blue-600 mx-auto mb-3" />
                     <h4 className="font-black text-gray-800 mb-3">How We Use It</h4>
                     <p className="text-gray-600 text-sm">
-                      We don't spray KennelSol all over your lawn. Instead, we use it to sanitize our scooping tools, boots, and gear between every single visit. That means when we step into your yard, we're stepping in clean. No cross-contamination, no germs traveling from one property to another.
+                      We don't spray KennelSol in your yard. We use it to sanitize our scoops, boots, and equipment after every job so we arrive clean at the next. Translation: your yard stays yours, and your neighbor's germs stay theirs.
                     </p>
                   </CardContent>
                 </Card>
@@ -60,9 +113,9 @@ export default function ProductsWeUse() {
                 <Card className="neu-button bg-blue-50">
                   <CardContent className="p-6 text-center">
                     <CheckCircle className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-                    <h4 className="font-black text-gray-800 mb-3">Safe for Pets</h4>
+                    <h4 className="font-black text-gray-800 mb-3">Safe When Used Right</h4>
                     <p className="text-gray-600 text-sm">
-                      When used properly, KennelSol delivers kennel-grade disinfection without harsh risks to pets or people. Think of it as "pro-level clean" — tough on germs, gentle on the good stuff.
+                      EPA-approved and formulated for environments where pets live and play. Powerful against germs, but safe for paws once our tools are refreshed and ready.
                     </p>
                   </CardContent>
                 </Card>
@@ -71,78 +124,31 @@ export default function ProductsWeUse() {
           </Card>
         </section>
 
-        {/* Simple Green Section */}
-        <section className="mb-20">
-          <Card className="neu-raised bg-white">
-            <CardHeader className="text-center">
-              <div className="flex justify-center mb-4">
-                <Leaf className="w-12 h-12 text-green-600" />
-              </div>
-              <CardTitle className="text-3xl md:text-4xl font-black text-gray-800 mb-2">
-                Simple Green Outdoor Pet – Eco-Friendly Fresh
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-8">
-              <div className="grid md:grid-cols-3 gap-6">
-                <Card className="neu-button bg-green-50">
-                  <CardContent className="p-6 text-center">
-                    <Leaf className="w-8 h-8 text-green-600 mx-auto mb-3" />
-                    <h4 className="font-black text-gray-800 mb-3">Biodegradable & Safe</h4>
-                    <p className="text-gray-600 text-sm">
-                      This formula is designed for outdoor use around pets, kids, and plants. It's non-toxic, biodegradable, and won't harm your grass. The only thing it kills is bad smells.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="neu-button bg-green-50">
-                  <CardContent className="p-6 text-center">
-                    <RefreshCw className="w-8 h-8 text-green-600 mx-auto mb-3" />
-                    <h4 className="font-black text-gray-800 mb-3">Odor Neutralizer</h4>
-                    <p className="text-gray-600 text-sm">
-                      Instead of just masking smells with fake "spring meadow" perfume, Simple Green breaks down odors at the source. Your yard smells fresh, not like a candle shop explosion.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="neu-button bg-green-50">
-                  <CardContent className="p-6 text-center">
-                    <Shield className="w-8 h-8 text-green-600 mx-auto mb-3" />
-                    <h4 className="font-black text-gray-800 mb-3">Environmentally Responsible</h4>
-                    <p className="text-gray-600 text-sm">
-                      Safe for runoff, waterways, and local wildlife. When we clean, the First Coast stays green. The dolphins approve.
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* Why We Share This Section */}
+        {/* Why It Matters Section */}
         <section className="mb-20">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-black text-gray-800 mb-6">
-              Why We Share This
+              Why It Matters
             </h2>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="neu-raised bg-white">
               <CardContent className="p-6 text-center">
-                <Eye className="w-8 h-8 text-orange-600 mx-auto mb-3" />
-                <h4 className="font-black text-gray-800 mb-3">Transparency</h4>
+                <Shield className="w-8 h-8 text-orange-600 mx-auto mb-3" />
+                <h4 className="font-black text-gray-800 mb-3">Pet-Safe & Family-Friendly</h4>
                 <p className="text-gray-600 text-sm">
-                  Most scoop companies won't tell you what's in the bottle. We do. Because "mystery solution" doesn't sound reassuring.
+                  Everything we use is chosen to protect pets, kids, and lawns.
                 </p>
               </CardContent>
             </Card>
 
             <Card className="neu-raised bg-white">
               <CardContent className="p-6 text-center">
-                <Shield className="w-8 h-8 text-orange-600 mx-auto mb-3" />
-                <h4 className="font-black text-gray-800 mb-3">Pet Safety</h4>
+                <Leaf className="w-8 h-8 text-orange-600 mx-auto mb-3" />
+                <h4 className="font-black text-gray-800 mb-3">Eco-Responsible</h4>
                 <p className="text-gray-600 text-sm">
-                  If it's not safe for dogs, cats, and kids, it doesn't make the cut. Fido can sniff, lick, and roll worry-free.
+                  Our in-yard product (Simple Green) is biodegradable and safe for the environment.
                 </p>
               </CardContent>
             </Card>
@@ -150,70 +156,19 @@ export default function ProductsWeUse() {
             <Card className="neu-raised bg-white">
               <CardContent className="p-6 text-center">
                 <CheckCircle className="w-8 h-8 text-orange-600 mx-auto mb-3" />
-                <h4 className="font-black text-gray-800 mb-3">All-Included</h4>
+                <h4 className="font-black text-gray-800 mb-3">All Included</h4>
                 <p className="text-gray-600 text-sm">
-                  Both KennelSol and Simple Green are part of every service. We don't nickel-and-dime with "add-on deodorizer fees." That's just stinky business.
+                  You don't pay extra for the "good stuff." It's standard in every visit.
                 </p>
               </CardContent>
             </Card>
 
             <Card className="neu-raised bg-white">
               <CardContent className="p-6 text-center">
-                <Zap className="w-8 h-8 text-orange-600 mx-auto mb-3" />
-                <h4 className="font-black text-gray-800 mb-3">Better Than DIY</h4>
+                <Eye className="w-8 h-8 text-orange-600 mx-auto mb-3" />
+                <h4 className="font-black text-gray-800 mb-3">Full Transparency</h4>
                 <p className="text-gray-600 text-sm">
-                  These aren't dollar-store sprays. These are professional-grade products that actually work.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
-        {/* How We Keep Yards Safe */}
-        <section className="mb-20">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-black text-gray-800 mb-6">
-              How We Keep Yards (and Pets) Safe
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-6">
-            <Card className="neu-raised bg-orange-50">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-orange-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-black text-xl">1</div>
-                <h4 className="font-black text-gray-800 mb-3">Scoop It</h4>
-                <p className="text-gray-600 text-sm">
-                  Heavy-duty tools take care of every pile.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="neu-raised bg-blue-50">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-black text-xl">2</div>
-                <h4 className="font-black text-gray-800 mb-3">Sanitize It</h4>
-                <p className="text-gray-600 text-sm">
-                  KennelSol eliminates bacteria and viruses at the molecular level.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="neu-raised bg-green-50">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-green-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-black text-xl">3</div>
-                <h4 className="font-black text-gray-800 mb-3">Deodorize It</h4>
-                <p className="text-gray-600 text-sm">
-                  Simple Green neutralizes odors while staying safe for paws, lawns, and kids.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="neu-raised bg-purple-50">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-black text-xl">4</div>
-                <h4 className="font-black text-gray-800 mb-3">Reset & Refresh</h4>
-                <p className="text-gray-600 text-sm">
-                  Before heading to the next stop, we clean and disinfect all our tools with KennelSol so every yard starts with a clean slate. (Think of it as hitting the "reset" button — but for poop gear.)
+                  We tell you what we use because trust shouldn't be a mystery.
                 </p>
               </CardContent>
             </Card>
@@ -226,7 +181,7 @@ export default function ProductsWeUse() {
             The Bottom Line
           </h2>
           <p className="text-lg text-gray-600 max-w-4xl mx-auto mb-8">
-            Your pets deserve better than mystery chemicals, and your lawn deserves more than a quick scoop-and-go. We use professional, pet-safe, eco-friendly products trusted by veterinarians and pet care pros. And it's all included in your price. No gimmicks. No add-ons. Just safe, clean yards — with a little humor on the side.
+            Simple Green keeps your yard safe, fresh, and eco-friendly. KennelSol keeps our tools clean and disinfected between every visit. Together, it means a yard that's not just poop-free, but safe, sanitary, and paw-approved — with no extra fees or gimmicks.
           </p>
           <Link href="/contact">
             <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
