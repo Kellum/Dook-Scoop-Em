@@ -61,7 +61,7 @@ export default function Home() {
             <div className="bg-white rounded-lg p-8 text-center">
               <Heart className="w-16 h-16 text-orange-600 mx-auto mb-4" />
               <h3 className="text-xl font-black text-gray-800 mb-2">Pet Safe</h3>
-              <p className="text-gray-600">Safe for dogs, safe for lawns, safe for the planet. Now if only it worked on your neighbor's chihuahua.</p>
+              <p className="text-gray-600">Safe for dogs, safe for lawns, safe for the planet, fairies, chupacabras, bigfoot, etc. etc.</p>
             </div>
           </div>
         </div>
