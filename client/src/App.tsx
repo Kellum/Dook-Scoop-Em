@@ -8,6 +8,7 @@ import { useAnalytics } from "../hooks/use-analytics";
 import Home from "@/pages/home";
 import LandingMinimal from "@/pages/landing-minimal";
 import LandingMinimalEastJax from "@/pages/landing-minimal-eastjax";
+import WaitlistMap from "@/pages/waitlist-map";
 import Residential from "@/pages/residential";
 import Commercial from "@/pages/commercial";
 import HowWeScoop from "@/pages/how-we-scoop";
@@ -29,6 +30,9 @@ function Router() {
     <Switch>
       {/* Main business website as home */}
       <Route path="/" component={Home} />
+      
+      {/* Waitlist area selector page */}
+      <Route path="/waitlist" component={WaitlistMap} />
       
       {/* Waitlist pages at specific URLs */}
       <Route path="/waitlist/northJax-yulee-dina" component={LandingMinimal} />
