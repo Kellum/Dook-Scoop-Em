@@ -124,70 +124,77 @@ export default function WaitlistMap() {
           ))}
         </div>
 
-        {/* Visual Map Section */}
+        {/* Interactive Google Map Section */}
         <Card className="neu-raised shadow-2xl overflow-hidden mb-12">
           <CardHeader className="text-center bg-gray-100">
             <CardTitle className="text-2xl font-black text-gray-800">
               Jacksonville Area Service Map
             </CardTitle>
             <p className="text-gray-600 font-medium">
-              Click on your area to join the waitlist
+              Explore our service areas and find your zip code
             </p>
           </CardHeader>
           
-          <CardContent className="p-8">
-            {/* Simplified SVG Map */}
-            <div className="relative max-w-2xl mx-auto">
-              <svg viewBox="0 0 400 300" className="w-full h-auto">
-                {/* Background */}
-                <rect width="400" height="300" fill="#f8fafc" stroke="#e2e8f0" strokeWidth="2" />
+          <CardContent className="p-0">
+            {/* Google Maps Embed */}
+            <div className="relative w-full h-96 md:h-[500px]">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224346.48295625535!2d-81.8371373!3d30.3321838!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e5b716f1ceafeb%3A0xc4cd7d3896fcc7e2!2sJacksonville%2C%20FL!5e0!3m2!1sen!2sus!4v1694886543210!5m2!1sen!2sus"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Jacksonville Service Areas Map"
+              ></iframe>
+            </div>
+            
+            {/* Map Legend & Instructions */}
+            <div className="p-6 bg-gray-50">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-black text-gray-800 mb-3 flex items-center">
+                    <div className="w-4 h-4 bg-blue-500 rounded-full mr-3"></div>
+                    North Area - Zip Codes
+                  </h4>
+                  <div className="grid grid-cols-3 gap-2 text-sm">
+                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-bold">32097</span>
+                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-bold">32034</span>
+                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-bold">32226</span>
+                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-bold">32218</span>
+                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-bold">32234</span>
+                  </div>
+                  <p className="text-xs text-gray-600 mt-2">Yulee, Fernandina Beach, Oceanway, Nassau County</p>
+                </div>
                 
-                {/* North Area (Yulee, Fernandina, Nassau County) */}
-                <g 
-                  className="cursor-pointer transition-all duration-200 hover:opacity-80"
-                  onClick={() => handleAreaClick('/waitlist/northJax-yulee-dina')}
-                >
-                  <rect x="50" y="30" width="300" height="100" fill="#dbeafe" stroke="#3b82f6" strokeWidth="2" rx="8" />
-                  <text x="200" y="65" textAnchor="middle" className="font-black text-lg" fill="#1e40af">
-                    North Jax, Yulee & Fernandina
-                  </text>
-                  <text x="200" y="85" textAnchor="middle" className="font-medium text-sm" fill="#1e40af">
-                    32097, 32034, 32226, 32218, 32234
-                  </text>
-                  <text x="200" y="105" textAnchor="middle" className="font-bold text-xs" fill="#1e40af">
-                    Click to Join Waitlist
-                  </text>
-                </g>
-                
-                {/* East Area (East Jax & Beaches) */}
-                <g 
-                  className="cursor-pointer transition-all duration-200 hover:opacity-80"
-                  onClick={() => handleAreaClick('/waitlist/eastJax-beaches')}
-                >
-                  <rect x="50" y="170" width="300" height="100" fill="#fed7aa" stroke="#ea580c" strokeWidth="2" rx="8" />
-                  <text x="200" y="205" textAnchor="middle" className="font-black text-lg" fill="#c2410c">
-                    East Jax & Beaches
-                  </text>
-                  <text x="200" y="225" textAnchor="middle" className="font-medium text-sm" fill="#c2410c">
-                    32233, 32266, 32250, 32224, 32225
-                  </text>
-                  <text x="200" y="245" textAnchor="middle" className="font-bold text-xs" fill="#c2410c">
-                    Click to Join Waitlist
-                  </text>
-                </g>
-                
-                {/* Decorative elements */}
-                <circle cx="370" cy="50" r="8" fill="#22c55e" opacity="0.6" />
-                <text x="370" y="30" textAnchor="middle" className="text-xs font-bold" fill="#16a34a">Available</text>
-                
-                <circle cx="370" cy="250" r="8" fill="#22c55e" opacity="0.6" />
-                <text x="370" y="270" textAnchor="middle" className="text-xs font-bold" fill="#16a34a">Available</text>
-                
-                {/* Coming Soon indicator */}
-                <text x="200" y="290" textAnchor="middle" className="text-xs font-medium italic" fill="#6b7280">
-                  More areas coming soon...
-                </text>
-              </svg>
+                <div>
+                  <h4 className="font-black text-gray-800 mb-3 flex items-center">
+                    <div className="w-4 h-4 bg-orange-500 rounded-full mr-3"></div>
+                    East Area - Zip Codes
+                  </h4>
+                  <div className="grid grid-cols-3 gap-2 text-sm">
+                    <span className="bg-orange-100 text-orange-800 px-2 py-1 rounded font-bold">32233</span>
+                    <span className="bg-orange-100 text-orange-800 px-2 py-1 rounded font-bold">32266</span>
+                    <span className="bg-orange-100 text-orange-800 px-2 py-1 rounded font-bold">32250</span>
+                    <span className="bg-orange-100 text-orange-800 px-2 py-1 rounded font-bold">32224</span>
+                    <span className="bg-orange-100 text-orange-800 px-2 py-1 rounded font-bold">32225</span>
+                  </div>
+                  <p className="text-xs text-gray-600 mt-2">East Jacksonville, Neptune Beach, Atlantic Beach, Jacksonville Beach</p>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 bg-white rounded-lg border-2 border-orange-200">
+                <p className="text-sm font-bold text-gray-800 mb-2">
+                  💡 How to use this map:
+                </p>
+                <ul className="text-xs text-gray-600 space-y-1">
+                  <li>• Search for your address or zip code in the map above</li>
+                  <li>• Check which service area (North or East) your location falls into</li>
+                  <li>• Click the appropriate area card above to join that waitlist</li>
+                  <li>• Not sure? Contact us and we'll help you find the right area!</li>
+                </ul>
+              </div>
             </div>
           </CardContent>
         </Card>
