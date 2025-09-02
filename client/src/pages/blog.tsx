@@ -1,127 +1,47 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "wouter";
+import { Clock, PenTool } from "lucide-react";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 
 export default function Blog() {
-  const blogPosts = [
-    {
-      title: "The Science of Poop: Why Professional Cleanup Matters",
-      excerpt: "It's not just about the smell (though that's part of it). Learn why proper waste removal is crucial for your family's health.",
-      date: "March 15, 2025",
-      readTime: "5 min read"
-    },
-    {
-      title: "Training Your Dog vs. Hiring a Professional Service",
-      excerpt: "Spoiler alert: Both are important! Here's how professional cleanup complements good training habits.",
-      date: "March 12, 2025", 
-      readTime: "3 min read"
-    },
-    {
-      title: "Spring Cleaning: Getting Your Yard Ready for the Season",
-      excerpt: "Winter is rough on yards. Here's our guide to getting your outdoor space back to pristine condition.",
-      date: "March 8, 2025",
-      readTime: "7 min read"
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <Navigation />
       
       <main className="container mx-auto px-4 py-16">
-        {/* Hero Section */}
-        <section className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-black text-gray-800 mb-6">
-            The Scoop Blog
+        {/* Coming Soon Section */}
+        <section className="text-center max-w-4xl mx-auto">
+          <div className="mb-8">
+            <Clock className="w-16 h-16 text-orange-600 mx-auto mb-6" />
+          </div>
+          
+          <h1 className="text-4xl md:text-6xl font-black text-gray-800 mb-8">
+            The Blog Is on Duval Time
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Insights, tips, and probably more poop facts than you expected. We're here to educate and entertain.
+          
+          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-12 font-bold">
+            We'd be writing posts already, but the dogs of Jacksonville keep us busy. Don't worry — fresh content is coming soon, right after we finish this route.
           </p>
-        </section>
 
-        {/* Featured Post */}
-        <section className="mb-16">
-          <div className="bg-white rounded-lg p-8">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="bg-orange-600 text-white text-xs font-bold px-3 py-1 rounded-full">FEATURED</span>
-              <span className="text-orange-600 font-bold text-sm">March 15, 2025 • 5 min read</span>
+          <div className="bg-white rounded-lg p-8 shadow-xl max-w-2xl mx-auto mb-12">
+            <div className="flex items-center justify-center mb-4">
+              <PenTool className="w-6 h-6 text-orange-600 mr-2" />
+              <h3 className="text-lg font-black text-gray-800">What's Coming</h3>
             </div>
-            <h2 className="text-3xl font-black text-gray-800 mb-4">
-              The Science of Poop: Why Professional Cleanup Matters
-            </h2>
-            <p className="text-lg text-gray-600 mb-6">
-              You might think all poop cleanup is the same. You'd be wrong. Here's the scientific breakdown of why professional service isn't just about convenience - it's about health, safety, and actually getting the job done right.
+            <p className="text-gray-600 mb-6">
+              We're planning posts about pet care tips, yard maintenance secrets, Jacksonville dog park reviews, and probably way too many poop jokes. Stay tuned!
             </p>
-            <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
-              Read Full Article
+            <p className="text-sm text-gray-500 italic">
+              In the meantime, we'll be out there keeping First Coast yards clean.
+            </p>
+          </div>
+
+          <Link href="/contact">
+            <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
+              Get Your Service Started
             </Button>
-          </div>
-        </section>
-
-        {/* Blog Posts Grid */}
-        <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {blogPosts.map((post, index) => (
-            <div key={index} className="bg-white rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer">
-              <div className="text-sm text-orange-600 font-bold mb-2">
-                {post.date} • {post.readTime}
-              </div>
-              <h3 className="text-xl font-black text-gray-800 leading-tight mb-4">
-                {post.title}
-              </h3>
-              <p className="text-gray-600 mb-4">{post.excerpt}</p>
-              <Button variant="outline" className="font-bold">
-                Read More
-              </Button>
-            </div>
-          ))}
-        </section>
-
-        {/* Topics We Cover */}
-        <section className="bg-white rounded-lg p-8 mb-16">
-          <h2 className="text-3xl font-black text-gray-800 mb-8 text-center">Topics We Cover</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="text-3xl mb-3">🧪</div>
-              <h3 className="font-black text-gray-800 mb-2">Science & Health</h3>
-              <p className="text-sm text-gray-600">The facts behind proper waste management</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl mb-3">🐕</div>
-              <h3 className="font-black text-gray-800 mb-2">Pet Care</h3>
-              <p className="text-sm text-gray-600">Training tips and behavioral insights</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl mb-3">🌿</div>
-              <h3 className="font-black text-gray-800 mb-2">Yard Maintenance</h3>
-              <p className="text-sm text-gray-600">Keeping your outdoor space pristine</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl mb-3">😂</div>
-              <h3 className="font-black text-gray-800 mb-2">Industry Humor</h3>
-              <p className="text-sm text-gray-600">Because this job has its moments</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Newsletter Signup */}
-        <section className="text-center">
-          <div className="bg-white rounded-lg p-8 max-w-2xl mx-auto">
-              <h2 className="text-2xl font-black text-gray-800 mb-4">Stay in the Loop</h2>
-              <p className="text-gray-600 mb-6">
-                Get the latest posts, tips, and exclusive content delivered to your inbox. We promise not to spam you (unlike some dogs we know).
-              </p>
-              <div className="flex gap-4 max-w-md mx-auto">
-                <input 
-                  type="email" 
-                  placeholder="your@email.com" 
-                  className="flex-1 px-4 py-2 rounded-lg border border-gray-300 neu-input bg-gray-100"
-                />
-                <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-6">
-                  Subscribe
-                </Button>
-              </div>
-          </div>
+          </Link>
         </section>
       </main>
 
