@@ -573,297 +573,417 @@ export default function LandingMinimalEastJax() {
           </div>
         )}
 
-        {/* Pricing Section */}
-        <section id="perks" className="mt-16 space-y-8">
+        {/* Pricing Comparison Section */}
+        <section className="mt-16 space-y-8">
           <div className="text-center">
             <h2 className="text-3xl md:text-4xl font-black text-gray-800 mb-4">
-              Founding Member Perks
+              Dook Scoop 'Em Pricing Comparison
             </h2>
-            <p className="text-gray-600 font-medium">
-              Be among our first customers and lock in exclusive benefits
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              This chart shows how Dook Scoop 'Em stacks up against competitors. By bundling sanitization + deodorizing, hauling, and multiple areas into every package, founding members don't just get a discount — they get far more value for their money.
             </p>
           </div>
 
-          {/* Mobile-Optimized Pricing Cards */}
-          <div className="grid gap-6 md:grid-cols-3">
-            {/* Regular Plan - Not Available */}
-            <Card className="neu-raised opacity-60 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gray-300 bg-opacity-20"></div>
-              <CardHeader className="text-center relative">
-                <CardTitle className="text-xl font-black text-gray-500">Regular Plan</CardTitle>
-                <div className="text-3xl font-black text-gray-500 mb-2">$100<span className="text-lg">/mo</span></div>
-                <p className="text-gray-400 font-medium italic">Not available for founding members</p>
-              </CardHeader>
-              <CardContent className="relative">
-                <div className="space-y-3 text-gray-400">
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-gray-300 mr-3 flex-shrink-0"></span>
-                    <span>Weekly yard cleanup</span>
+          {/* Mobile Cards - Hidden on desktop */}
+          <div className="md:hidden space-y-4 mb-8">
+            {/* Competitors Card */}
+            <Card className="neu-raised cursor-pointer" onClick={() => toggleCardExpansion('competitors')}>
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <h3 className="font-black text-lg text-gray-600">Competitors</h3>
+                    <p className="text-sm text-gray-500 font-bold">(Them)</p>
+                    <p className="font-black text-xl text-gray-600 mt-1">$95–115/mo</p>
+                    <p className="text-xs text-gray-500">(realistic all-in)</p>
                   </div>
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-gray-300 mr-3 flex-shrink-0"></span>
-                    <span>Standard equipment</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-gray-300 mr-3 flex-shrink-0"></span>
-                    <span>Basic service guarantee</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-500 font-medium">View Features</span>
+                    {expandedCards.competitors ? <ChevronUp size={20} className="text-gray-600" /> : <ChevronDown size={20} className="text-gray-600" />}
                   </div>
                 </div>
-              </CardContent>
+                
+                {expandedCards.competitors && (
+                  <div className="space-y-3 pt-3 border-t border-gray-200">
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Cost Per Visit:</span>
+                      <span className="text-sm font-bold text-gray-600">$22–27</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Rate Lock:</span>
+                      <span className="text-sm font-bold text-gray-600">–</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Free Month Credit:</span>
+                      <span className="text-sm font-bold text-gray-600">–</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Add'l Dog Fee:</span>
+                      <span className="text-sm font-bold text-gray-600">$5–7 per visit</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Sanitization:</span>
+                      <span className="text-sm font-bold text-gray-600">Paid add-on (+$10/visit)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Waste Haul-Away:</span>
+                      <span className="text-sm font-bold text-gray-600">Often left in your bin 🤢</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Multiple Areas:</span>
+                      <span className="text-sm font-bold text-gray-600">+$3–5 each</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Priority Scheduling:</span>
+                      <span className="text-sm font-bold text-gray-600">?</span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </Card>
 
-            {/* Founding Monthly - Popular */}
-            <Card 
-              className="neu-raised relative border-2 border-orange-500 shadow-xl transform hover:scale-105 transition-all duration-200"
-              style={{ background: 'linear-gradient(135deg, hsl(29 100% 96%) 0%, hsl(29 100% 92%) 100%)' }}
-            >
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <span className="bg-orange-600 text-white px-4 py-1 rounded-full text-sm font-black">
-                  POPULAR
-                </span>
+            {/* Regular Plan Card */}
+            <Card className="neu-raised cursor-pointer relative" onClick={() => toggleCardExpansion('regular')}>
+              {/* Red Stamped Overlay */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                <div className="transform rotate-12 text-center">
+                  <div className="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-lg border-4 border-yellow-500 shadow-lg">
+                    <div className="font-black text-lg uppercase tracking-wider">NOT AVAILABLE</div>
+                    <div className="text-xs font-bold mt-1">You're a founding member,</div>
+                    <div className="text-xs font-bold">you deserve better</div>
+                  </div>
+                </div>
               </div>
-              <CardHeader className="text-center">
-                <CardTitle className="text-xl font-black text-gray-800">Founding Monthly</CardTitle>
-                <div className="text-3xl font-black text-orange-600 mb-2">$90<span className="text-lg">/mo</span></div>
-                <p className="text-gray-600 font-medium">Save $10/month forever</p>
-              </CardHeader>
-              <CardContent>
-                {/* Mobile Expandable Section */}
-                <div className="md:hidden">
-                  <Button
-                    variant="ghost"
-                    onClick={() => toggleCardExpansion('founding-monthly')}
-                    className="w-full flex items-center justify-between p-2 mb-4 bg-white bg-opacity-50 rounded-lg"
-                  >
-                    <span className="font-bold">View Benefits</span>
-                    {expandedCards['founding-monthly'] ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                  </Button>
-                  
-                  {expandedCards['founding-monthly'] && (
-                    <div className="space-y-3 mb-4">
-                      <div className="flex items-center">
-                        <span className="w-4 h-4 rounded-full bg-orange-600 mr-3 flex-shrink-0"></span>
-                        <span>Weekly yard cleanup</span>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="w-4 h-4 rounded-full bg-orange-600 mr-3 flex-shrink-0"></span>
-                        <span>Premium equipment & eco-friendly products</span>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="w-4 h-4 rounded-full bg-orange-600 mr-3 flex-shrink-0"></span>
-                        <span>Priority scheduling</span>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="w-4 h-4 rounded-full bg-orange-600 mr-3 flex-shrink-0"></span>
-                        <span>Locked-in pricing for 12 months</span>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="w-4 h-4 rounded-full bg-orange-600 mr-3 flex-shrink-0"></span>
-                        <span>Free service customization</span>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="w-4 h-4 rounded-full bg-orange-600 mr-3 flex-shrink-0"></span>
-                        <span>Founding member recognition</span>
-                      </div>
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <h3 className="font-black text-lg text-gray-600">Regular</h3>
+                    <p className="text-sm text-gray-500 font-bold">(Us)</p>
+                    <p className="font-black text-xl text-gray-600 mt-1">$100/mo</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-500 font-medium">View Features</span>
+                    {expandedCards.regular ? <ChevronUp size={20} className="text-gray-600" /> : <ChevronDown size={20} className="text-gray-600" />}
+                  </div>
+                </div>
+                
+                {expandedCards.regular && (
+                  <div className="space-y-3 pt-3 border-t border-gray-200">
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Cost Per Visit:</span>
+                      <span className="text-sm font-bold text-gray-600">~$23</span>
                     </div>
-                  )}
-                </div>
-
-                {/* Desktop Always Visible */}
-                <div className="hidden md:block space-y-3">
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-orange-600 mr-3 flex-shrink-0"></span>
-                    <span>Weekly yard cleanup</span>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Rate Lock:</span>
+                      <span className="text-sm font-bold text-gray-600">–</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Free Month Credit:</span>
+                      <span className="text-sm font-bold text-gray-600">–</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Add'l Dog Fee:</span>
+                      <span className="text-sm font-bold text-gray-600">+$10/mo</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Sanitization:</span>
+                      <span className="text-sm font-bold text-green-600">✓ Included</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Waste Haul-Away:</span>
+                      <span className="text-sm font-bold text-green-600">✓ Included</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Multiple Areas:</span>
+                      <span className="text-sm font-bold text-green-600">✓ Included</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Priority Scheduling:</span>
+                      <span className="text-sm font-bold text-green-600">✓ Included</span>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-orange-600 mr-3 flex-shrink-0"></span>
-                    <span>Premium equipment & eco-friendly products</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-orange-600 mr-3 flex-shrink-0"></span>
-                    <span>Priority scheduling</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-orange-600 mr-3 flex-shrink-0"></span>
-                    <span>Locked-in pricing for 12 months</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-orange-600 mr-3 flex-shrink-0"></span>
-                    <span>Free service customization</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-orange-600 mr-3 flex-shrink-0"></span>
-                    <span>Founding member recognition</span>
-                  </div>
-                </div>
-              </CardContent>
+                )}
+              </div>
             </Card>
 
-            {/* Founding Annual - Best Value */}
-            <Card className="neu-raised relative">
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <span className="bg-green-600 text-white px-4 py-1 rounded-full text-sm font-black">
-                  BEST VALUE
-                </span>
-              </div>
-              <CardHeader className="text-center">
-                <CardTitle className="text-xl font-black text-gray-800">Founding Annual</CardTitle>
-                <div className="text-3xl font-black text-green-600 mb-2">$85<span className="text-lg">/mo</span></div>
-                <p className="text-gray-600 font-medium">Save $15/month + 2 months free</p>
-              </CardHeader>
-              <CardContent>
-                {/* Mobile Expandable Section */}
-                <div className="md:hidden">
-                  <Button
-                    variant="ghost"
-                    onClick={() => toggleCardExpansion('founding-annual')}
-                    className="w-full flex items-center justify-between p-2 mb-4 bg-white bg-opacity-50 rounded-lg"
-                  >
-                    <span className="font-bold">View Benefits</span>
-                    {expandedCards['founding-annual'] ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                  </Button>
-                  
-                  {expandedCards['founding-annual'] && (
-                    <div className="space-y-3 mb-4">
-                      <div className="flex items-center">
-                        <span className="w-4 h-4 rounded-full bg-green-600 mr-3 flex-shrink-0"></span>
-                        <span>Everything in Founding Monthly</span>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="w-4 h-4 rounded-full bg-green-600 mr-3 flex-shrink-0"></span>
-                        <span>Extra 2 months free (14 months total)</span>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="w-4 h-4 rounded-full bg-green-600 mr-3 flex-shrink-0"></span>
-                        <span>Exclusive founding member benefits</span>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="w-4 h-4 rounded-full bg-green-600 mr-3 flex-shrink-0"></span>
-                        <span>Holiday season priority service</span>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="w-4 h-4 rounded-full bg-green-600 mr-3 flex-shrink-0"></span>
-                        <span>Free deep clean once per year</span>
-                      </div>
-                      <div className="flex items-center">
-                        <span className="w-4 h-4 rounded-full bg-green-600 mr-3 flex-shrink-0"></span>
-                        <span>VIP customer support</span>
-                      </div>
+            {/* Founding Monthly Card */}
+            <Card className="neu-raised border-2 border-blue-200 bg-blue-50 cursor-pointer" onClick={() => toggleCardExpansion('foundingMonthly')}>
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-black text-lg text-blue-600">Founding Monthly</h3>
+                      <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">POPULAR</span>
                     </div>
-                  )}
+                    <p className="text-sm text-blue-700 font-bold">(Us - 10% off)</p>
+                    <p className="font-black text-xl text-blue-600 mt-1">$90/mo</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-blue-600 font-medium">View Features</span>
+                    {expandedCards.foundingMonthly ? <ChevronUp size={20} className="text-blue-600" /> : <ChevronDown size={20} className="text-blue-600" />}
+                  </div>
                 </div>
+                
+                {expandedCards.foundingMonthly && (
+                  <div className="space-y-3 pt-3 border-t border-blue-200">
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Cost Per Visit:</span>
+                      <span className="text-sm font-bold text-blue-600">~$20.77</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Rate Lock:</span>
+                      <span className="text-sm font-bold text-blue-600">12 months</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Free Month Credit:</span>
+                      <span className="text-sm font-bold text-blue-600">Month 4</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Add'l Dog Fee:</span>
+                      <span className="text-sm font-bold text-gray-600">+$10/mo</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Sanitization:</span>
+                      <span className="text-sm font-bold text-green-600">✓ Included</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Waste Haul-Away:</span>
+                      <span className="text-sm font-bold text-green-600">✓ Included</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Multiple Areas:</span>
+                      <span className="text-sm font-bold text-green-600">✓ Included</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Priority Scheduling:</span>
+                      <span className="text-sm font-bold text-green-600">✓ Included</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Card>
 
-                {/* Desktop Always Visible */}
-                <div className="hidden md:block space-y-3">
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-green-600 mr-3 flex-shrink-0"></span>
-                    <span>Everything in Founding Monthly</span>
+            {/* Founding Annual Card */}
+            <Card className="neu-raised border-2 border-orange-200 bg-orange-50 cursor-pointer" onClick={() => toggleCardExpansion('foundingAnnual')}>
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-black text-lg text-orange-600">Founding Annual</h3>
+                      <span className="bg-orange-600 text-white text-xs font-bold px-2 py-1 rounded">BEST VALUE</span>
+                    </div>
+                    <p className="text-sm text-orange-700 font-bold">(Us - 15% off)</p>
+                    <p className="font-black text-xl text-orange-600 mt-1">$85/mo</p>
                   </div>
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-green-600 mr-3 flex-shrink-0"></span>
-                    <span>Extra 2 months free (14 months total)</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-green-600 mr-3 flex-shrink-0"></span>
-                    <span>Exclusive founding member benefits</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-green-600 mr-3 flex-shrink-0"></span>
-                    <span>Holiday season priority service</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-green-600 mr-3 flex-shrink-0"></span>
-                    <span>Free deep clean once per year</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="w-4 h-4 rounded-full bg-green-600 mr-3 flex-shrink-0"></span>
-                    <span>VIP customer support</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-orange-600 font-medium">View Features</span>
+                    {expandedCards.foundingAnnual ? <ChevronUp size={20} className="text-orange-600" /> : <ChevronDown size={20} className="text-orange-600" />}
                   </div>
                 </div>
-              </CardContent>
+                
+                {expandedCards.foundingAnnual && (
+                  <div className="space-y-3 pt-3 border-t border-orange-200">
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Cost Per Visit:</span>
+                      <span className="text-sm font-bold text-orange-600">~$19.62</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Rate Lock:</span>
+                      <span className="text-sm font-bold text-orange-600">12 months</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Free Month Credit:</span>
+                      <span className="text-sm font-bold text-orange-600">Month 13 (bonus)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Add'l Dog Fee:</span>
+                      <span className="text-sm font-bold text-gray-600">+$10/mo</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Sanitization:</span>
+                      <span className="text-sm font-bold text-green-600">✓ Included</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Waste Haul-Away:</span>
+                      <span className="text-sm font-bold text-green-600">✓ Included</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Multiple Areas:</span>
+                      <span className="text-sm font-bold text-green-600">✓ Included</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Priority Scheduling:</span>
+                      <span className="text-sm font-bold text-green-600">✓ Included</span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </Card>
           </div>
 
-          {/* Trust Section */}
-          <div className="mt-16 text-center">
-            <h3 className="text-2xl font-black text-gray-800 mb-8">
-              We Fear No Pile Because We're Professionals
-            </h3>
-            
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <div className="space-y-4">
-                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto">
-                  <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h4 className="text-lg font-black text-gray-800">Licensed & Insured</h4>
-                <p className="text-gray-600">Fully licensed business with comprehensive insurance coverage for your peace of mind</p>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto">
-                  <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h4 className="text-lg font-black text-gray-800">Reliable Schedule</h4>
-                <p className="text-gray-600">Consistent weekly service you can count on. We show up when we say we will</p>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto">
-                  <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
-                </div>
-                <h4 className="text-lg font-black text-gray-800">Pet Safe Products</h4>
-                <p className="text-gray-600">Only eco-friendly, pet-safe cleaning products that protect your furry family members</p>
-              </div>
+          {/* Desktop Table - Hidden on mobile */}
+          <Card className="hidden md:block neu-raised shadow-2xl overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm md:text-base">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="text-left p-3 md:p-4 font-black text-gray-800 min-w-[140px]">Feature</th>
+                    <th className="text-center p-3 md:p-4 font-black text-gray-600 min-w-[120px]">
+                      <div className="flex flex-col">
+                        <span className="text-base md:text-lg">Competitors</span>
+                        <span className="text-xs font-bold text-gray-500">(Them)</span>
+                      </div>
+                    </th>
+                    <th className="text-center p-3 md:p-4 font-black text-gray-600 min-w-[120px]">
+                      <div className="flex flex-col">
+                        <span className="text-base md:text-lg">Regular</span>
+                        <span className="text-xs font-bold text-gray-500">(Us)</span>
+                      </div>
+                    </th>
+                    <th className="text-center p-3 md:p-4 font-black text-blue-600 bg-blue-50 min-w-[140px]">
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-1 justify-center">
+                          <span className="text-base md:text-lg">Founding Monthly</span>
+                          <span className="bg-blue-600 text-white text-xs font-bold px-1.5 py-0.5 rounded">POPULAR</span>
+                        </div>
+                        <span className="text-xs font-bold text-blue-700">(Us - 10% off)</span>
+                      </div>
+                    </th>
+                    <th className="text-center p-3 md:p-4 font-black text-orange-600 bg-orange-50 min-w-[140px]">
+                      <div className="flex flex-col">
+                        <span className="text-base md:text-lg">Founding Annual</span>
+                        <span className="text-xs font-bold text-orange-700">(Us - 15% off)</span>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-gray-200">
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Weekly 1-dog Rate</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">$95–115/mo<br/><span className="text-xs">(realistic all-in)</span></td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">$100/mo</td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50 font-black text-blue-600">$90/mo</td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50 font-black text-orange-600">$85/mo</td>
+                  </tr>
+                  <tr className="border-b border-gray-200 bg-gray-50">
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Approx. Cost Per Visit</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">$22–27</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">~$23</td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50 font-black text-blue-600">~$20.77</td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50 font-black text-orange-600">~$19.62</td>
+                  </tr>
+                  <tr className="border-b border-gray-200">
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Rate Lock</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">–</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">–</td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50 font-black text-blue-600">12 months</td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50 font-black text-orange-600">12 months</td>
+                  </tr>
+                  <tr className="border-b border-gray-200 bg-gray-50">
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Free Month Credit</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">–</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">–</td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50 font-black text-blue-600">Month 4</td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50 font-black text-orange-600">Month 13<br/><span className="text-xs">(bonus)</span></td>
+                  </tr>
+                  <tr className="border-b border-gray-200">
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Add'l Dog Fee</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">$5–7 per visit</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">+$10/mo</td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50 font-bold text-gray-700">+$10/mo</td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50 font-bold text-gray-700">+$10/mo</td>
+                  </tr>
+                  <tr className="border-b border-gray-200 bg-gray-50">
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Sanitization + Deodorizing</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">Paid add-on<br/><span className="text-xs">(+$10/visit)</span></td>
+                    <td className="p-3 md:p-4 text-center">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
+                  </tr>
+                  <tr className="border-b border-gray-200">
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Waste Haul-Away</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">Often left in your bin 🤢</td>
+                    <td className="p-3 md:p-4 text-center">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
+                  </tr>
+                  <tr className="border-b border-gray-200 bg-gray-50">
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Multiple Areas<br/><span className="text-xs font-normal">(front, side, back, garden, etc.)</span></td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">+$3–5 each</td>
+                    <td className="p-3 md:p-4 text-center">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50">
+                      <span className="text-green-600 font-black">Included</span>
+                    </td>
+                  </tr>
+                  <tr className="border-b border-gray-200">
+                    <td className="p-3 md:p-4 font-bold text-gray-800">Priority Scheduling</td>
+                    <td className="p-3 md:p-4 text-center font-bold text-gray-600">?</td>
+                    <td className="p-3 md:p-4 text-center">
+                      <span className="text-green-600 font-black text-xl">✓</span>
+                    </td>
+                    <td className="p-3 md:p-4 text-center bg-blue-50">
+                      <span className="text-green-600 font-black text-xl">✓</span>
+                    </td>
+                    <td className="p-3 md:p-4 text-center bg-orange-50">
+                      <span className="text-green-600 font-black text-xl">✓</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+          </Card>
+
+          {/* CTA Button */}
+          <div className="text-center mt-8">
+            <button 
+              onClick={scrollToWaitlistForm}
+              className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-black py-4 px-8 rounded-lg text-lg transition-colors"
+            >
+              Join the Founding Members!
+            </button>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12 mt-16">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div>
-              <h3 className="text-2xl font-black mb-4">DOOK SCOOP 'EM</h3>
-              <p className="text-gray-300 mb-4">We Fear No Pile!</p>
-              <p className="text-gray-400 text-sm">Professional pet waste removal service coming to East Jacksonville & Beaches</p>
+      {/* Social Media Footer */}
+      <footer className="mt-16 pb-8">
+        <div className="max-w-2xl mx-auto px-4">
+          <div className="text-center">
+            <p className="text-gray-600 font-bold mb-4">Follow Us</p>
+            <div className="flex justify-center space-x-6">
+              <a 
+                href="https://www.facebook.com/dookscoopem/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-800 hover:text-gray-600 transition-colors"
+              >
+                <Facebook size={32} />
+              </a>
+              <a 
+                href="https://www.instagram.com/dookscoopem" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-800 hover:text-gray-600 transition-colors"
+              >
+                <Instagram size={32} />
+              </a>
             </div>
-            
-            <div>
-              <h4 className="font-bold mb-4">Service Areas</h4>
-              <ul className="space-y-2 text-gray-300 text-sm">
-                <li>East Jacksonville</li>
-                <li>Neptune Beach</li>
-                <li>Atlantic Beach</li>
-                <li>Jacksonville Beach</li>
-                <li>More areas coming soon...</li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-bold mb-4">Contact</h4>
-              <div className="space-y-2 text-gray-300 text-sm">
-                <p>Email: <a href="mailto:hello@dookscoopem.com" className="text-orange-400 hover:underline">hello@dookscoopem.com</a></p>
-                <div className="flex space-x-4 mt-4">
-                  <a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">
-                    <Facebook className="w-5 h-5" />
-                  </a>
-                  <a href="#" className="text-gray-400 hover:text-orange-400 transition-colors">
-                    <Instagram className="w-5 h-5" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
-            <p>© 2025 Dook Scoop 'Em. All rights reserved.</p>
           </div>
         </div>
       </footer>
