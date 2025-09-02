@@ -26,8 +26,11 @@ function Router() {
   
   return (
     <Switch>
-      {/* Main waitlist page as home */}
-      <Route path="/" component={LandingMinimal} />
+      {/* Main business website as home */}
+      <Route path="/" component={Home} />
+      
+      {/* Waitlist page at specific URL */}
+      <Route path="/waitlist/northJax-yulee-dina" component={LandingMinimal} />
       
       {/* Public website pages */}
       <Route path="/residential" component={Residential} />
