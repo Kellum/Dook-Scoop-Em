@@ -67,7 +67,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Our Services */
+      {/* Our Services */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
