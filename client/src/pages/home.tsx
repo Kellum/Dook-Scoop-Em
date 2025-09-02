@@ -4,7 +4,7 @@ import { Link } from "wouter";
 import { Shield, Clock, Heart, MapPin, CheckCircle, Users, Star } from "lucide-react";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
-import pixelDogImage from "@assets/dog face_1756743062816.png";
+import pixelDogImage from "@assets/dog small lower centered_1756833072461.png";
 
 export default function Home() {
   return (
