@@ -103,7 +103,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="text-xl font-black text-gray-800 mb-2">We Actually Show Up</h3>
-                    <p className="text-gray-600">Reliable service you can count on. No more wondering if your yard will be clean.</p>
+                    <p className="text-gray-600">No ghosting, no excuses. Just a clean yard, every time. This isn't Craigslist.</p>
                   </div>
                 </div>
 
@@ -113,7 +113,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="text-xl font-black text-gray-800 mb-2">Thorough & Professional</h3>
-                    <p className="text-gray-600">We don't just grab the obvious stuff. Every square inch gets checked.</p>
+                    <p className="text-gray-600">Other guys might do a "drive-by scoop." We hunt down every pile like it owes us money.</p>
                   </div>
                 </div>
 
@@ -122,20 +122,11 @@ export default function Home() {
                     <CheckCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black text-gray-800 mb-2">Local Nassau County Business</h3>
-                    <p className="text-gray-600">We live here, work here, and care about our community.</p>
+                    <h3 className="text-xl font-black text-gray-800 mb-2">Local to Jax</h3>
+                    <p className="text-gray-600">Born and raised right here. We clean yards, cheer for the Jags, and dodge the same potholes you do.</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full bg-orange-600 flex items-center justify-center flex-shrink-0 mt-1">
-                    <CheckCircle className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-black text-gray-800 mb-2">Fair Pricing, No Surprises</h3>
-                    <p className="text-gray-600">Transparent pricing. What we quote is what you pay.</p>
-                  </div>
-                </div>
               </div>
             </div>
             
