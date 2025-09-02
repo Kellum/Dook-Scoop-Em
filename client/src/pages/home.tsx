@@ -131,7 +131,7 @@ export default function Home() {
               </div>
             </div>
             
-            <div className="bg-white rounded-lg p-8 text-center">
+            <div className="bg-gray-50 rounded-lg p-8 text-center">
               <img src={heroImage} alt="We Fear No Pile Hero" className="w-24 h-24 mx-auto mb-4" />
               <p className="text-gray-600 mb-6">
                 It's dirty work, sure. But from terrier sprinkles to Dane dumps, we're the ones who actually show up and do it.
