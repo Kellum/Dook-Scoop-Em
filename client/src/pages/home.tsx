@@ -5,7 +5,7 @@ import { Shield, Clock, Heart, MapPin, CheckCircle, Users, Star } from "lucide-r
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import pixelDogImage from "@assets/dog small lower centered_1756833072461.png";
-import heroImage from "@assets/a-pixel-art-logo-depicting-a-heroic-figu_G2-wk3h-RHK0S_WbYEP9fQ_PgM67temTW2i1pqE1QU24A_1755776704851.png";
+import heroImage from "@assets/transp_BG_1756840650946.png";
 
 export default function Home() {
   return (
@@ -131,7 +131,7 @@ export default function Home() {
               </div>
             </div>
             
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-8 text-center">
+            <div className="bg-white rounded-lg p-8 text-center">
               <img src={heroImage} alt="We Fear No Pile Hero" className="w-24 h-24 mx-auto mb-4" />
               <h3 className="text-2xl font-black text-gray-800 mb-4">We Fear No Pile!</h3>
               <p className="text-gray-600 mb-6">
