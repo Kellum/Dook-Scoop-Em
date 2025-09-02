@@ -49,7 +49,7 @@ export default function Home() {
             <div className="bg-white rounded-lg p-8 text-center">
               <Shield className="w-16 h-16 text-orange-600 mx-auto mb-4" />
               <h3 className="text-xl font-black text-gray-800 mb-2">Licensed & Insured</h3>
-              <p className="text-gray-600">Professional service you can trust with full liability coverage.</p>
+              <p className="text-gray-600">The only thing risky here is stepping in it—don't worry, we're fully insured.</p>
             </div>
             
             <div className="bg-white rounded-lg p-8 text-center">
