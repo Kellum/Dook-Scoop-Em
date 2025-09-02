@@ -147,25 +147,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Get Started Section */}
+      {/* Haiku Section */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-6">
-            Ready to Reclaim Your Yard?
+          <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-8">
+            A Poop Scoop Haiku
           </h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Join our waitlist to be among the first to experience professional pet waste removal in Nassau County.
-            Founding members get exclusive perks!
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/">
-              <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
-                Join Waitlist Today
-              </Button>
-            </Link>
+          <div className="text-2xl md:text-3xl text-gray-600 mb-8 italic leading-relaxed">
+            <p>From Fernandina,</p>
+            <p>Down to Nocatee we scoop,</p>
+            <p>Duval stays cleaner.</p>
+          </div>
+          <div className="flex justify-center">
             <Link href="/contact">
-              <Button variant="outline" className="neu-button border-orange-600 text-orange-600 hover:bg-orange-50 font-bold px-8 py-4 text-lg">
-                Ask Questions
+              <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
+                Send Us Your Own Haiku
               </Button>
             </Link>
           </div>
