@@ -31,7 +31,7 @@ export default function Home() {
       </section>
 
       {/* Dead Simple Section */}
-      <section className="py-20 px-4 bg-gray-50">
+      <section className="py-32 px-4 bg-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-8">
             This is dead simple.
