@@ -89,7 +89,7 @@ export default function Home() {
       </section>
 
       {/* The Dook Scoop 'Em Difference */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -133,7 +133,6 @@ export default function Home() {
             
             <div className="bg-white rounded-lg p-8 text-center">
               <img src={heroImage} alt="We Fear No Pile Hero" className="w-24 h-24 mx-auto mb-4" />
-              <h3 className="text-2xl font-black text-gray-800 mb-4">We Fear No Pile!</h3>
               <p className="text-gray-600 mb-6">
                 It's dirty work, sure. But from terrier sprinkles to Dane dumps, we're the ones who actually show up and do it.
               </p>
