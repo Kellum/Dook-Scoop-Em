@@ -11,7 +11,6 @@ export default function Navigation() {
   const navigationItems = [
     { label: "Residential", href: "/residential" },
     { label: "Commercial", href: "/commercial" },
-    { label: "How We Scoop", href: "/how-we-scoop" },
     { label: "Products We Use", href: "/products-we-use" },
     { label: "Blog", href: "/blog" },
     { label: "About Us", href: "/about-us" },

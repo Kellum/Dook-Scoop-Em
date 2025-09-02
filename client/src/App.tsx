@@ -11,7 +11,6 @@ import LandingMinimalEastJax from "@/pages/landing-minimal-eastjax";
 import WaitlistMap from "@/pages/waitlist-map";
 import Residential from "@/pages/residential";
 import Commercial from "@/pages/commercial";
-import HowWeScoop from "@/pages/how-we-scoop";
 import ProductsWeUse from "@/pages/products-we-use";
 import Blog from "@/pages/blog";
 import AboutUs from "@/pages/about-us";
@@ -41,7 +40,6 @@ function Router() {
       {/* Public website pages */}
       <Route path="/residential" component={Residential} />
       <Route path="/commercial" component={Commercial} />
-      <Route path="/how-we-scoop" component={HowWeScoop} />
       <Route path="/products-we-use" component={ProductsWeUse} />
       <Route path="/blog" component={Blog} />
       <Route path="/about-us" component={AboutUs} />
