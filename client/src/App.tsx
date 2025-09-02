@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAnalytics } from "../hooks/use-analytics";
 import Home from "@/pages/home";
 import LandingMinimal from "@/pages/landing-minimal";
+import LandingMinimalEastJax from "@/pages/landing-minimal-eastjax";
 import Residential from "@/pages/residential";
 import Commercial from "@/pages/commercial";
 import HowWeScoop from "@/pages/how-we-scoop";
@@ -29,8 +30,9 @@ function Router() {
       {/* Main business website as home */}
       <Route path="/" component={Home} />
       
-      {/* Waitlist page at specific URL */}
+      {/* Waitlist pages at specific URLs */}
       <Route path="/waitlist/northJax-yulee-dina" component={LandingMinimal} />
+      <Route path="/waitlist/eastJax-beaches" component={LandingMinimalEastJax} />
       
       {/* Public website pages */}
       <Route path="/residential" component={Residential} />
