@@ -112,7 +112,7 @@ export default function Home() {
                     <CheckCircle className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-black text-gray-800 mb-2">Thorough & Professional</h3>
+                    <h3 className="text-xl font-black text-gray-800 mb-2">Thorough</h3>
                     <p className="text-gray-600">Other guys might do a "drive-by scoop." We hunt down every pile like it owes us money.</p>
                   </div>
                 </div>
