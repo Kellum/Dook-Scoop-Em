@@ -1,0 +1,47 @@
+Hero Section (top of page)
+
+Header text: “Commercial Scooping: Coming Soon to the First Coast”
+
+Description text: “We’re gearing up to bring poop-free peace to apartments, HOAs, office parks, breweries, and more. Full launch is on the horizon, but if your property can’t wait, don’t sweat it—reach out and we’ll see if we can sneak you in early.”
+
+Button directly under description: “Contact Us About Commercial Service”
+
+Small note under the button: “Soft-opening vibes. Big shovel energy.”
+
+Section: HOAs & Apartments
+
+Subheader: “HOAs & Apartments”
+
+Tagline: “Because your tenants deserve clean grass, not landmines.”
+
+Description: “From neighborhood HOAs to sprawling apartment complexes, we’ll keep shared spaces safe, clean, and walkable. Coming soon, but we may be able to help now—especially if residents are tired of dodging surprise piles.”
+
+Section: Businesses & Offices
+
+Subheader: “Businesses & Offices”
+
+Tagline: “Nobody wants to step in it on the way to a meeting.”
+
+Description: “Dog-friendly offices, storefronts, and breweries—your customers and employees will thank you. Even if we’re not officially live for businesses yet, you can still reach out. We’ll try to get you scooped in.”
+
+Section: Parks & Community Spaces
+
+Subheader: “Parks & Community Spaces”
+
+Tagline: “Public space, not poop space.”
+
+Description: “Whether it’s a local park, dog run, or community lawn, we’ll help keep First Coast green spaces actually green. Coming soon—but message us if your space is already in need.”
+
+Local Flavor Callout Section (between content)
+
+Text: “Duval, we got you. From Amelia Island to Riverside—if it looks like Lot J after a Jags game, tap that button.”
+
+Contact Section (bottom of page)
+
+Header: “Tell Us About Your Property”
+
+Description: “Commercial services are almost here. If you’re ready now, we might be able to sneak you into the lineup early.”
+
+Simple contact form with fields for: Name, Email, Phone, Property Type (HOA, Apartment, Office/Business, Brewery, Park/Community Space, Other), Address/Area, and Message.
+
+Submit button text: “Request Commercial Service”
