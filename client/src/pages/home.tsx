@@ -37,16 +37,9 @@ export default function Home() {
           <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-8">
             This is dead simple.
           </h2>
-          <p className="text-2xl md:text-3xl text-gray-600 font-bold mb-8">
+          <p className="text-2xl md:text-3xl text-gray-600 font-bold">
             You have poop, we scoop poop.
           </p>
-          <div className="flex justify-center">
-            <Link href="/contact">
-              <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
-                Get Quote
-              </Button>
-            </Link>
-          </div>
         </div>
       </section>
 
