@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import logoImage from "@assets/hand and shovel-cropped_1756833681751.png";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -24,8 +25,9 @@ export default function Navigation() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo/Brand */}
-          <Link href="/" className="flex items-center">
-            <span className="text-2xl md:text-3xl font-black text-gray-800 hover:text-orange-600 transition-colors">
+          <Link href="/" className="flex items-center gap-3">
+            <img src={logoImage} alt="Dook Scoop 'Em Logo" className="h-10 w-auto" />
+            <span className="text-xl md:text-2xl font-black text-gray-800 hover:text-orange-600 transition-colors">
               DOOK SCOOP 'EM
             </span>
           </Link>
