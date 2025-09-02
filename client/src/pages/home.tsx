@@ -5,6 +5,7 @@ import { Shield, Clock, Heart, MapPin, CheckCircle, Users, Star } from "lucide-r
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import pixelDogImage from "@assets/dog small lower centered_1756833072461.png";
+import heroImage from "@assets/a-pixel-art-logo-depicting-a-heroic-figu_G2-wk3h-RHK0S_WbYEP9fQ_PgM67temTW2i1pqE1QU24A_1755776704851.png";
 
 export default function Home() {
   return (
@@ -131,14 +132,14 @@ export default function Home() {
             </div>
             
             <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-8 text-center">
-              <div className="text-6xl mb-4">🐕</div>
+              <img src={heroImage} alt="We Fear No Pile Hero" className="w-24 h-24 mx-auto mb-4" />
               <h3 className="text-2xl font-black text-gray-800 mb-4">We Fear No Pile!</h3>
               <p className="text-gray-600 mb-6">
                 It's dirty work, sure. But from terrier sprinkles to Dane dumps, we're the ones who actually show up and do it.
               </p>
-              <Link href="/how-we-scoop">
+              <Link href="/contact">
                 <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-3">
-                  See How We Work
+                  Get Quote
                 </Button>
               </Link>
             </div>
