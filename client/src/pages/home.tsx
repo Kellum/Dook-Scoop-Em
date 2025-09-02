@@ -55,7 +55,7 @@ export default function Home() {
             <div className="bg-white rounded-lg p-8 text-center">
               <Clock className="w-16 h-16 text-orange-600 mx-auto mb-4" />
               <h3 className="text-xl font-black text-gray-800 mb-2">Reliable Schedule</h3>
-              <p className="text-gray-600">Weekly, bi-weekly, or one-time cleanups. Always on time.</p>
+              <p className="text-gray-600">Weekly, bi-weekly, or one-time service. Think of us as your poop fairy, always there</p>
             </div>
             
             <div className="bg-white rounded-lg p-8 text-center">
