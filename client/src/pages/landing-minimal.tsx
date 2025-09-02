@@ -159,7 +159,7 @@ export default function LandingMinimal() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Header */}
-      <header className="w-full py-4 md:py-8 px-4">
+      <header className="w-full py-1 md:py-8 px-4">
         <div className="max-w-4xl mx-auto text-center">
           {/* Company Name */}
           <h1 
