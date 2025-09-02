@@ -77,39 +77,12 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white rounded-lg p-6 hover:transform hover:scale-105 transition-all duration-300">
-              <h3 className="text-xl font-black text-gray-800 mb-4">Weekly Service</h3>
-              <p className="text-gray-600 mb-4">Perfect for busy pet parents. We'll keep your yard clean every week.</p>
-              <div className="text-2xl font-black text-orange-600 mb-4">Starting at $15/visit</div>
-              <Link href="/residential">
-                <Button className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
-                  Learn More
-                </Button>
-              </Link>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 hover:transform hover:scale-105 transition-all duration-300">
-              <h3 className="text-xl font-black text-gray-800 mb-4">Bi-Weekly Service</h3>
-              <p className="text-gray-600 mb-4">Great value option for smaller dogs or less frequent needs.</p>
-              <div className="text-2xl font-black text-orange-600 mb-4">Starting at $18/visit</div>
-              <Link href="/residential">
-                <Button className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
-                  Learn More
-                </Button>
-              </Link>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 hover:transform hover:scale-105 transition-all duration-300">
-              <h3 className="text-xl font-black text-gray-800 mb-4">One-Time Cleanup</h3>
-              <p className="text-gray-600 mb-4">Moving in? Spring cleaning? We'll get your yard pristine.</p>
-              <div className="text-2xl font-black text-orange-600 mb-4">Starting at $75</div>
-              <Link href="/contact">
-                <Button className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
-                  Get Quote
-                </Button>
-              </Link>
-            </div>
+          <div className="text-center">
+            <Link href="/contact">
+              <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
+                Get Quote
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
