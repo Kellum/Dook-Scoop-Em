@@ -71,9 +71,9 @@ export default function Home() {
       <section className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-6">Our Services</h2>
+            <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-6">We Do Things a Lil Different…</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Professional pet waste removal for homes and businesses. No pile too big, no yard too small.
+              Forget the overwhelming list of add-ons. Our pricing is simple and stress-free. Unless you've got a Great Dane army or a backyard that needs its own zip code, you're covered.
             </p>
           </div>
           
