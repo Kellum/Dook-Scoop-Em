@@ -85,13 +85,13 @@ export default function Navigation() {
               </Link>
             ))}
             
-            <div className="pt-4 border-t border-gray-200">
-              <Link href="/">
+            <div className="pt-4 border-t border-gray-200 flex justify-center">
+              <Link href="/contact">
                 <Button 
-                  className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold py-3"
+                  className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-3"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Join Waitlist
+                  Get Quote
                 </Button>
               </Link>
             </div>
