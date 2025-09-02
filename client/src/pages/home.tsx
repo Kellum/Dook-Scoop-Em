@@ -132,7 +132,7 @@ export default function Home() {
             </div>
             
             <div className="bg-gray-50 rounded-lg p-8 text-center">
-              <img src={heroImage} alt="We Fear No Pile Hero" className="w-24 h-24 mx-auto mb-4" />
+              <img src={heroImage} alt="We Fear No Pile Hero" className="w-48 h-48 md:w-64 md:h-64 mx-auto mb-6" />
               <p className="text-gray-600 mb-6">
                 It's dirty work, sure. But from terrier sprinkles to Dane dumps, we're the ones who actually show up and do it.
               </p>
