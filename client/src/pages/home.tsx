@@ -73,7 +73,7 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black text-gray-800 mb-6">We Do Things a Lil Different…</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Forget the overwhelming list of add-ons. Our pricing is simple and stress-free. Unless you've got a Great Dane army or a backyard that needs its own zip code, you're covered.
+              Forget the overwhelming list of add-ons. Our pricing is simple and stress-free. Unless you've got a Great Dane army, a backyard with its own zip code, or a yard that hasn't been cleaned since the Jags' last playoff run.
             </p>
           </div>
           
