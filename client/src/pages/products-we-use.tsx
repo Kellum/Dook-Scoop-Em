@@ -32,7 +32,7 @@ export default function ProductsWeUse() {
                 <Shield className="w-12 h-12 text-blue-600" />
               </div>
               <CardTitle className="text-3xl md:text-4xl font-black text-gray-800 mb-2">
-                KennelSol – The Gold Standard in Clean
+                KennelSol – Kennel-Grade Sanitation
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-8">
@@ -40,9 +40,9 @@ export default function ProductsWeUse() {
                 <Card className="neu-button bg-blue-50">
                   <CardContent className="p-6 text-center">
                     <Shield className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-                    <h4 className="font-black text-gray-800 mb-3">Veterinary-Grade Safety</h4>
+                    <h4 className="font-black text-gray-800 mb-3">Trusted by the Pros</h4>
                     <p className="text-gray-600 text-sm">
-                      KennelSol is the same EPA-approved disinfectant trusted by veterinarians, shelters, and boarding facilities across the country. It wipes out bacteria, viruses, and odors without harming pets, lawns, or local wildlife. Basically, it's the Lysol of the dog world — minus the harsh fumes and scary warning labels.
+                      KennelSol is the same disinfectant used in veterinary clinics, boarding facilities, and animal shelters. It wipes out bacteria, viruses, and funky germs that don't belong anywhere near your pets.
                     </p>
                   </CardContent>
                 </Card>
@@ -50,9 +50,9 @@ export default function ProductsWeUse() {
                 <Card className="neu-button bg-blue-50">
                   <CardContent className="p-6 text-center">
                     <Zap className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-                    <h4 className="font-black text-gray-800 mb-3">Tool & Equipment Sanitizer</h4>
+                    <h4 className="font-black text-gray-800 mb-3">How We Use It</h4>
                     <p className="text-gray-600 text-sm">
-                      We don't just use KennelSol in your yard — we also soak down our scooping tools, boots, and gear between every job. That means when we show up, we're starting fresh. No germs hitchhiking from one yard to the next. Your neighbor's problems stay your neighbor's problems.
+                      We don't spray KennelSol all over your lawn. Instead, we use it to sanitize our scooping tools, boots, and gear between every single visit. That means when we step into your yard, we're stepping in clean. No cross-contamination, no germs traveling from one property to another.
                     </p>
                   </CardContent>
                 </Card>
@@ -60,9 +60,9 @@ export default function ProductsWeUse() {
                 <Card className="neu-button bg-blue-50">
                   <CardContent className="p-6 text-center">
                     <CheckCircle className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-                    <h4 className="font-black text-gray-800 mb-3">Powerful Yet Safe</h4>
+                    <h4 className="font-black text-gray-800 mb-3">Safe for Pets</h4>
                     <p className="text-gray-600 text-sm">
-                      KennelSol delivers hospital-level disinfecting power, but it's non-irritating for pets and people. Tough on germs, gentle on paws — like a bouncer in fuzzy slippers.
+                      When used properly, KennelSol delivers kennel-grade disinfection without harsh risks to pets or people. Think of it as "pro-level clean" — tough on germs, gentle on the good stuff.
                     </p>
                   </CardContent>
                 </Card>
