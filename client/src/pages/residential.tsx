@@ -37,8 +37,73 @@ export default function Residential() {
             </p>
           </div>
 
-          {/* Main Pricing Table */}
-          <div className="bg-white rounded-lg shadow-xl overflow-hidden mb-8">
+          {/* Mobile Cards (hidden on desktop) */}
+          <div className="block lg:hidden space-y-6 mb-8">
+            {/* Weekly Service Card */}
+            <Card className="neu-raised">
+              <CardHeader className="bg-gray-50 rounded-t-lg">
+                <CardTitle className="flex items-center text-lg font-black text-gray-800">
+                  <Calendar className="w-5 h-5 text-orange-600 mr-2" />
+                  Once a Week
+                </CardTitle>
+                <p className="text-sm text-gray-500">Perfect for most families</p>
+              </CardHeader>
+              <CardContent className="p-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="text-center p-3 bg-gray-50 rounded">
+                    <div className="text-sm font-bold text-gray-600">1 Dog</div>
+                    <div className="text-xl font-black text-gray-900">$100</div>
+                  </div>
+                  <div className="text-center p-3 bg-gray-50 rounded">
+                    <div className="text-sm font-bold text-gray-600">2 Dogs</div>
+                    <div className="text-xl font-black text-gray-900">$120</div>
+                  </div>
+                  <div className="text-center p-3 bg-gray-50 rounded">
+                    <div className="text-sm font-bold text-gray-600">3 Dogs</div>
+                    <div className="text-xl font-black text-gray-900">$140</div>
+                  </div>
+                  <div className="text-center p-3 bg-gray-50 rounded">
+                    <div className="text-sm font-bold text-gray-600">4 Dogs</div>
+                    <div className="text-xl font-black text-gray-900">$160</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Twice Weekly Service Card */}
+            <Card className="neu-raised bg-orange-50">
+              <CardHeader className="bg-orange-100 rounded-t-lg">
+                <CardTitle className="flex items-center text-lg font-black text-gray-800">
+                  <Calendar className="w-5 h-5 text-orange-600 mr-2" />
+                  Twice a Week
+                </CardTitle>
+                <p className="text-sm text-gray-500">For busy pups or big yards</p>
+              </CardHeader>
+              <CardContent className="p-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="text-center p-3 bg-white rounded">
+                    <div className="text-sm font-bold text-gray-600">1 Dog</div>
+                    <div className="text-xl font-black text-gray-900">$120</div>
+                  </div>
+                  <div className="text-center p-3 bg-white rounded">
+                    <div className="text-sm font-bold text-gray-600">2 Dogs</div>
+                    <div className="text-xl font-black text-gray-900">$140</div>
+                  </div>
+                  <div className="text-center p-3 bg-white rounded">
+                    <div className="text-sm font-bold text-gray-600">3 Dogs</div>
+                    <div className="text-xl font-black text-gray-900">$160</div>
+                  </div>
+                  <div className="text-center p-3 bg-white rounded">
+                    <div className="text-sm font-bold text-gray-600">4 Dogs</div>
+                    <div className="text-xl font-black text-gray-900">$180</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Desktop Table (hidden on mobile) */}
+          <div className="hidden lg:block bg-white rounded-lg shadow-xl overflow-hidden mb-8">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-gray-50">
@@ -255,7 +320,99 @@ export default function Residential() {
             </p>
           </div>
 
-          <div className="bg-white rounded-lg shadow-xl overflow-hidden">
+          {/* Mobile Comparison Cards (hidden on desktop) */}
+          <div className="block lg:hidden space-y-4 mb-8">
+            <Card className="neu-raised">
+              <CardContent className="p-4">
+                <h4 className="font-black text-gray-800 mb-3">Deodorizing Spray</h4>
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="flex items-center justify-between p-3 bg-red-50 rounded">
+                    <span className="font-bold text-gray-700">Most Competitors</span>
+                    <div className="flex items-center">
+                      <X className="w-4 h-4 text-red-500 mr-2" />
+                      <span className="text-red-600 font-bold">$5-10 extra</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-green-50 rounded">
+                    <span className="font-bold text-gray-700">Dook Scoop 'Em</span>
+                    <div className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                      <span className="text-green-600 font-bold">FREE</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="neu-raised">
+              <CardContent className="p-4">
+                <h4 className="font-black text-gray-800 mb-3">Sanitization Treatment</h4>
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="flex items-center justify-between p-3 bg-red-50 rounded">
+                    <span className="font-bold text-gray-700">Most Competitors</span>
+                    <div className="flex items-center">
+                      <X className="w-4 h-4 text-red-500 mr-2" />
+                      <span className="text-red-600 font-bold">$8-15 extra</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-green-50 rounded">
+                    <span className="font-bold text-gray-700">Dook Scoop 'Em</span>
+                    <div className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                      <span className="text-green-600 font-bold">FREE</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="neu-raised">
+              <CardContent className="p-4">
+                <h4 className="font-black text-gray-800 mb-3">Waste Haul-Away</h4>
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="flex items-center justify-between p-3 bg-red-50 rounded">
+                    <span className="font-bold text-gray-700">Most Competitors</span>
+                    <div className="flex items-center">
+                      <X className="w-4 h-4 text-red-500 mr-2" />
+                      <span className="text-red-600 font-bold">$3-8 extra</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-green-50 rounded">
+                    <span className="font-bold text-gray-700">Dook Scoop 'Em</span>
+                    <div className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                      <span className="text-green-600 font-bold">FREE</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="neu-raised">
+              <CardContent className="p-4">
+                <h4 className="font-black text-gray-800 mb-3">Service Confirmations</h4>
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="flex items-center justify-between p-3 bg-red-50 rounded">
+                    <span className="font-bold text-gray-700">Most Competitors</span>
+                    <div className="flex items-center">
+                      <X className="w-4 h-4 text-red-500 mr-2" />
+                      <span className="text-red-600 font-bold">$2-5 extra</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-green-50 rounded">
+                    <span className="font-bold text-gray-700">Dook Scoop 'Em</span>
+                    <div className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                      <span className="text-green-600 font-bold">FREE</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Desktop Comparison Table (hidden on mobile) */}
+          <div className="hidden lg:block bg-white rounded-lg shadow-xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-gray-900 text-white">
