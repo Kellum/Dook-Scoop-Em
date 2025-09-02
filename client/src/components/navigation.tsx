@@ -48,9 +48,9 @@ export default function Navigation() {
             ))}
             
             {/* CTA Button */}
-            <Link href="/">
+            <Link href="/contact">
               <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-2">
-                Join Waitlist
+                Get Quote
               </Button>
             </Link>
           </div>

@@ -97,27 +97,6 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Quick Questions */}
-            <div className="bg-white rounded-lg p-6">
-              <h3 className="text-xl font-black text-gray-800 mb-4">Quick Questions?</h3>
-              <div className="space-y-3">
-                <p className="text-sm">
-                  <strong>💰 Pricing:</strong> Starting at $85/month for founding members
-                </p>
-                <p className="text-sm">
-                  <strong>🗓️ Scheduling:</strong> Weekly or bi-weekly service available
-                </p>
-                <p className="text-sm">
-                  <strong>🔑 Access:</strong> Gate codes or keys - we're fully insured
-                </p>
-                <p className="text-sm">
-                  <strong>🐕 Pets:</strong> Don't need to be home during service
-                </p>
-                <p className="text-sm">
-                  <strong>🌧️ Weather:</strong> We work rain or shine (unless it's dangerous)
-                </p>
-              </div>
-            </div>
           </div>
 
           {/* Contact Form */}
