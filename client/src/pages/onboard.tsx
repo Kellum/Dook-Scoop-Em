@@ -376,8 +376,17 @@ export default function Onboard() {
           <div className="text-center mb-6">
             <div className="bg-teal-500 text-white py-6 px-6 rounded-lg mb-6">
               <h3 className="text-2xl font-bold mb-2">Your Price Per Visit</h3>
-              <div className="text-4xl font-black">${pricingInfo.pricePerVisit || '13.86'}</div>
+              <div className="text-4xl font-black">~${pricingInfo.estimatedPrice || pricingInfo.pricePerVisit || '100.00'}</div>
               <div className="text-lg">per cleanup</div>
+              <div className="text-sm mt-2 opacity-90">
+                Billed monthly at ${(() => {
+                  const price = parseFloat(pricingInfo.estimatedPrice || pricingInfo.pricePerVisit || '100.00');
+                  const frequency = quoteData?.serviceFrequency || 'once_a_week';
+                  const visitsPerMonth = frequency === 'once_a_week' ? 4 : 
+                                       frequency === 'every_two_weeks' ? 2 : 1;
+                  return (price * visitsPerMonth).toFixed(2);
+                })()}
+              </div>
             </div>
           </div>
         )}
