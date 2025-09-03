@@ -195,9 +195,9 @@ export default function Onboard() {
     };
 
     return (
-      <Card className="neu-raised bg-white max-w-md mx-auto">
+      <Card className="neu-raised bg-white max-w-md mx-auto shadow-lg">
         <CardHeader className="text-center">
-          <div className="bg-teal-500 text-white py-4 px-6 rounded-lg mb-4">
+          <div className="bg-orange-600 text-white py-4 px-6 rounded-lg mb-4">
             <CardTitle className="text-2xl font-bold">Get Your Free Estimate</CardTitle>
           </div>
         </CardHeader>
@@ -332,7 +332,7 @@ export default function Onboard() {
               <Button 
                 type="submit"
                 disabled={getQuoteMutation.isPending}
-                className="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 text-lg"
+                className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 text-lg"
                 data-testid="button-getQuote"
               >
                 {getQuoteMutation.isPending ? "Getting Quote..." : "GET FREE QUOTE"}
@@ -371,10 +371,10 @@ export default function Onboard() {
     };
 
     return (
-      <Card className="neu-raised bg-white max-w-md mx-auto">
+      <Card className="neu-raised bg-white max-w-md mx-auto shadow-lg">
         {pricingInfo && (
           <div className="text-center mb-6">
-            <div className="bg-teal-500 text-white py-6 px-6 rounded-lg mb-6">
+            <div className="bg-orange-600 text-white py-6 px-6 rounded-lg mb-6">
               <h3 className="text-2xl font-bold mb-2">Your Price Per Visit</h3>
               <div className="text-4xl font-black">~${(() => {
                 // The estimatedPrice from Sweep&Go is the MONTHLY price, so we need to calculate per-visit
@@ -611,7 +611,7 @@ export default function Onboard() {
                 </Button>
                 <Button 
                   type="submit"
-                  className="flex-1 bg-teal-500 hover:bg-teal-600 text-white font-bold"
+                  className="flex-1 neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold"
                   data-testid="button-continue"
                 >
                   Continue
@@ -644,9 +644,9 @@ export default function Onboard() {
     };
 
     return (
-      <Card className="neu-raised bg-white max-w-md mx-auto">
+      <Card className="neu-raised bg-white max-w-md mx-auto shadow-lg">
         <CardHeader className="text-center">
-          <div className="bg-teal-500 text-white py-4 px-6 rounded-lg mb-4">
+          <div className="bg-orange-600 text-white py-4 px-6 rounded-lg mb-4">
             <CardTitle className="text-2xl font-bold">Almost Done... Set Up Auto Pay!</CardTitle>
           </div>
         </CardHeader>
@@ -748,7 +748,7 @@ export default function Onboard() {
                 <Button 
                   type="submit"
                   disabled={submitOnboardingMutation.isPending}
-                  className="flex-1 bg-teal-500 hover:bg-teal-600 text-white font-bold"
+                  className="flex-1 neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold"
                   data-testid="button-submit"
                 >
                   {submitOnboardingMutation.isPending ? "Processing..." : "SUBMIT"}
@@ -823,15 +823,15 @@ export default function Onboard() {
           
           {/* Progress Indicator */}
           <div className="flex justify-center items-center space-x-4 mb-8">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 1 ? 'bg-teal-500 text-white' : 'bg-gray-300 text-gray-600'}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 1 ? 'bg-orange-600 text-white' : 'bg-gray-300 text-gray-600'}`}>
               1
             </div>
-            <div className={`w-8 h-1 ${currentStep >= 2 ? 'bg-teal-500' : 'bg-gray-300'}`}></div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 2 ? 'bg-teal-500 text-white' : 'bg-gray-300 text-gray-600'}`}>
+            <div className={`w-8 h-1 ${currentStep >= 2 ? 'bg-orange-600' : 'bg-gray-300'}`}></div>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 2 ? 'bg-orange-600 text-white' : 'bg-gray-300 text-gray-600'}`}>
               2
             </div>
-            <div className={`w-8 h-1 ${currentStep >= 3 ? 'bg-teal-500' : 'bg-gray-300'}`}></div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 3 ? 'bg-teal-500 text-white' : 'bg-gray-300 text-gray-600'}`}>
+            <div className={`w-8 h-1 ${currentStep >= 3 ? 'bg-orange-600' : 'bg-gray-300'}`}></div>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 3 ? 'bg-orange-600 text-white' : 'bg-gray-300 text-gray-600'}`}>
               3
             </div>
           </div>
