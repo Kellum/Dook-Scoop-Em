@@ -310,12 +310,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Store quote request in database
-      const quoteRequest = await storage.createQuoteRequest({
+      const quoteData = {
         ...validatedData,
         sweepAndGoEmailExists: emailExists,
         sweepAndGoPricing: JSON.stringify(sweepAndGoPricing),
         estimatedPrice: estimatedPrice
-      });
+      };
+      
+      console.log("Data being passed to createQuoteRequest:", JSON.stringify(quoteData, null, 2));
+      console.log("estimatedPrice type:", typeof estimatedPrice, "value:", estimatedPrice);
+      
+      const quoteRequest = await storage.createQuoteRequest(quoteData);
       
       console.log("Quote request created:", quoteRequest.id);
       
