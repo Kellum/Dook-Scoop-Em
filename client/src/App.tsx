@@ -8,11 +8,11 @@ import { useAnalytics } from "../hooks/use-analytics";
 
 // Theme Switcher Component
 function ThemeSwitcher() {
-  const [currentTheme, setCurrentTheme] = useState<string>('default');
+  const [currentTheme, setCurrentTheme] = useState<string>('alternate');
 
   useEffect(() => {
     // Check if there's a saved theme preference
-    const savedTheme = localStorage.getItem('theme-preference') || 'default';
+    const savedTheme = localStorage.getItem('theme-preference') || 'alternate';
     setCurrentTheme(savedTheme);
     
     // Apply theme to document
