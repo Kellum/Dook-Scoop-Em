@@ -1,67 +1,73 @@
 import React, { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
-import { Phone, Mail, MapPin, Clock, Calculator, CheckCircle, AlertCircle } from "lucide-react";
-import { insertQuoteRequestSchema } from "@shared/schema";
+import { Phone, Mail, MapPin, Clock, CheckCircle, AlertCircle } from "lucide-react";
 import { z } from "zod";
 
-type QuoteFormData = z.infer<typeof insertQuoteRequestSchema>;
+// Simple contact form schema
+const contactFormSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  phone: z.string().min(10, "Please enter a valid phone number"),
+  subject: z.string().min(1, "Subject is required"),
+  message: z.string().min(10, "Message must be at least 10 characters"),
+});
+
+type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export default function Contact() {
   const { toast } = useToast();
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [quoteResponse, setQuoteResponse] = useState<any>(null);
 
-  const form = useForm<QuoteFormData>({
-    resolver: zodResolver(insertQuoteRequestSchema),
+  const form = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
     defaultValues: {
       name: "",
       email: "",
       phone: "",
-      address: "",
-      zipCode: "",
-      numberOfDogs: 1,
-      serviceFrequency: "weekly",
-      lastCleanedTimeframe: "one_month",
-      urgency: "within_month",
-      preferredContactMethod: "email",
+      subject: "",
       message: "",
     },
   });
 
-  const submitQuoteMutation = useMutation({
-    mutationFn: async (data: QuoteFormData) => {
-      return apiRequest("POST", "/api/quote", data);
+  const submitContactMutation = useMutation({
+    mutationFn: async (data: ContactFormData) => {
+      return apiRequest("POST", "/api/contact", data);
     },
-    onSuccess: (response) => {
-      setQuoteResponse(response);
+    onSuccess: () => {
       setIsSubmitted(true);
       
-      // Track quote submission
+      // Track contact submission
       if (typeof window !== 'undefined') {
         import('../../lib/analytics').then(({ trackEvent }) => {
-          trackEvent('quote_request', 'quote_form', 'contact_page');
+          trackEvent('contact_form', 'contact_form', 'contact_page');
         });
       }
       
       toast({
-        title: "Quote Request Received!",
-        description: "We'll get back to you within 24 hours with your custom quote.",
+        title: "Message Sent!",
+        description: "Thank you for contacting us. We'll get back to you soon!",
       });
     },
     onError: (error: any) => {
-      console.error("Quote submission error:", error);
+      console.error("Contact submission error:", error);
       toast({
         title: "Oops! Something went wrong",
         description: error.message || "Please try again later.",
@@ -70,57 +76,36 @@ export default function Contact() {
     },
   });
 
-  const onSubmit = (data: QuoteFormData) => {
-    console.log("Submitting quote request:", data);
-    submitQuoteMutation.mutate(data);
+  const onSubmit = (data: ContactFormData) => {
+    console.log("Submitting contact form:", data);
+    submitContactMutation.mutate(data);
   };
 
-  if (isSubmitted && quoteResponse) {
+  if (isSubmitted) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
         <Navigation />
         
         <main className="container mx-auto px-4 py-16">
           <div className="max-w-2xl mx-auto">
-            <Card className="neu-raised bg-white">
-              <CardContent className="p-8 text-center">
+            <Card className="neu-raised bg-white text-center">
+              <CardContent className="p-8">
                 <div className="mb-6">
                   <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
                 </div>
                 
                 <h1 className="text-3xl md:text-4xl font-black text-gray-800 mb-6">
-                  Quote Request Received!
+                  Message Sent Successfully!
                 </h1>
                 
                 <div className="text-left bg-gray-50 rounded-lg p-6 mb-6">
                   <h3 className="font-bold text-gray-800 mb-4">What's Next:</h3>
-                  <p className="text-gray-600 mb-4">{quoteResponse.nextSteps}</p>
-                  
-                  {quoteResponse.emailExistsInSystem && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                      <div className="flex items-center">
-                        <CheckCircle className="w-5 h-5 text-blue-600 mr-2" />
-                        <span className="text-blue-800 font-medium">
-                          Great news! We found your information in our system.
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {quoteResponse.pricing && (
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                      <h4 className="font-bold text-green-800 mb-2">
-                        <Calculator className="w-5 h-5 inline mr-2" />
-                        Estimated Pricing
-                      </h4>
-                      <p className="text-green-700">
-                        <strong>${quoteResponse.pricing.estimatedPrice}/month</strong> for {quoteResponse.pricing.frequency} service
-                      </p>
-                      <p className="text-sm text-green-600 mt-1">
-                        *Final pricing may vary based on yard size and specific requirements
-                      </p>
-                    </div>
-                  )}
+                  <p className="text-gray-600 mb-4">
+                    Thank you for reaching out! We'll review your message and get back to you within 24 hours.
+                  </p>
+                  <p className="text-gray-600">
+                    For urgent matters, feel free to call us directly at <strong>(904) 312-2422</strong>.
+                  </p>
                 </div>
                 
                 <div className="space-y-4">
@@ -138,13 +123,12 @@ export default function Contact() {
                   <Button 
                     onClick={() => {
                       setIsSubmitted(false);
-                      setQuoteResponse(null);
                       form.reset();
                     }}
                     variant="outline"
                     className="mr-4"
                   >
-                    Submit Another Quote
+                    Send Another Message
                   </Button>
                   
                   <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
@@ -169,10 +153,10 @@ export default function Contact() {
         {/* Hero Section */}
         <section className="text-center mb-16">
           <h1 className="text-4xl md:text-6xl font-black text-gray-800 mb-6">
-            Get Your Free Quote
+            Contact Us
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Professional poop scooping with real-time pricing. Tell us about your yard and pups, and we'll give you an instant estimate synced with our scheduling system.
+            Have questions about our services? Need to schedule a cleanup? We're here to help! Send us a message and we'll get back to you within 24 hours.
           </p>
         </section>
 
@@ -221,25 +205,27 @@ export default function Contact() {
             <Card className="neu-raised bg-orange-50">
               <CardContent className="p-6">
                 <h3 className="text-lg font-black text-gray-800 mb-3">
-                  <Calculator className="w-5 h-5 inline mr-2" />
-                  Real-Time Pricing
+                  Need a Quote?
                 </h3>
-                <p className="text-gray-700 text-sm">
-                  Your quote is calculated instantly using our professional scheduling system. Pricing is based on your zip code, number of dogs, yard size, and service frequency.
+                <p className="text-gray-700 text-sm mb-4">
+                  For instant pricing and to get started with service, visit our quote page where you can see real-time pricing and sign up immediately.
                 </p>
+                <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold">
+                  <a href="/onboard">Get Your Quote</a>
+                </Button>
               </CardContent>
             </Card>
           </div>
 
-          {/* Quote Form */}
+          {/* Contact Form */}
           <div className="lg:col-span-2">
             <Card className="neu-raised bg-white">
               <CardHeader>
                 <CardTitle className="text-2xl font-black text-gray-800">
-                  Get Your Instant Quote
+                  Send Us a Message
                 </CardTitle>
                 <p className="text-gray-600">
-                  Fill out the form below and we'll provide real-time pricing from our system.
+                  Fill out the form below and we'll get back to you as soon as possible.
                 </p>
               </CardHeader>
               <CardContent>
@@ -276,7 +262,7 @@ export default function Contact() {
                                 {...field} 
                                 type="tel"
                                 className="neu-input bg-gray-100"
-                                placeholder="(904) 555-0000"
+                                placeholder="(904) 555-0123"
                               />
                             </FormControl>
                             <FormMessage />
@@ -304,169 +290,19 @@ export default function Contact() {
                       )}
                     />
 
-                    {/* Service Location */}
-                    <div className="grid md:grid-cols-3 gap-4">
-                      <div className="md:col-span-2">
-                        <FormField
-                          control={form.control}
-                          name="address"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className="font-bold">Service Address</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  {...field} 
-                                  className="neu-input bg-gray-100"
-                                  placeholder="123 Main Street, Jacksonville, FL"
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                      
-                      <FormField
-                        control={form.control}
-                        name="zipCode"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="font-bold">Zip Code</FormLabel>
-                            <FormControl>
-                              <Input 
-                                {...field} 
-                                className="neu-input bg-gray-100"
-                                placeholder="32256"
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    {/* Service Details */}
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="numberOfDogs"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="font-bold">Number of Dogs</FormLabel>
-                            <Select onValueChange={(value) => field.onChange(parseInt(value))} value={field.value?.toString()}>
-                              <FormControl>
-                                <SelectTrigger className="neu-input bg-gray-100">
-                                  <SelectValue placeholder="Select number of dogs" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="1">1 Dog</SelectItem>
-                                <SelectItem value="2">2 Dogs</SelectItem>
-                                <SelectItem value="3">3 Dogs</SelectItem>
-                                <SelectItem value="4">4 Dogs</SelectItem>
-                                <SelectItem value="5">5+ Dogs</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="serviceFrequency"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="font-bold">Service Frequency</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                              <FormControl>
-                                <SelectTrigger className="neu-input bg-gray-100">
-                                  <SelectValue placeholder="How often?" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="weekly">Weekly (Recommended)</SelectItem>
-                                <SelectItem value="bi_weekly">Bi-Weekly</SelectItem>
-                                <SelectItem value="monthly">Monthly</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="lastCleanedTimeframe"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="font-bold">Last Yard Cleanup</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                              <FormControl>
-                                <SelectTrigger className="neu-input bg-gray-100">
-                                  <SelectValue placeholder="When was it last cleaned?" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="one_week">Last week</SelectItem>
-                                <SelectItem value="one_month">Last month</SelectItem>
-                                <SelectItem value="three_months">3 months ago</SelectItem>
-                                <SelectItem value="six_months">6 months ago</SelectItem>
-                                <SelectItem value="one_year">Over a year ago</SelectItem>
-                                <SelectItem value="never">Never cleaned professionally</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="urgency"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="font-bold">When Do You Need Service?</FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
-                              <FormControl>
-                                <SelectTrigger className="neu-input bg-gray-100">
-                                  <SelectValue placeholder="Timeline?" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="asap">ASAP - It's getting bad!</SelectItem>
-                                <SelectItem value="this_week">This week</SelectItem>
-                                <SelectItem value="next_week">Next week</SelectItem>
-                                <SelectItem value="within_month">Within the month</SelectItem>
-                                <SelectItem value="planning_ahead">Just planning ahead</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
                     <FormField
                       control={form.control}
-                      name="preferredContactMethod"
+                      name="subject"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="font-bold">Preferred Contact Method</FormLabel>
-                          <Select onValueChange={field.onChange} value={field.value}>
-                            <FormControl>
-                              <SelectTrigger className="neu-input bg-gray-100">
-                                <SelectValue placeholder="How should we contact you?" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="email">Email</SelectItem>
-                              <SelectItem value="phone">Phone Call</SelectItem>
-                              <SelectItem value="text">Text Message</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <FormLabel className="font-bold">Subject</FormLabel>
+                          <FormControl>
+                            <Input 
+                              {...field} 
+                              className="neu-input bg-gray-100"
+                              placeholder="How can we help you?"
+                            />
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -477,12 +313,12 @@ export default function Contact() {
                       name="message"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="font-bold">Additional Details (Optional)</FormLabel>
+                          <FormLabel className="font-bold">Message</FormLabel>
                           <FormControl>
-                            <Textarea
-                              {...field}
-                              className="neu-input bg-gray-100 min-h-[100px]"
-                              placeholder="Tell us about your yard, any special requirements, gate codes, etc."
+                            <Textarea 
+                              {...field} 
+                              className="neu-input bg-gray-100 min-h-[120px]"
+                              placeholder="Tell us about your needs, ask questions, or schedule a service..."
                             />
                           </FormControl>
                           <FormMessage />
@@ -491,18 +327,11 @@ export default function Contact() {
                     />
 
                     <Button 
-                      type="submit"
-                      disabled={submitQuoteMutation.isPending}
+                      type="submit" 
+                      disabled={submitContactMutation.isPending}
                       className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 text-lg"
                     >
-                      {submitQuoteMutation.isPending ? (
-                        "Getting Your Quote..."
-                      ) : (
-                        <>
-                          <Calculator className="w-5 h-5 mr-2" />
-                          Get My Instant Quote
-                        </>
-                      )}
+                      {submitContactMutation.isPending ? "Sending..." : "Send Message"}
                     </Button>
                   </form>
                 </Form>

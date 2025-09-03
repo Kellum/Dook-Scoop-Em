@@ -276,6 +276,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Public endpoints
+  // Simple contact form endpoint
+  app.post("/api/contact", async (req, res) => {
+    try {
+      console.log("=== CONTACT FORM RECEIVED ===");
+      console.log("Contact data:", req.body);
+      
+      // For now just log the contact message - you can extend this to save to database or send email
+      res.json({
+        success: true,
+        message: "Thank you for your message! We'll get back to you within 24 hours.",
+      });
+      
+    } catch (error) {
+      console.error("Contact form error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to send message. Please try again later.",
+      });
+    }
+  });
+
   // Quote request endpoint - integrates with Sweep&Go
   app.post("/api/quote", async (req, res) => {
     try {
