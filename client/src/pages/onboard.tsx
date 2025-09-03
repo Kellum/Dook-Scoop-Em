@@ -79,8 +79,8 @@ export default function Onboard() {
       // Map frontend values to quote API expected values
       const frequencyMap = {
         "once_a_week": "weekly",
-        "every_two_weeks": "bi_weekly", 
-        "once_a_month": "monthly"
+        "twice_a_week": "twice_weekly", 
+        "one_time": "one_time"
       } as const;
 
       return apiRequest("POST", "/api/quote", {
@@ -256,9 +256,9 @@ export default function Onboard() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="once_a_week">Weekly</SelectItem>
-                        <SelectItem value="every_two_weeks">Bi-Weekly</SelectItem>
-                        <SelectItem value="once_a_month">Monthly</SelectItem>
+                        <SelectItem value="once_a_week">Once a Week</SelectItem>
+                        <SelectItem value="twice_a_week">Twice a Week</SelectItem>
+                        <SelectItem value="one_time">One Time Cleanup</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -381,7 +381,7 @@ export default function Onboard() {
                 const monthlyPrice = parseFloat(pricingInfo.estimatedPrice || '100.00');
                 const frequency = quoteData?.serviceFrequency || 'once_a_week';
                 const visitsPerMonth = frequency === 'once_a_week' ? 4 : 
-                                     frequency === 'every_two_weeks' ? 2 : 1;
+                                     frequency === 'twice_a_week' ? 8 : 1;
                 return (monthlyPrice / visitsPerMonth).toFixed(2);
               })()}</div>
               <div className="text-lg">per cleanup</div>

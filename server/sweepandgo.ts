@@ -151,8 +151,8 @@ export class SweepAndGoAPI {
       // Map frequency values to match Sweep&Go API expectations
       const frequencyMap: Record<string, string> = {
         "weekly": "once_a_week",
-        "bi_weekly": "every_two_weeks", 
-        "monthly": "once_a_month"
+        "twice_weekly": "twice_a_week", 
+        "one_time": "one_time"
       };
 
       const queryParams = new URLSearchParams({

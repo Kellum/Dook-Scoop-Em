@@ -256,7 +256,7 @@ export const insertQuoteRequestSchema = createInsertSchema(quoteRequests).omit({
   address: z.string().min(5, "Please enter your service address"),
   zipCode: z.string().min(5, "Please enter a valid zip code"),
   numberOfDogs: z.number().min(1, "Please select number of dogs").max(10, "Please contact us for 10+ dogs"),
-  serviceFrequency: z.enum(["weekly", "bi_weekly", "monthly"], { required_error: "Please select service frequency" }),
+  serviceFrequency: z.enum(["weekly", "twice_weekly", "one_time"], { required_error: "Please select service frequency" }),
   lastCleanedTimeframe: z.enum(["one_week", "one_month", "three_months", "six_months", "one_year", "never"], { required_error: "Please let us know when your yard was last cleaned" }),
   urgency: z.enum(["asap", "this_week", "next_week", "within_month", "planning_ahead"], { required_error: "Please select your timing preference" }),
   preferredContactMethod: z.enum(["email", "phone", "text"]).default("email"),
@@ -286,7 +286,7 @@ export const insertOnboardingSubmissionSchema = createInsertSchema(onboardingSub
   homePhone: z.string().optional(),
   cellPhone: z.string().min(10, "Please enter a valid cell phone number"),
   numberOfDogs: z.number().min(1, "Please select number of dogs").max(10, "Maximum 10 dogs allowed"),
-  serviceFrequency: z.enum(["once_a_week", "every_two_weeks", "once_a_month"], {
+  serviceFrequency: z.enum(["once_a_week", "twice_a_week", "one_time"], {
     errorMap: () => ({ message: "Please select a service frequency" })
   }),
   lastCleanedTimeframe: z.enum(["one_week", "one_month", "three_months", "six_months", "one_year", "never"], {
