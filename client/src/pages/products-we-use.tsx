@@ -183,7 +183,7 @@ export default function ProductsWeUse() {
           <p className="text-lg text-gray-600 max-w-4xl mx-auto mb-8">
             Simple Green keeps your yard safe, fresh, and eco-friendly. KennelSol keeps our tools clean and disinfected between every visit. Together, it means a yard that's not just poop-free, but safe, sanitary, and paw-approved — with no extra fees or gimmicks.
           </p>
-          <Link href="/contact">
+          <Link href="/onboard">
             <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
               Get Your Free Quote
             </Button>

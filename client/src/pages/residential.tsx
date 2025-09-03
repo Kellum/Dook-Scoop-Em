@@ -19,7 +19,7 @@ export default function Residential() {
           <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto mb-8 font-bold">
             We fear no pile in your backyard! Professional service that keeps your lawn pristine and your family happy.
           </p>
-          <Link href="/contact">
+          <Link href="/onboard">
             <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
               Get Your Quote Today
             </Button>
@@ -520,7 +520,7 @@ export default function Residential() {
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Join hundreds of happy homeowners who trust us to keep their yards pristine.
           </p>
-          <Link href="/contact">
+          <Link href="/onboard">
             <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
               Get Your Free Quote
             </Button>

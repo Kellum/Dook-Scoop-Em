@@ -22,7 +22,7 @@ export default function Home() {
             We scoop Jacksonville's poop so the First Coast stays fresh.
           </h2>
           <div className="flex justify-center">
-            <Link href="/contact">
+            <Link href="/onboard">
               <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
                 Get Quote
               </Button>
@@ -79,7 +79,7 @@ export default function Home() {
           </div>
           
           <div className="text-center">
-            <Link href="/contact">
+            <Link href="/onboard">
               <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-8 py-4 text-lg">
                 Get Quote
               </Button>
@@ -136,7 +136,7 @@ export default function Home() {
               <p className="text-gray-600 mb-6">
                 It's dirty work, sure. But from terrier sprinkles to Dane dumps, we're the ones who actually show up and do it.
               </p>
-              <Link href="/contact">
+              <Link href="/onboard">
                 <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-3">
                   Get Quote
                 </Button>
