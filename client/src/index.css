@@ -42,9 +42,9 @@
   --font-90s: 'Orbitron', sans-serif;
 }
 
-/* Alternative Theme - Ready for your new design */
+/* NEO-BRUTALISM THEME - Bold, Raw, Accessible */
 [data-theme="alternate"] {
-  /* Placeholder values - will be replaced with your new design */
+  /* Keep same colors - just change visual treatment */
   --background: hsl(0 0% 98%);
   --foreground: hsl(0 0% 23%);
   --card: hsl(0 0% 100%);
@@ -66,17 +66,159 @@
   --ring: hsl(25 85% 65%);
   --earth-tone: hsl(30 43% 31%);
   --soft-grey: hsl(0 0% 69%);
-  --radius: 1rem;
   
-  /* Alternative Neumorphic shadows */
-  --neu-shadow-light: rgba(255, 255, 255, 0.7);
-  --neu-shadow-dark: rgba(0, 0, 0, 0.15);
+  /* Neo-Brutalism: No rounded corners */
+  --radius: 0;
   
-  /* Fonts can be overridden too */
+  /* Neo-Brutalism: No shadows, only borders */
+  --neu-shadow-light: transparent;
+  --neu-shadow-dark: transparent;
+  
+  /* Border weights for hierarchy */
+  --border-thin: 2px;
+  --border-thick: 3px;
+  --border-emphasis: 4px;
+  
+  /* Keep same fonts */
   --font-pixel: 'Press Start 2P', monospace;
   --font-vcr: 'VCR OSD Mono', monospace;
   --font-primary: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-90s: 'Orbitron', sans-serif;
+}
+
+/* NEO-BRUTALISM COMPONENT OVERRIDES */
+
+/* Remove all rounded corners globally */
+[data-theme="alternate"] * {
+  border-radius: 0 !important;
+}
+
+/* Cards become bordered boxes */
+[data-theme="alternate"] .neu-raised,
+[data-theme="alternate"] .neu-card {
+  background: hsl(var(--card));
+  border: var(--border-thin) solid hsl(var(--border));
+  box-shadow: none !important;
+}
+
+[data-theme="alternate"] .neu-raised:hover,
+[data-theme="alternate"] .neu-card:hover {
+  transform: translateY(-2px);
+  box-shadow: none !important;
+  border-width: var(--border-thick);
+}
+
+/* Pressed state becomes thicker border */
+[data-theme="alternate"] .neu-pressed {
+  background: hsl(var(--muted));
+  border: var(--border-thick) solid hsl(var(--border));
+  box-shadow: none !important;
+}
+
+/* Flat elements get basic border */
+[data-theme="alternate"] .neu-flat {
+  background: hsl(var(--background));
+  border: var(--border-thin) solid hsl(var(--border));
+  box-shadow: none !important;
+}
+
+/* Buttons become bold bordered boxes */
+[data-theme="alternate"] .neu-button {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  border: var(--border-thin) solid hsl(var(--foreground));
+  box-shadow: none !important;
+  transition: all 120ms ease-out;
+}
+
+[data-theme="alternate"] .neu-button:hover {
+  background: hsl(var(--foreground));
+  color: hsl(var(--background));
+  border-color: hsl(var(--accent));
+  transform: translateY(-2px);
+  box-shadow: none !important;
+}
+
+[data-theme="alternate"] .neu-button:active {
+  transform: translateY(0);
+  box-shadow: none !important;
+}
+
+[data-theme="alternate"] .neu-button:focus,
+[data-theme="alternate"] .neu-button:focus-visible {
+  outline: var(--border-thick) solid hsl(var(--accent));
+  outline-offset: 2px;
+}
+
+/* Inputs become square bordered fields */
+[data-theme="alternate"] .neu-input {
+  background: hsl(var(--input));
+  border: var(--border-thin) solid hsl(var(--border));
+  box-shadow: none !important;
+  transition: all 180ms ease-out;
+}
+
+[data-theme="alternate"] .neu-input:focus {
+  border: var(--border-thick) solid hsl(var(--accent));
+  outline: var(--border-thin) solid hsl(var(--accent));
+  outline-offset: 1px;
+  box-shadow: none !important;
+}
+
+/* Navigation gets bottom borders instead of underlines */
+[data-theme="alternate"] nav a {
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 120ms ease-out;
+}
+
+[data-theme="alternate"] nav a:hover,
+[data-theme="alternate"] nav a.active {
+  border-bottom: 2px solid hsl(var(--accent));
+  text-decoration: none;
+}
+
+/* Featured/emphasized elements get thicker borders */
+[data-theme="alternate"] .featured,
+[data-theme="alternate"] .emphasis {
+  border-width: var(--border-emphasis) !important;
+}
+
+/* Focus states are bold and clear */
+[data-theme="alternate"] *:focus,
+[data-theme="alternate"] *:focus-visible {
+  outline: var(--border-thick) solid hsl(var(--accent));
+  outline-offset: 2px;
+}
+
+/* Remove gradients from status indicators */
+[data-theme="alternate"] .status-active {
+  background: #10b981;
+  border: var(--border-thin) solid #059669;
+}
+
+[data-theme="alternate"] .status-coming-soon {
+  background: hsl(var(--accent));
+  border: var(--border-thin) solid hsl(var(--foreground));
+  color: hsl(var(--accent-foreground));
+}
+
+/* Logo gets border treatment */
+[data-theme="alternate"] .logo-icon {
+  border: var(--border-thin) solid hsl(var(--border));
+  box-shadow: none !important;
+}
+
+/* Theme switcher gets neo-brutal treatment too */
+[data-theme="alternate"] .theme-switcher {
+  border: var(--border-thin) solid hsl(var(--border));
+  border-right: none;
+  box-shadow: none !important;
+}
+
+[data-theme="alternate"] .theme-switcher:hover {
+  border-width: var(--border-thick);
+  border-right: none;
+  box-shadow: none !important;
 }
 
 .dark {

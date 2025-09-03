@@ -1,0 +1,104 @@
+PROJECT DIRECTIVE — Reskin Current Site to Neo-Brutalism
+
+Objective
+Keep all colors, fonts, copy, and layout structure as is. Replace the visual skin with neo-brutalism: bold, raw borders, flat fills, square corners, no gradients or soft shadows. Prioritize accessibility and strong hierarchy.
+
+Global Changes
+
+Remove all border-radius (0 everywhere).
+
+Remove all box-shadows and gradients.
+
+Replace depth with 2–3px solid borders (3–4px for emphasis).
+
+Keep spacing generous, grid-like, and obvious.
+
+Text blocks max width ~65–75ch.
+
+Navigation / Header
+
+Current nav with underline hover → switch to 2px bottom border on hover/active.
+
+Active page link: boxed or underlined with a thicker line.
+
+“Get Quote” button: square, solid border, flat fill. Hover = invert border/fill. Focus = high-contrast outline.
+
+Hero Sections
+
+Replace soft card backgrounds with framed boxes (2–3px border).
+
+Keep headings and CTAs inside these bordered frames.
+
+Hero images (like the pixel dog): sit in a thin border box, no shadow.
+
+Cards & Feature Blocks (About Us, Products, Services)
+
+Current rounded cards → square cards with borders.
+
+No shadows. Flat fill only.
+
+Icons remain, but framed with stroke widths matching border thickness.
+
+Use border weight (e.g., thicker for “highlighted” product/service) instead of color fill to create emphasis.
+
+Forms (Contact, Commercial Quote)
+
+Inputs: square, 2px border, flat fill.
+
+Focus state: thicker border or solid outline ring (3px in brand accent).
+
+Buttons: square, bordered, flat fill. Hover = invert. Focus = outline.
+
+Pricing Tables (Residential Page)
+
+Each column gets a 2px border. Featured pricing column gets 3–4px border.
+
+Remove subtle shading. Use background fills sparingly.
+
+CTA buttons: square, bordered, flat fill. Hover/Focus same rules as above.
+
+Informational Banners (Poop Emergency, Commercial Status)
+
+Currently pink/red background with soft edges. → Square, 2px border box with solid fill.
+
+Headline stands out through bold type, not rounded styling.
+
+Blog / “Coming Soon” Panels
+
+Current rounded soft box → square bordered panel, flat background.
+
+“Get Started” or “Follow Up” CTAs = bordered buttons.
+
+Footer
+
+Treat footer as a top-bounded box: add a 2px top border.
+
+Keep dark background, but no shadows/gradients.
+
+Links: underline on hover, active link uses border box.
+
+Micro-Interactions
+
+Limit to hovers, focus, and small translate lifts (−2px).
+
+Remove fancy easing or shadows. Use 120–180ms ease-out.
+
+Accessibility
+
+Focus states must be clear: 2–3px solid outline ring (not blur).
+
+All borders meet contrast ratios against their fills.
+
+Acceptance Criteria
+
+All cards, inputs, and CTAs are square and bordered.
+
+No rounded corners or soft shadows remain.
+
+Emphasis achieved via border weight, scale, spacing — not decoration.
+
+Fonts, colors, and copy remain untouched.
+
+Keyboard focus is obvious.
+
+Consistency: all sections use the same border language.
