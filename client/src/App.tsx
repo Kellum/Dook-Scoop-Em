@@ -72,7 +72,13 @@ function Router() {
   
   // Scroll to top whenever route changes
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Use setTimeout to ensure DOM is fully rendered before scrolling
+    setTimeout(() => {
+      // Force scroll to top with multiple methods for reliability
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }, 0);
   }, [location]);
   
   return (
