@@ -76,14 +76,25 @@ export default function Onboard() {
   // Get quote pricing mutation
   const getQuoteMutation = useMutation({
     mutationFn: async (data: QuoteFormData) => {
+      // Map frontend values to quote API expected values
+      const frequencyMap = {
+        "once_a_week": "weekly",
+        "every_two_weeks": "bi_weekly", 
+        "once_a_month": "monthly"
+      } as const;
+
       return apiRequest("POST", "/api/quote", {
-        zipCode: data.zipCode,
-        numberOfDogs: data.numberOfDogs,
-        serviceFrequency: data.serviceFrequency,
-        lastCleanedTimeframe: data.lastCleanedTimeframe,
+        name: "Onboarding Customer", // Required field
         email: data.email,
         phone: data.cellPhone,
-        customerType: "residential"
+        address: "Will be provided in step 2", // Required field, filled in step 2
+        zipCode: data.zipCode,
+        numberOfDogs: data.numberOfDogs,
+        serviceFrequency: frequencyMap[data.serviceFrequency],
+        lastCleanedTimeframe: data.lastCleanedTimeframe,
+        urgency: "this_week", // Default urgency for onboarding flow
+        preferredContactMethod: "email",
+        message: "Customer onboarding quote request"
       });
     },
     onSuccess: (response) => {
