@@ -379,12 +379,6 @@ export default function Onboard() {
               <div className="text-4xl font-black">${pricingInfo.pricePerVisit || '13.86'}</div>
               <div className="text-lg">per cleanup</div>
             </div>
-            <Button 
-              onClick={() => setCurrentStep(3)}
-              className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-8 text-lg mb-6"
-            >
-              Start Up
-            </Button>
           </div>
         )}
 

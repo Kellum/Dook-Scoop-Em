@@ -305,15 +305,6 @@ export class DatabaseStorage implements IStorage {
 
   // Quote request operations
   async createQuoteRequest(insertQuote: InsertQuoteRequest): Promise<QuoteRequest> {
-    console.log("Storage layer - inserting quote request:");
-    console.log("Type of insertQuote:", typeof insertQuote);
-    console.log("insertQuote keys:", Object.keys(insertQuote));
-    
-    // Log each field and its type
-    Object.entries(insertQuote).forEach(([key, value]) => {
-      console.log(`Field ${key}:`, typeof value, JSON.stringify(value));
-    });
-    
     const [quote] = await db
       .insert(quoteRequests)
       .values(insertQuote)

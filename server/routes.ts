@@ -317,9 +317,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         estimatedPrice: estimatedPrice
       };
       
-      console.log("Data being passed to createQuoteRequest:", JSON.stringify(quoteData, null, 2));
-      console.log("estimatedPrice type:", typeof estimatedPrice, "value:", estimatedPrice);
-      
       const quoteRequest = await storage.createQuoteRequest(quoteData);
       
       console.log("Quote request created:", quoteRequest.id);
