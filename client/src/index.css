@@ -423,25 +423,34 @@ body {
   font-family: var(--font-system);
 }
 
-/* Theme Switcher */
+/* Theme Switcher - Customer Service Chat Tab Style */
 .theme-switcher {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 1000;
   background: hsl(var(--card));
   border: 1px solid hsl(var(--border));
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 12px;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  padding: 12px 8px;
+  font-size: 11px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: hsl(var(--foreground));
 }
 
 .theme-switcher:hover {
   background: hsl(var(--muted));
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-50%) translateX(-4px);
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
 }
