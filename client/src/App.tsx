@@ -15,6 +15,7 @@ import ProductsWeUse from "@/pages/products-we-use";
 import Blog from "@/pages/blog";
 import AboutUs from "@/pages/about-us";
 import Contact from "@/pages/contact";
+import Onboard from "@/pages/onboard";
 import Locations from "@/pages/locations-neu";
 import AdminLogin from "@/pages/admin/login-neu";
 import AdminDashboard from "@/pages/admin/dashboard";
@@ -44,6 +45,7 @@ function Router() {
       <Route path="/blog" component={Blog} />
       <Route path="/about-us" component={AboutUs} />
       <Route path="/contact" component={Contact} />
+      <Route path="/onboard" component={Onboard} />
       
       {/* Legacy/admin pages */}
       <Route path="/home" component={Home} />

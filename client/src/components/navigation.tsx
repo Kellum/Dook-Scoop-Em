@@ -47,10 +47,15 @@ export default function Navigation() {
               </Link>
             ))}
             
-            {/* CTA Button */}
+            {/* CTA Buttons */}
             <Link href="/contact">
-              <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-2">
+              <Button variant="outline" className="font-bold px-4 py-2 border-orange-600 text-orange-600 hover:bg-orange-50">
                 Get Quote
+              </Button>
+            </Link>
+            <Link href="/onboard">
+              <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-2">
+                Sign Up Now
               </Button>
             </Link>
           </div>
@@ -84,13 +89,22 @@ export default function Navigation() {
               </Link>
             ))}
             
-            <div className="pt-4 border-t border-gray-200 flex justify-center">
+            <div className="pt-4 border-t border-gray-200 flex flex-col space-y-3">
               <Link href="/contact">
                 <Button 
-                  className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-3"
+                  variant="outline"
+                  className="w-full font-bold px-6 py-3 border-orange-600 text-orange-600 hover:bg-orange-50"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Get Quote
+                </Button>
+              </Link>
+              <Link href="/onboard">
+                <Button 
+                  className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-3"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Sign Up Now
                 </Button>
               </Link>
             </div>

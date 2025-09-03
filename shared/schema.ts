@@ -114,6 +114,35 @@ export const quoteRequests = pgTable("quote_requests", {
   quotedAt: text("quoted_at"),
 });
 
+// Customer onboarding through Sweep&Go with payment processing
+export const onboardingSubmissions = pgTable("onboarding_submissions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  firstName: text("first_name").notNull(),
+  lastName: text("last_name").notNull(),
+  email: text("email").notNull(),
+  homeAddress: text("home_address").notNull(),
+  city: text("city").notNull(),
+  state: text("state").notNull(),
+  zipCode: text("zip_code").notNull(),
+  homePhone: text("home_phone"),
+  cellPhone: text("cell_phone").notNull(),
+  numberOfDogs: integer("number_of_dogs").notNull(),
+  serviceFrequency: text("service_frequency").notNull(), // once_a_week, every_two_weeks, etc
+  lastCleanedTimeframe: text("last_cleaned_timeframe").notNull(),
+  initialCleanupRequired: boolean("initial_cleanup_required").default(true),
+  notificationType: text("notification_type").default("completed,on_the_way"), // notification preferences
+  notificationChannel: text("notification_channel").default("sms"), // sms, email, call
+  howHeardAboutUs: text("how_heard_about_us"),
+  additionalComments: text("additional_comments"),
+  nameOnCard: text("name_on_card").notNull(),
+  sweepAndGoResponse: text("sweepandgo_response"), // JSON response from Sweep&Go onboarding
+  sweepAndGoClientId: text("sweepandgo_client_id"), // Client ID from Sweep&Go if successful
+  status: text("status").default("pending"), // pending, completed, failed
+  errorMessage: text("error_message"), // If onboarding failed
+  submittedAt: text("submitted_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -236,3 +265,40 @@ export const insertQuoteRequestSchema = createInsertSchema(quoteRequests).omit({
 
 export type InsertQuoteRequest = z.infer<typeof insertQuoteRequestSchema>;
 export type QuoteRequest = typeof quoteRequests.$inferSelect;
+
+// Onboarding Schema Validation
+export const insertOnboardingSubmissionSchema = createInsertSchema(onboardingSubmissions).omit({
+  id: true,
+  submittedAt: true,
+  updatedAt: true,
+  sweepAndGoResponse: true,
+  sweepAndGoClientId: true,
+  status: true,
+  errorMessage: true,
+}).extend({
+  firstName: z.string().min(2, "First name must be at least 2 characters"),
+  lastName: z.string().min(2, "Last name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  homeAddress: z.string().min(5, "Please enter your full home address"),
+  city: z.string().min(2, "City is required"),
+  state: z.string().length(2, "Please enter state abbreviation (e.g., FL)"),
+  zipCode: z.string().min(5, "Please enter a valid zip code"),
+  homePhone: z.string().optional(),
+  cellPhone: z.string().min(10, "Please enter a valid cell phone number"),
+  numberOfDogs: z.number().min(1, "Please select number of dogs").max(10, "Maximum 10 dogs allowed"),
+  serviceFrequency: z.enum(["once_a_week", "every_two_weeks", "once_a_month"], {
+    errorMap: () => ({ message: "Please select a service frequency" })
+  }),
+  lastCleanedTimeframe: z.enum(["one_week", "one_month", "three_months", "six_months", "one_year", "never"], {
+    errorMap: () => ({ message: "Please select when your yard was last cleaned" })
+  }),
+  initialCleanupRequired: z.boolean().default(true),
+  notificationType: z.string().default("completed,on_the_way"),
+  notificationChannel: z.enum(["sms", "email", "call"]).default("sms"),
+  howHeardAboutUs: z.string().optional(),
+  additionalComments: z.string().optional(),
+  nameOnCard: z.string().min(2, "Name on card is required"),
+});
+
+export type InsertOnboardingSubmission = z.infer<typeof insertOnboardingSubmissionSchema>;
+export type OnboardingSubmission = typeof onboardingSubmissions.$inferSelect;

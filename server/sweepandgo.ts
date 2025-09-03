@@ -221,6 +221,90 @@ export class SweepAndGoAPI {
       return null;
     }
   }
+
+  // Full customer onboarding with payment through Sweep&Go
+  async onboardCustomer(onboardingData: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    homeAddress: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    homePhone?: string;
+    cellPhone: string;
+    numberOfDogs: number;
+    serviceFrequency: string;
+    lastCleanedTimeframe: string;
+    initialCleanupRequired: boolean;
+    notificationType: string;
+    notificationChannel: string;
+    howHeardAboutUs?: string;
+    additionalComments?: string;
+    nameOnCard: string;
+    creditCardToken: string;
+    cvv: string;
+    postal: string;
+    expiry: string;
+  }): Promise<any> {
+    if (!this.apiToken) {
+      console.log("Sweep&Go API not configured - skipping onboarding");
+      return { error: "API not configured" };
+    }
+
+    try {
+      const url = `${SWEEPANDGO_BASE_URL}/v1/residential/onboarding`;
+      
+      const payload = {
+        zip_code: parseInt(onboardingData.zipCode),
+        number_of_dogs: onboardingData.numberOfDogs,
+        last_time_yard_was_thoroughly_cleaned: onboardingData.lastCleanedTimeframe,
+        clean_up_frequency: onboardingData.serviceFrequency,
+        first_name: onboardingData.firstName,
+        last_name: onboardingData.lastName,
+        email: onboardingData.email,
+        city: onboardingData.city,
+        home_address: onboardingData.homeAddress,
+        state: onboardingData.state,
+        home_phone_number: onboardingData.homePhone || "",
+        cell_phone_number: onboardingData.cellPhone,
+        initial_cleanup_required: onboardingData.initialCleanupRequired,
+        cleanup_notification_type: onboardingData.notificationType,
+        cleanup_notification_channel: onboardingData.notificationChannel,
+        how_heard_about_us: onboardingData.howHeardAboutUs || "Website",
+        additional_comment: onboardingData.additionalComments || "",
+        credit_card_token: onboardingData.creditCardToken,
+        name_on_card: onboardingData.nameOnCard,
+        cvv: onboardingData.cvv,
+        postal: onboardingData.postal,
+        expiry: onboardingData.expiry,
+      };
+
+      console.log("Sweep&Go onboarding request:", JSON.stringify(payload, null, 2));
+
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: this.getHeaders(),
+        body: JSON.stringify(payload),
+      });
+
+      const responseData = await response.json();
+      
+      if (!response.ok) {
+        console.error("Sweep&Go onboarding failed:", response.status, response.statusText, responseData);
+        return { 
+          error: `Onboarding failed: ${response.status} ${response.statusText}`, 
+          details: responseData 
+        };
+      }
+
+      console.log("Sweep&Go onboarding successful:", responseData);
+      return responseData;
+    } catch (error) {
+      console.error("Error during onboarding:", error);
+      return { error: error instanceof Error ? error.message : "Unknown error" };
+    }
+  }
 }
 
 export const sweepAndGoAPI = new SweepAndGoAPI();

@@ -7,6 +7,7 @@ import {
   seoSettings,
   mediaAssets,
   quoteRequests,
+  onboardingSubmissions,
   type User, 
   type InsertUser, 
   type WaitlistSubmission, 
@@ -23,6 +24,8 @@ import {
   type InsertMediaAsset,
   type QuoteRequest,
   type InsertQuoteRequest,
+  type OnboardingSubmission,
+  type InsertOnboardingSubmission,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
@@ -77,6 +80,13 @@ export interface IStorage {
   updateQuoteRequestPricing(id: string, pricing: string, estimatedPrice?: string): Promise<QuoteRequest | undefined>;
   addQuoteRequestNote(id: string, notes: string): Promise<QuoteRequest | undefined>;
   deleteQuoteRequest(id: string): Promise<void>;
+  
+  // Onboarding operations
+  createOnboardingSubmission(onboarding: InsertOnboardingSubmission): Promise<OnboardingSubmission>;
+  getAllOnboardingSubmissions(): Promise<OnboardingSubmission[]>;
+  getOnboardingSubmission(id: string): Promise<OnboardingSubmission | undefined>;
+  updateOnboardingStatus(id: string, status: string, sweepAndGoResponse?: string, sweepAndGoClientId?: string, errorMessage?: string): Promise<OnboardingSubmission | undefined>;
+  deleteOnboardingSubmission(id: string): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -354,6 +364,60 @@ export class DatabaseStorage implements IStorage {
 
   async deleteQuoteRequest(id: string): Promise<void> {
     await db.delete(quoteRequests).where(eq(quoteRequests.id, id));
+  }
+
+  // Onboarding operations
+  async createOnboardingSubmission(insertOnboarding: InsertOnboardingSubmission): Promise<OnboardingSubmission> {
+    const [onboarding] = await db
+      .insert(onboardingSubmissions)
+      .values(insertOnboarding)
+      .returning();
+    return onboarding;
+  }
+
+  async getAllOnboardingSubmissions(): Promise<OnboardingSubmission[]> {
+    return await db.select().from(onboardingSubmissions).orderBy(desc(onboardingSubmissions.submittedAt));
+  }
+
+  async getOnboardingSubmission(id: string): Promise<OnboardingSubmission | undefined> {
+    const [onboarding] = await db.select().from(onboardingSubmissions).where(eq(onboardingSubmissions.id, id));
+    return onboarding;
+  }
+
+  async updateOnboardingStatus(
+    id: string, 
+    status: string, 
+    sweepAndGoResponse?: string, 
+    sweepAndGoClientId?: string, 
+    errorMessage?: string
+  ): Promise<OnboardingSubmission | undefined> {
+    const updateData: any = { 
+      status, 
+      updatedAt: new Date().toISOString() 
+    };
+    
+    if (sweepAndGoResponse) {
+      updateData.sweepAndGoResponse = sweepAndGoResponse;
+    }
+    
+    if (sweepAndGoClientId) {
+      updateData.sweepAndGoClientId = sweepAndGoClientId;
+    }
+    
+    if (errorMessage) {
+      updateData.errorMessage = errorMessage;
+    }
+
+    const [onboarding] = await db
+      .update(onboardingSubmissions)
+      .set(updateData)
+      .where(eq(onboardingSubmissions.id, id))
+      .returning();
+    return onboarding;
+  }
+
+  async deleteOnboardingSubmission(id: string): Promise<void> {
+    await db.delete(onboardingSubmissions).where(eq(onboardingSubmissions.id, id));
   }
 
   private async initializeServiceLocations() {
