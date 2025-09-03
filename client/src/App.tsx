@@ -1,10 +1,51 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAnalytics } from "../hooks/use-analytics";
+
+// Theme Switcher Component
+function ThemeSwitcher() {
+  const [currentTheme, setCurrentTheme] = useState<string>('default');
+
+  useEffect(() => {
+    // Check if there's a saved theme preference
+    const savedTheme = localStorage.getItem('theme-preference') || 'default';
+    setCurrentTheme(savedTheme);
+    
+    // Apply theme to document
+    if (savedTheme === 'alternate') {
+      document.documentElement.setAttribute('data-theme', 'alternate');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = currentTheme === 'default' ? 'alternate' : 'default';
+    setCurrentTheme(newTheme);
+    localStorage.setItem('theme-preference', newTheme);
+    
+    // Apply theme to document
+    if (newTheme === 'alternate') {
+      document.documentElement.setAttribute('data-theme', 'alternate');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  };
+
+  return (
+    <button 
+      onClick={toggleTheme}
+      className="theme-switcher"
+      title={`Switch to ${currentTheme === 'default' ? 'alternate' : 'default'} theme`}
+    >
+      {currentTheme === 'default' ? '🎨 Alt Theme' : '🏠 Default'}
+    </button>
+  );
+}
 import Home from "@/pages/home";
 import LandingMinimal from "@/pages/landing-minimal";
 import LandingMinimalEastJax from "@/pages/landing-minimal-eastjax";
@@ -63,6 +104,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
+        <ThemeSwitcher />
         <Router />
       </TooltipProvider>
     </QueryClientProvider>

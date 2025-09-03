@@ -7,7 +7,7 @@
 @tailwind utilities;
 
 :root {
-  /* Light Theme Color Palette - Matching Waitlist Page */
+  /* Default Theme (Current Design) - Light Theme Color Palette */
   --background: hsl(0 0% 98%);
   --foreground: hsl(0 0% 23%);
   --card: hsl(0 0% 100%);
@@ -36,6 +36,43 @@
   --neu-shadow-dark: rgba(0, 0, 0, 0.15);
   
   /* Fonts */
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-vcr: 'VCR OSD Mono', monospace;
+  --font-primary: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-90s: 'Orbitron', sans-serif;
+}
+
+/* Alternative Theme - Ready for your new design */
+[data-theme="alternate"] {
+  /* Placeholder values - will be replaced with your new design */
+  --background: hsl(0 0% 98%);
+  --foreground: hsl(0 0% 23%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(0 0% 23%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(0 0% 23%);
+  --primary: hsl(0 0% 23%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(0 0% 69%);
+  --secondary-foreground: hsl(0 0% 23%);
+  --muted: hsl(0 0% 96%);
+  --muted-foreground: hsl(0 0% 46%);
+  --accent: hsl(25 85% 65%);
+  --accent-foreground: hsl(0 0% 0%);
+  --destructive: hsl(0 84% 60%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(0 0% 89%);
+  --input: hsl(0 0% 96%);
+  --ring: hsl(25 85% 65%);
+  --earth-tone: hsl(30 43% 31%);
+  --soft-grey: hsl(0 0% 69%);
+  --radius: 1rem;
+  
+  /* Alternative Neumorphic shadows */
+  --neu-shadow-light: rgba(255, 255, 255, 0.7);
+  --neu-shadow-dark: rgba(0, 0, 0, 0.15);
+  
+  /* Fonts can be overridden too */
   --font-pixel: 'Press Start 2P', monospace;
   --font-vcr: 'VCR OSD Mono', monospace;
   --font-primary: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -384,4 +421,27 @@ body {
   font-size: 12px;
   font-weight: 600;
   font-family: var(--font-system);
+}
+
+/* Theme Switcher */
+.theme-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.theme-switcher:hover {
+  background: hsl(var(--muted));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
