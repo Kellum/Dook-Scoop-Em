@@ -1,0 +1,34 @@
+Northside / Yulee / Amelia Island / Nassau ZIPs: 32034, 32097, 32041, 32226, 32218
+	•	“Less than the gas it takes to sit in Yulee traffic to the island.” Subline: “$75 billed monthly. We battle the piles so you don’t battle the bridge.”
+	•	“Less than concert parking—without the wait at the causeway.” Subline: “$75 billed monthly. Your yard stays calmer than A1A at rush.”
+	•	“Less than your Uber Eats lunch on the island.” Subline: “$75 billed monthly. Fresh yard, fresh air, fewer detours.”
+
+Jacksonville Beach / Neptune Beach / Atlantic Beach / Mayport ZIPs: 32250, 32266, 32233, 32224
+	•	“Less than sunscreen + snacks for a beach day.” Subline: “$75 billed monthly. Your yard stays clearer than the pier at sunrise.”
+	•	“Less than parking for a busy beach weekend.” Subline: “$75 billed monthly. Sand between toes, not surprises underfoot.”
+	•	“Less than your post-surf burrito run.” Subline: “$75 billed monthly. We scoop so you can chase waves, not landmines.”
+
+Riverside / Avondale / Murray Hill / Springfield / San Marco / Downtown ZIPs: 32202, 32204, 32205, 32206, 32207
+	•	“Less than brunch for two on King Street.” Subline: “$75 billed monthly. Your lawn stays fresh long after the mimosas wear off.”
+	•	“Less than a night out on the riverfront.” Subline: “$75 billed monthly. A clean lawn without the valet wait.”
+	•	“Less than your Bold Bean habit this week.” Subline: “$75 billed monthly. Sip slow; we’ll handle the fast clean.”
+
+Southside / Baymeadows / Deerwood / Nocatee / Ponte Vedra ZIPs: 32216, 32217, 32224, 32225, 32246, 32256, 32257, 32081, 32082
+	•	“Less than your Target run you didn’t plan on.” Subline: “$75 billed monthly. No surprises in the yard this time.”
+	•	“Less than topping off your tank on JTB days.” Subline: “$75 billed monthly. Fueled by poop-free yards.”
+	•	“Less than your Uber Eats lunch in Nocatee.” Subline: “$75 billed monthly. Clean lawn delivered on autopilot.”
+
+Westside / Orange Park / Middleburg ZIPs: 32210, 32221, 32222, 32244, 32073, 32065, 32068
+	•	“Less than the toll of sitting on Blanding at rush hour.” Subline: “$75 billed monthly. We scoop so you keep your sanity.”
+	•	“Less than concert parking—no traffic jam required.” Subline: “$75 billed monthly. Backyard clarity beats brake lights.”
+	•	“Less than your drive-thru detour this week.” Subline: “$75 billed monthly. Zero lines, zero landmines.”
+
+Arlington / Regency / Intracoastal ZIPs: 32211, 32225, 32246
+	•	“Less than takeout on Atlantic Boulevard.” Subline: “$75 billed monthly. Fresh yard, hot food, no mess.”
+	•	“Less than concert parking—right across the bridge.” Subline: “$75 billed monthly. Your lawn, but make it breathable.”
+	•	“Less than the ‘just this once’ impulse buys.” Subline: “$75 billed monthly. Consistently clean > occasionally chaotic.”
+
+General Jax / Fallback ZIPs: 32003, 32007, 32033, 32035, 32058, 32064, 32080, 32145, 32254, 32258, 32277
+	•	“Less than your Uber Eats lunch this week.” Subline: “$75 billed monthly. A clean lawn delivered automatically.”
+	•	“Less than concert parking—no wristband needed.” Subline: “$75 billed monthly. Everyday yard, headline cleanliness.”
+	•	“Less than your weekly grocery store impulse buys.” Subline: “$75 billed monthly. Clean lawn, zero guilt.”
