@@ -303,7 +303,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Extract estimated price from Sweep&Go response if available
       let estimatedPrice = null;
       if (sweepAndGoPricing && !sweepAndGoPricing.error && sweepAndGoPricing.price) {
-        estimatedPrice = sweepAndGoPricing.price.toString();
+        // Extract the actual price value from the price object
+        estimatedPrice = typeof sweepAndGoPricing.price === 'object' 
+          ? sweepAndGoPricing.price.value 
+          : sweepAndGoPricing.price.toString();
       }
       
       // Store quote request in database
