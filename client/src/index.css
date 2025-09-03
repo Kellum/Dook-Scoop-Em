@@ -213,13 +213,11 @@
 /* Theme switcher gets neo-brutal black borders */
 [data-theme="alternate"] .theme-switcher {
   border: var(--border-thick) solid var(--border-black);
-  border-right: none;
   box-shadow: none !important;
 }
 
 [data-theme="alternate"] .theme-switcher:hover {
   border: var(--border-emphasis) solid var(--border-black);
-  border-right: none;
   box-shadow: none !important;
 }
 
@@ -567,26 +565,21 @@ body {
   font-family: var(--font-system);
 }
 
-/* Theme Switcher - Customer Service Chat Tab Style */
+/* Theme Switcher - Floating Bottom Left Button */
 .theme-switcher {
   position: fixed;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: 20px;
+  left: 20px;
   z-index: 1000;
   background: hsl(var(--card));
   border: 1px solid hsl(var(--border));
-  border-right: none;
-  border-radius: 8px 0 0 8px;
-  padding: 12px 8px;
-  font-size: 11px;
-  font-weight: 600;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  font-size: 24px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  min-height: 80px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -595,6 +588,6 @@ body {
 
 .theme-switcher:hover {
   background: hsl(var(--muted));
-  transform: translateY(-50%) translateX(-4px);
-  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }

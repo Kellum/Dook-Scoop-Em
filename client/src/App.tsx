@@ -42,7 +42,7 @@ function ThemeSwitcher() {
       className="theme-switcher"
       title={`Switch to ${currentTheme === 'default' ? 'alternate' : 'default'} theme`}
     >
-      {currentTheme === 'default' ? '🎨 Alt Theme' : '🏠 Default'}
+🧡
     </button>
   );
 }
