@@ -74,10 +74,11 @@
   --neu-shadow-light: transparent;
   --neu-shadow-dark: transparent;
   
-  /* Border weights for hierarchy */
+  /* Neo-Brutalism Border weights - Bold black borders */
   --border-thin: 2px;
   --border-thick: 3px;
   --border-emphasis: 4px;
+  --border-black: #000000;
   
   /* Keep same fonts */
   --font-pixel: 'Press Start 2P', monospace;
@@ -93,11 +94,11 @@
   border-radius: 0 !important;
 }
 
-/* Cards become bordered boxes */
+/* Cards become bordered boxes with bold black borders */
 [data-theme="alternate"] .neu-raised,
 [data-theme="alternate"] .neu-card {
   background: hsl(var(--card));
-  border: var(--border-thin) solid hsl(var(--border));
+  border: var(--border-thick) solid var(--border-black);
   box-shadow: none !important;
 }
 
@@ -105,36 +106,36 @@
 [data-theme="alternate"] .neu-card:hover {
   transform: translateY(-2px);
   box-shadow: none !important;
-  border-width: var(--border-thick);
+  border: var(--border-emphasis) solid var(--border-black);
 }
 
 /* Pressed state becomes thicker border */
 [data-theme="alternate"] .neu-pressed {
   background: hsl(var(--muted));
-  border: var(--border-thick) solid hsl(var(--border));
+  border: var(--border-emphasis) solid var(--border-black);
   box-shadow: none !important;
 }
 
-/* Flat elements get basic border */
+/* Flat elements get black border */
 [data-theme="alternate"] .neu-flat {
   background: hsl(var(--background));
-  border: var(--border-thin) solid hsl(var(--border));
+  border: var(--border-thick) solid var(--border-black);
   box-shadow: none !important;
 }
 
-/* Buttons become bold bordered boxes */
+/* Buttons become bold black bordered boxes */
 [data-theme="alternate"] .neu-button {
   background: hsl(var(--accent));
   color: hsl(var(--accent-foreground));
-  border: var(--border-thin) solid hsl(var(--foreground));
+  border: var(--border-thick) solid var(--border-black);
   box-shadow: none !important;
   transition: all 120ms ease-out;
 }
 
 [data-theme="alternate"] .neu-button:hover {
-  background: hsl(var(--foreground));
+  background: var(--border-black);
   color: hsl(var(--background));
-  border-color: hsl(var(--accent));
+  border: var(--border-thick) solid var(--border-black);
   transform: translateY(-2px);
   box-shadow: none !important;
 }
@@ -150,16 +151,16 @@
   outline-offset: 2px;
 }
 
-/* Inputs become square bordered fields */
+/* Inputs become square black bordered fields */
 [data-theme="alternate"] .neu-input {
   background: hsl(var(--input));
-  border: var(--border-thin) solid hsl(var(--border));
+  border: var(--border-thick) solid var(--border-black);
   box-shadow: none !important;
   transition: all 180ms ease-out;
 }
 
 [data-theme="alternate"] .neu-input:focus {
-  border: var(--border-thick) solid hsl(var(--accent));
+  border: var(--border-emphasis) solid var(--border-black);
   outline: var(--border-thin) solid hsl(var(--accent));
   outline-offset: 1px;
   box-shadow: none !important;
@@ -190,33 +191,33 @@
   outline-offset: 2px;
 }
 
-/* Remove gradients from status indicators */
+/* Remove gradients from status indicators with black borders */
 [data-theme="alternate"] .status-active {
   background: #10b981;
-  border: var(--border-thin) solid #059669;
+  border: var(--border-thick) solid var(--border-black);
 }
 
 [data-theme="alternate"] .status-coming-soon {
   background: hsl(var(--accent));
-  border: var(--border-thin) solid hsl(var(--foreground));
+  border: var(--border-thick) solid var(--border-black);
   color: hsl(var(--accent-foreground));
 }
 
-/* Logo gets border treatment */
+/* Logo gets black border treatment */
 [data-theme="alternate"] .logo-icon {
-  border: var(--border-thin) solid hsl(var(--border));
+  border: var(--border-thick) solid var(--border-black);
   box-shadow: none !important;
 }
 
-/* Theme switcher gets neo-brutal treatment too */
+/* Theme switcher gets neo-brutal black borders */
 [data-theme="alternate"] .theme-switcher {
-  border: var(--border-thin) solid hsl(var(--border));
+  border: var(--border-thick) solid var(--border-black);
   border-right: none;
   box-shadow: none !important;
 }
 
 [data-theme="alternate"] .theme-switcher:hover {
-  border-width: var(--border-thick);
+  border: var(--border-emphasis) solid var(--border-black);
   border-right: none;
   box-shadow: none !important;
 }
