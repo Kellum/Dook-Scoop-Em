@@ -282,7 +282,88 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("=== CONTACT FORM RECEIVED ===");
       console.log("Contact data:", req.body);
       
-      // For now just log the contact message - you can extend this to save to database or send email
+      const { name, email, phone, subject, message } = req.body;
+      
+      // Send email notification to ryan@dookscoop.com
+      try {
+        const emailContent = {
+          from: {
+            email: "noreply@dookscoop.com",
+            name: "Dook Scoop Em Contact Form"
+          },
+          to: [
+            {
+              email: "ryan@dookscoop.com",
+              name: "Ryan"
+            }
+          ],
+          subject: `Contact Form: ${subject || 'New Message'}`,
+          html: `
+            <h2>New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+            <p><strong>Subject:</strong> ${subject || 'Not provided'}</p>
+            <p><strong>Message:</strong></p>
+            <p>${message}</p>
+            <hr>
+            <p><em>Submitted at ${new Date().toLocaleString()}</em></p>
+          `,
+          text: `
+            New Contact Form Submission
+            
+            Name: ${name}
+            Email: ${email}
+            Phone: ${phone || 'Not provided'}
+            Subject: ${subject || 'Not provided'}
+            
+            Message:
+            ${message}
+            
+            Submitted at ${new Date().toLocaleString()}
+          `
+        };
+
+        if (process.env.MAILERSEND_API_KEY) {
+          // Use MailerSend API
+          const emailResponse = await fetch('https://api.mailersend.com/v1/email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${process.env.MAILERSEND_API_KEY}`
+            },
+            body: JSON.stringify(emailContent)
+          });
+
+          if (emailResponse.ok) {
+            console.log("Contact form email sent successfully via API");
+          } else {
+            console.log("API failed, trying SMTP fallback");
+            await transporter.sendMail({
+              from: '"Dook Scoop Em Contact Form" <noreply@dookscoop.com>',
+              to: 'ryan@dookscoop.com',
+              subject: emailContent.subject,
+              html: emailContent.html,
+              text: emailContent.text
+            });
+            console.log("Contact form email sent successfully via SMTP");
+          }
+        } else {
+          // Fallback to SMTP
+          await transporter.sendMail({
+            from: '"Dook Scoop Em Contact Form" <noreply@dookscoop.com>',
+            to: 'ryan@dookscoop.com',
+            subject: emailContent.subject,
+            html: emailContent.html,
+            text: emailContent.text
+          });
+          console.log("Contact form email sent successfully via SMTP");
+        }
+      } catch (emailError) {
+        console.error("Failed to send contact form email:", emailError);
+        // Continue anyway - don't fail the form submission if email fails
+      }
+      
       res.json({
         success: true,
         message: "Thank you for your message! We'll get back to you within 24 hours.",
@@ -610,8 +691,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
               },
               body: JSON.stringify({
                 from: {
-                  email: "noreply@dookscoopem.com",
-                  name: "Dook Scoop Em"
+                  email: "noreply@dookscoop.com",
+                  name: "Dook Scoop Em Waitlist"
                 },
                 to: [
                   {
@@ -619,35 +700,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
                     name: "Ryan"
                   }
                 ],
-                subject: `New Waitlist Signup - ${submission.name} (${new Date().toLocaleDateString()})`,
+                subject: `🐾 New Waitlist: ${submission.name} (${submission.zipCode})`,
                 html: `
-                  <h2>New Waitlist Signup</h2>
+                  <h2>🐾 New Waitlist Signup</h2>
                   <p><strong>Name:</strong> ${submission.name}</p>
                   <p><strong>Email:</strong> ${submission.email}</p>
                   <p><strong>Phone:</strong> ${submission.phone}</p>
                   <p><strong>Address:</strong> ${submission.address}</p>
                   <p><strong>Zip Code:</strong> ${submission.zipCode}</p>
-                  <p><strong>Number of Dogs:</strong> ${submission.numberOfDogs}</p>
-                  ${submission.referralSource ? `<p><strong>How they heard about us:</strong> ${submission.referralSource}</p>` : ''}
-                  ${submission.urgency ? `<p><strong>Service urgency:</strong> ${submission.urgency}</p>` : ''}
+                  <p><strong>Dogs:</strong> ${submission.numberOfDogs}</p>
+                  ${submission.referralSource ? `<p><strong>Heard about us:</strong> ${submission.referralSource}</p>` : ''}
+                  ${submission.urgency ? `<p><strong>Urgency:</strong> ${submission.urgency}</p>` : ''}
                   ${submission.lastCleanup ? `<p><strong>Last cleanup:</strong> ${submission.lastCleanup}</p>` : ''}
-                  <p><strong>Can Text Updates:</strong> ${submission.canText ? 'YES ✓' : 'NO'}</p>
-                  <p><strong>Submitted At:</strong> ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}</p>
+                  ${submission.preferredPlan ? `<p><strong>Preferred plan:</strong> ${submission.preferredPlan}</p>` : ''}
+                  <p><strong>Can text:</strong> ${submission.canText ? 'YES ✅' : 'NO'}</p>
+                  <hr>
+                  <p><em>Submitted: ${new Date().toLocaleString()}</em></p>
                 `,
                 text: `
-                  New Waitlist Signup
-                  
-                  Name: ${submission.name}
-                  Email: ${submission.email}
-                  Phone: ${submission.phone}
-                  Address: ${submission.address}
-                  Zip Code: ${submission.zipCode}
-                  Number of Dogs: ${submission.numberOfDogs}
-                  ${submission.referralSource ? `How they heard about us: ${submission.referralSource}` : ''}
-                  ${submission.urgency ? `Service urgency: ${submission.urgency}` : ''}
-                  ${submission.lastCleanup ? `Last cleanup: ${submission.lastCleanup}` : ''}
-                  Can Text Updates: ${submission.canText ? 'YES' : 'NO'}
-                  Submitted At: ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}
+New Waitlist Signup
+
+Name: ${submission.name}
+Email: ${submission.email}
+Phone: ${submission.phone}
+Address: ${submission.address}
+Zip Code: ${submission.zipCode}
+Dogs: ${submission.numberOfDogs}
+${submission.referralSource ? `Heard about us: ${submission.referralSource}` : ''}
+${submission.urgency ? `Urgency: ${submission.urgency}` : ''}
+${submission.lastCleanup ? `Last cleanup: ${submission.lastCleanup}` : ''}
+${submission.preferredPlan ? `Preferred plan: ${submission.preferredPlan}` : ''}
+Can text: ${submission.canText ? 'YES' : 'NO'}
+
+Submitted: ${new Date().toLocaleString()}
                 `
               })
             });
@@ -810,37 +895,41 @@ Dook Scoop 'Em | Professional Pet Waste Removal
           if (process.env.MAILERSEND_SMTP_USER && process.env.MAILERSEND_SMTP_PASS) {
             try {
               const mailOptions = {
-                from: '"Dook Scoop Em" <noreply@dookscoopem.com>',
+                from: '"Dook Scoop Em Waitlist" <noreply@dookscoop.com>',
                 to: 'ryan@dookscoop.com',
-                subject: `New Waitlist Signup - ${submission.name} (${new Date().toLocaleDateString()})`,
+                subject: `🐾 New Waitlist: ${submission.name} (${submission.zipCode})`,
                 html: `
-                  <h2>New Waitlist Signup</h2>
+                  <h2>🐾 New Waitlist Signup</h2>
                   <p><strong>Name:</strong> ${submission.name}</p>
                   <p><strong>Email:</strong> ${submission.email}</p>
                   <p><strong>Phone:</strong> ${submission.phone}</p>
                   <p><strong>Address:</strong> ${submission.address}</p>
                   <p><strong>Zip Code:</strong> ${submission.zipCode}</p>
-                  <p><strong>Number of Dogs:</strong> ${submission.numberOfDogs}</p>
-                  ${submission.referralSource ? `<p><strong>How they heard about us:</strong> ${submission.referralSource}</p>` : ''}
-                  ${submission.urgency ? `<p><strong>Service urgency:</strong> ${submission.urgency}</p>` : ''}
+                  <p><strong>Dogs:</strong> ${submission.numberOfDogs}</p>
+                  ${submission.referralSource ? `<p><strong>Heard about us:</strong> ${submission.referralSource}</p>` : ''}
+                  ${submission.urgency ? `<p><strong>Urgency:</strong> ${submission.urgency}</p>` : ''}
                   ${submission.lastCleanup ? `<p><strong>Last cleanup:</strong> ${submission.lastCleanup}</p>` : ''}
-                  <p><strong>Can Text Updates:</strong> ${submission.canText ? 'YES ✓' : 'NO'}</p>
-                  <p><strong>Submitted At:</strong> ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}</p>
+                  ${submission.preferredPlan ? `<p><strong>Preferred plan:</strong> ${submission.preferredPlan}</p>` : ''}
+                  <p><strong>Can text:</strong> ${submission.canText ? 'YES ✅' : 'NO'}</p>
+                  <hr>
+                  <p><em>Submitted: ${new Date().toLocaleString()}</em></p>
                 `,
                 text: `
-                  New Waitlist Signup
-                  
-                  Name: ${submission.name}
-                  Email: ${submission.email}
-                  Phone: ${submission.phone}
-                  Address: ${submission.address}
-                  Zip Code: ${submission.zipCode}
-                  Number of Dogs: ${submission.numberOfDogs}
-                  ${submission.referralSource ? `How they heard about us: ${submission.referralSource}` : ''}
-                  ${submission.urgency ? `Service urgency: ${submission.urgency}` : ''}
-                  ${submission.lastCleanup ? `Last cleanup: ${submission.lastCleanup}` : ''}
-                  Can Text Updates: ${submission.canText ? 'YES' : 'NO'}
-                  Submitted At: ${submission.submittedAt ? new Date(submission.submittedAt).toLocaleString() : 'Unknown'}
+New Waitlist Signup
+
+Name: ${submission.name}
+Email: ${submission.email}
+Phone: ${submission.phone}
+Address: ${submission.address}
+Zip Code: ${submission.zipCode}
+Dogs: ${submission.numberOfDogs}
+${submission.referralSource ? `Heard about us: ${submission.referralSource}` : ''}
+${submission.urgency ? `Urgency: ${submission.urgency}` : ''}
+${submission.lastCleanup ? `Last cleanup: ${submission.lastCleanup}` : ''}
+${submission.preferredPlan ? `Preferred plan: ${submission.preferredPlan}` : ''}
+Can text: ${submission.canText ? 'YES' : 'NO'}
+
+Submitted: ${new Date().toLocaleString()}
                 `
               };
 
