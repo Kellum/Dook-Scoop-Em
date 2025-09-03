@@ -6,6 +6,7 @@ import {
   pageContent,
   seoSettings,
   mediaAssets,
+  quoteRequests,
   type User, 
   type InsertUser, 
   type WaitlistSubmission, 
@@ -20,6 +21,8 @@ import {
   type InsertSeoSettings,
   type MediaAsset,
   type InsertMediaAsset,
+  type QuoteRequest,
+  type InsertQuoteRequest,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
@@ -65,6 +68,15 @@ export interface IStorage {
   getMediaAsset(id: string): Promise<MediaAsset | undefined>;
   createMediaAsset(asset: InsertMediaAsset): Promise<MediaAsset>;
   deleteMediaAsset(id: string): Promise<void>;
+  
+  // Quote request operations
+  createQuoteRequest(quote: InsertQuoteRequest): Promise<QuoteRequest>;
+  getAllQuoteRequests(): Promise<QuoteRequest[]>;
+  getQuoteRequest(id: string): Promise<QuoteRequest | undefined>;
+  updateQuoteRequestStatus(id: string, status: string): Promise<QuoteRequest | undefined>;
+  updateQuoteRequestPricing(id: string, pricing: string, estimatedPrice?: string): Promise<QuoteRequest | undefined>;
+  addQuoteRequestNote(id: string, notes: string): Promise<QuoteRequest | undefined>;
+  deleteQuoteRequest(id: string): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -279,6 +291,69 @@ export class DatabaseStorage implements IStorage {
 
   async deleteMediaAsset(id: string): Promise<void> {
     await db.delete(mediaAssets).where(eq(mediaAssets.id, id));
+  }
+
+  // Quote request operations
+  async createQuoteRequest(insertQuote: InsertQuoteRequest): Promise<QuoteRequest> {
+    const [quote] = await db
+      .insert(quoteRequests)
+      .values(insertQuote)
+      .returning();
+    return quote;
+  }
+
+  async getAllQuoteRequests(): Promise<QuoteRequest[]> {
+    return await db.select().from(quoteRequests).orderBy(desc(quoteRequests.submittedAt));
+  }
+
+  async getQuoteRequest(id: string): Promise<QuoteRequest | undefined> {
+    const [quote] = await db.select().from(quoteRequests).where(eq(quoteRequests.id, id));
+    return quote;
+  }
+
+  async updateQuoteRequestStatus(id: string, status: string): Promise<QuoteRequest | undefined> {
+    const [quote] = await db
+      .update(quoteRequests)
+      .set({ 
+        status, 
+        updatedAt: new Date().toISOString(),
+        ...(status === "contacted" && { contactedAt: new Date().toISOString() }),
+        ...(status === "quoted" && { quotedAt: new Date().toISOString() })
+      })
+      .where(eq(quoteRequests.id, id))
+      .returning();
+    return quote;
+  }
+
+  async updateQuoteRequestPricing(id: string, pricing: string, estimatedPrice?: string): Promise<QuoteRequest | undefined> {
+    const updateData: any = { 
+      sweepAndGoPricing: pricing, 
+      updatedAt: new Date().toISOString() 
+    };
+    
+    if (estimatedPrice) {
+      updateData.estimatedPrice = estimatedPrice;
+    }
+
+    const [quote] = await db
+      .update(quoteRequests)
+      .set(updateData)
+      .where(eq(quoteRequests.id, id))
+      .returning();
+    return quote;
+  }
+
+  async addQuoteRequestNote(id: string, notes: string): Promise<QuoteRequest | undefined> {
+    const [quote] = await db
+      .update(quoteRequests)
+      .set({ notes, updatedAt: new Date().toISOString() })
+      .where(eq(quoteRequests.id, id))
+      .returning();
+    return quote;
+  }
+
+  async deleteQuoteRequest(id: string): Promise<void> {
+    await db.delete(quoteRequests).where(eq(quoteRequests.id, id));
   }
 
   private async initializeServiceLocations() {

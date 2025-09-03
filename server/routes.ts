@@ -8,7 +8,8 @@ import {
   insertPageSchema,
   insertPageContentSchema,
   insertSeoSettingsSchema,
-  insertMediaAssetSchema
+  insertMediaAssetSchema,
+  insertQuoteRequestSchema
 } from "@shared/schema";
 import { hashPassword, verifyPassword, generateToken, requireAuth } from "./auth";
 import { handleSweepAndGoWebhook, sweepAndGoAPI } from "./sweepandgo";
@@ -140,6 +141,64 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin Quote Management Endpoints
+  app.get("/api/admin/quotes", requireAuth, async (req, res) => {
+    try {
+      const quotes = await storage.getAllQuoteRequests();
+      res.json({ quotes });
+    } catch (error) {
+      console.error("Error fetching quotes:", error);
+      res.status(500).json({ error: "Failed to fetch quotes" });
+    }
+  });
+
+  app.patch("/api/admin/quotes/:id/status", requireAuth, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      
+      if (!["new", "contacted", "quoted", "converted", "lost"].includes(status)) {
+        return res.status(400).json({ error: "Invalid status" });
+      }
+      
+      const quote = await storage.updateQuoteRequestStatus(id, status);
+      if (!quote) {
+        return res.status(404).json({ error: "Quote not found" });
+      }
+      res.json({ message: "Quote status updated successfully", quote });
+    } catch (error) {
+      console.error("Error updating quote status:", error);
+      res.status(500).json({ error: "Failed to update quote status" });
+    }
+  });
+
+  app.patch("/api/admin/quotes/:id/notes", requireAuth, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { notes } = req.body;
+      
+      const quote = await storage.addQuoteRequestNote(id, notes);
+      if (!quote) {
+        return res.status(404).json({ error: "Quote not found" });
+      }
+      res.json({ message: "Quote notes updated successfully", quote });
+    } catch (error) {
+      console.error("Error updating quote notes:", error);
+      res.status(500).json({ error: "Failed to update quote notes" });
+    }
+  });
+
+  app.delete("/api/admin/quotes/:id", requireAuth, async (req, res) => {
+    try {
+      const { id } = req.params;
+      await storage.deleteQuoteRequest(id);
+      res.json({ message: "Quote deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting quote:", error);
+      res.status(500).json({ error: "Failed to delete quote" });
+    }
+  });
+
   app.patch("/api/admin/waitlist/:id/archive", requireAuth, async (req, res) => {
     try {
       const { id } = req.params;
@@ -216,6 +275,92 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Public endpoints
+  // Quote request endpoint - integrates with Sweep&Go
+  app.post("/api/quote", async (req, res) => {
+    try {
+      console.log("=== QUOTE REQUEST RECEIVED ===");
+      console.log("Request body:", JSON.stringify(req.body, null, 2));
+      
+      // Validate request body
+      const validatedData = insertQuoteRequestSchema.parse(req.body);
+      console.log("Validated data:", validatedData);
+      
+      // Check if email already exists in Sweep&Go
+      const emailExists = await sweepAndGoAPI.checkClientEmailExists(validatedData.email);
+      console.log(`Email ${validatedData.email} exists in Sweep&Go:`, emailExists);
+      
+      // Get pricing from Sweep&Go
+      const sweepAndGoPricing = await sweepAndGoAPI.getPricing({
+        zipCode: validatedData.zipCode,
+        numberOfDogs: validatedData.numberOfDogs,
+        frequency: validatedData.serviceFrequency,
+        lastCleanedTimeframe: validatedData.lastCleanedTimeframe
+      });
+      
+      console.log("Sweep&Go pricing response:", sweepAndGoPricing);
+      
+      // Extract estimated price from Sweep&Go response if available
+      let estimatedPrice = null;
+      if (sweepAndGoPricing && !sweepAndGoPricing.error && sweepAndGoPricing.price) {
+        estimatedPrice = sweepAndGoPricing.price.toString();
+      }
+      
+      // Store quote request in database
+      const quoteRequest = await storage.createQuoteRequest({
+        ...validatedData,
+        sweepAndGoEmailExists: emailExists,
+        sweepAndGoPricing: JSON.stringify(sweepAndGoPricing),
+        estimatedPrice: estimatedPrice
+      });
+      
+      console.log("Quote request created:", quoteRequest.id);
+      
+      // Prepare response with pricing information
+      const responseData = {
+        success: true,
+        quoteId: quoteRequest.id,
+        message: "Quote request received successfully",
+        emailExistsInSystem: emailExists,
+        pricing: sweepAndGoPricing && !sweepAndGoPricing.error ? {
+          estimatedPrice: estimatedPrice,
+          frequency: validatedData.serviceFrequency,
+          details: sweepAndGoPricing
+        } : null,
+        nextSteps: emailExists 
+          ? "We found your information in our system. We'll contact you within 24 hours to confirm pricing and schedule."
+          : "We'll contact you within 24 hours with a custom quote and to schedule your service."
+      };
+      
+      console.log("Quote response:", responseData);
+      
+      // Track quote submission for analytics
+      console.log("=== QUOTE ANALYTICS ===");
+      console.log("Event: quote_request");
+      console.log("Email exists:", emailExists);
+      console.log("Pricing available:", !!estimatedPrice);
+      console.log("Service frequency:", validatedData.serviceFrequency);
+      console.log("Number of dogs:", validatedData.numberOfDogs);
+      console.log("Zip code:", validatedData.zipCode);
+      console.log("========================");
+      
+      res.json(responseData);
+      
+    } catch (error) {
+      console.error("Quote request error:", error);
+      if (error instanceof Error && error.name === 'ZodError') {
+        return res.status(400).json({ 
+          success: false,
+          message: "Please check your form data", 
+          errors: (error as any).errors 
+        });
+      }
+      res.status(500).json({ 
+        success: false,
+        message: "Failed to process quote request. Please try again later." 
+      });
+    }
+  });
+  
   // Get service locations endpoint
   app.get("/api/locations", async (req, res) => {
     try {

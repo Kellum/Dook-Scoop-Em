@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, integer, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, integer, boolean, decimal, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -81,6 +81,37 @@ export const mediaAssets = pgTable("media_assets", {
   altText: text("alt_text"),
   caption: text("caption"),
   uploadedAt: text("uploaded_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+// Quote Requests - separate from waitlist for business quotes
+export const quoteRequests = pgTable("quote_requests", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone").notNull(),
+  address: text("address").notNull(),
+  zipCode: text("zip_code").notNull(),
+  numberOfDogs: integer("number_of_dogs").notNull(),
+  serviceFrequency: text("service_frequency").notNull(), // weekly, bi_weekly, monthly
+  lastCleanedTimeframe: text("last_cleaned_timeframe").notNull(), // one_week, one_month, etc.
+  urgency: text("urgency").notNull(),
+  preferredContactMethod: text("preferred_contact_method").default("email"), // email, phone, text
+  message: text("message"),
+  
+  // Sweep&Go integration data
+  sweepAndGoEmailExists: boolean("sweepandgo_email_exists").default(false),
+  sweepAndGoPricing: text("sweepandgo_pricing"), // JSON string of pricing response
+  
+  // Quote status and follow-up
+  status: text("status").default("new"), // new, contacted, quoted, converted, lost
+  estimatedPrice: decimal("estimated_price", { precision: 10, scale: 2 }),
+  notes: text("notes"), // Admin notes for follow-up
+  
+  // Timestamps
+  submittedAt: text("submitted_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
+  contactedAt: text("contacted_at"),
+  quotedAt: text("quoted_at"),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
@@ -176,3 +207,32 @@ export type InsertSeoSettings = z.infer<typeof insertSeoSettingsSchema>;
 export type SeoSettings = typeof seoSettings.$inferSelect;
 export type InsertMediaAsset = z.infer<typeof insertMediaAssetSchema>;
 export type MediaAsset = typeof mediaAssets.$inferSelect;
+
+// Quote Request Schema
+export const insertQuoteRequestSchema = createInsertSchema(quoteRequests).omit({
+  id: true,
+  submittedAt: true,
+  updatedAt: true,
+  contactedAt: true,
+  quotedAt: true,
+  sweepAndGoEmailExists: true,
+  sweepAndGoPricing: true,
+  status: true,
+  estimatedPrice: true,
+  notes: true,
+}).extend({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  phone: z.string().min(10, "Please enter a valid phone number"),
+  address: z.string().min(5, "Please enter your service address"),
+  zipCode: z.string().min(5, "Please enter a valid zip code"),
+  numberOfDogs: z.number().min(1, "Please select number of dogs").max(10, "Please contact us for 10+ dogs"),
+  serviceFrequency: z.enum(["weekly", "bi_weekly", "monthly"], { required_error: "Please select service frequency" }),
+  lastCleanedTimeframe: z.enum(["one_week", "one_month", "three_months", "six_months", "one_year", "never"], { required_error: "Please let us know when your yard was last cleaned" }),
+  urgency: z.enum(["asap", "this_week", "next_week", "within_month", "planning_ahead"], { required_error: "Please select your timing preference" }),
+  preferredContactMethod: z.enum(["email", "phone", "text"]).default("email"),
+  message: z.string().optional(),
+});
+
+export type InsertQuoteRequest = z.infer<typeof insertQuoteRequestSchema>;
+export type QuoteRequest = typeof quoteRequests.$inferSelect;
