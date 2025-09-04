@@ -285,7 +285,7 @@ export class SweepAndGoAPI {
       const url = `${SWEEPANDGO_BASE_URL}/v1/residential/onboarding`;
       
       const payload = {
-        zip_code: parseInt(onboardingData.zipCode),
+        zip_code: onboardingData.zipCode,
         number_of_dogs: onboardingData.numberOfDogs,
         last_time_yard_was_thoroughly_cleaned: onboardingData.lastCleanedTimeframe,
         clean_up_frequency: onboardingData.serviceFrequency,
@@ -297,7 +297,7 @@ export class SweepAndGoAPI {
         state: onboardingData.state,
         home_phone_number: onboardingData.homePhone || "",
         cell_phone_number: onboardingData.cellPhone,
-        initial_cleanup_required: onboardingData.initialCleanupRequired,
+        initial_cleanup_required: onboardingData.initialCleanupRequired ? "yes" : "no",
         cleanup_notification_type: onboardingData.notificationType,
         cleanup_notification_channel: onboardingData.notificationChannel,
         how_heard_about_us: onboardingData.howHeardAboutUs || "Website",

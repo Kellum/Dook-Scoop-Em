@@ -78,6 +78,19 @@ export default function Onboard() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [onboardingResponse, setOnboardingResponse] = useState<any>(null);
 
+  // Payment form for Step 3 (moved to top level to fix hook error)
+  const paymentForm = useForm<PaymentInfoData>({
+    resolver: zodResolver(paymentInfoSchema),
+    defaultValues: {
+      nameOnCard: "",
+      creditCardNumber: "",
+      expiryMonth: "",
+      expiryYear: "",
+      cvv: "",
+      couponCode: ""
+    },
+  });
+
   // Get quote pricing mutation
   const getQuoteMutation = useMutation({
     mutationFn: async (data: QuoteFormData) => {
@@ -622,18 +635,6 @@ export default function Onboard() {
 
   // Step 3 Component - Payment Setup
   const renderStep3 = () => {
-    const form = useForm<PaymentInfoData>({
-      resolver: zodResolver(paymentInfoSchema),
-      defaultValues: {
-        nameOnCard: "",
-        creditCardNumber: "",
-        expiryMonth: "",
-        expiryYear: "",
-        cvv: "",
-        couponCode: ""
-      },
-    });
-
     const onSubmitPayment = (data: PaymentInfoData) => {
       console.log("Payment info:", data);
       submitOnboardingMutation.mutate(data);
@@ -695,10 +696,10 @@ export default function Onboard() {
           </div>
         </CardHeader>
         <CardContent className="p-6">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmitPayment)} className="space-y-4">
+          <Form {...paymentForm}>
+            <form onSubmit={paymentForm.handleSubmit(onSubmitPayment)} className="space-y-4">
               <FormField
-                control={form.control}
+                control={paymentForm.control}
                 name="nameOnCard"
                 render={({ field }) => (
                   <FormItem>
@@ -712,7 +713,7 @@ export default function Onboard() {
               />
 
               <FormField
-                control={form.control}
+                control={paymentForm.control}
                 name="creditCardNumber"
                 render={({ field }) => (
                   <FormItem>
@@ -733,7 +734,7 @@ export default function Onboard() {
               <div className="text-sm font-bold text-black mb-2">EXPIRY DATE</div>
               <div className="grid grid-cols-2 gap-3">
                 <FormField
-                  control={form.control}
+                  control={paymentForm.control}
                   name="expiryMonth"
                   render={({ field }) => (
                     <FormItem>
@@ -745,7 +746,7 @@ export default function Onboard() {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={paymentForm.control}
                   name="expiryYear"
                   render={({ field }) => (
                     <FormItem>
@@ -759,7 +760,7 @@ export default function Onboard() {
               </div>
 
               <FormField
-                control={form.control}
+                control={paymentForm.control}
                 name="cvv"
                 render={({ field }) => (
                   <FormItem>
