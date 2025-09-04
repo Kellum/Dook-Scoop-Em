@@ -116,7 +116,7 @@ export class SweepAndGoAPI {
         // Original format
         {
           url: `${SWEEPANDGO_BASE_URL}/v2/client_on_boarding/check_client_email_exists`,
-          params: { slug: this.organizationSlug, email: email }
+          params: { organization: this.organizationSlug, email: email }
         },
         // Alternative format 1
         {
