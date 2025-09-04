@@ -586,6 +586,20 @@ export default function Onboard() {
     
     try {
       const response = await apiRequest("POST", "/api/validate-coupon", { code: couponCode });
+      
+      // Check if response is ok first
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      // Check content type before parsing
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error("Non-JSON response received:", text);
+        throw new Error("Server returned non-JSON response");
+      }
+      
       const data = await response.json();
       
       if (data.valid) {
