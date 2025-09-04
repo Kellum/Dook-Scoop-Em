@@ -209,10 +209,11 @@ export default function Onboard() {
                 name="zipCode"
                 render={({ field }) => (
                   <FormItem>
+                    <div className="text-lg font-bold text-black mb-2">YOUR ZIP CODE</div>
                     <FormControl>
                       <Input 
                         {...field} 
-                        placeholder="Your Zip Code (e.g. 32226)"
+                        placeholder="32226"
                         className="text-center text-lg py-3"
                         data-testid="input-zipCode"
                       />
@@ -299,11 +300,12 @@ export default function Onboard() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
+                    <div className="text-lg font-bold text-black mb-2">EMAIL ADDRESS</div>
                     <FormControl>
                       <Input 
                         {...field} 
                         type="email"
-                        placeholder="Email address for quote (e.g. john@example.com)"
+                        placeholder="john@example.com"
                         className="text-gray-500"
                         data-testid="input-email"
                       />
@@ -318,11 +320,12 @@ export default function Onboard() {
                 name="cellPhone"
                 render={({ field }) => (
                   <FormItem>
+                    <div className="text-lg font-bold text-black mb-2">CELL PHONE</div>
                     <FormControl>
                       <Input 
                         {...field} 
                         type="tel"
-                        placeholder="Cell phone for updates (e.g. 904-555-1234)"
+                        placeholder="904-555-1234"
                         className="text-gray-500"
                         data-testid="input-cellPhone"
                       />
@@ -428,6 +431,7 @@ export default function Onboard() {
         <CardContent className="p-6">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmitCustomerInfo)} className="space-y-4">
+              <div className="text-lg font-bold text-black mb-2">YOUR NAME</div>
               <div className="grid grid-cols-2 gap-3">
                 <FormField
                   control={form.control}
@@ -435,7 +439,7 @@ export default function Onboard() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} placeholder="First Name*" data-testid="input-firstName" />
+                        <Input {...field} placeholder="First" data-testid="input-firstName" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -447,7 +451,7 @@ export default function Onboard() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} placeholder="Last Name*" data-testid="input-lastName" />
+                        <Input {...field} placeholder="Last" data-testid="input-lastName" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -460,14 +464,16 @@ export default function Onboard() {
                 name="homeAddress"
                 render={({ field }) => (
                   <FormItem>
+                    <div className="text-lg font-bold text-black mb-2">HOME ADDRESS</div>
                     <FormControl>
-                      <Input {...field} placeholder="Home Address*" data-testid="input-homeAddress" />
+                      <Input {...field} placeholder="123 Main St" data-testid="input-homeAddress" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              <div className="text-lg font-bold text-black mb-2">CITY & STATE</div>
               <div className="grid grid-cols-2 gap-3">
                 <FormField
                   control={form.control}
@@ -475,7 +481,7 @@ export default function Onboard() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} placeholder="City*" data-testid="input-city" />
+                        <Input {...field} placeholder="Jacksonville" data-testid="input-city" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -489,7 +495,7 @@ export default function Onboard() {
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger data-testid="select-state">
-                            <SelectValue placeholder="State*" />
+                            <SelectValue placeholder="FL" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -508,8 +514,9 @@ export default function Onboard() {
                 name="homePhone"
                 render={({ field }) => (
                   <FormItem>
+                    <div className="text-lg font-bold text-black mb-2">PHONE NUMBER</div>
                     <FormControl>
-                      <Input {...field} type="tel" placeholder="Phone Number" data-testid="input-homePhone" />
+                      <Input {...field} type="tel" placeholder="904-555-1234" data-testid="input-homePhone" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -521,10 +528,11 @@ export default function Onboard() {
                 name="additionalComments"
                 render={({ field }) => (
                   <FormItem>
+                    <div className="text-lg font-bold text-black mb-2">SPECIAL INSTRUCTIONS</div>
                     <FormControl>
                       <Textarea 
                         {...field} 
-                        placeholder="Additional comments (gate codes, special instructions, etc.)"
+                        placeholder="Gate code, dog behavior notes, etc."
                         className="min-h-[80px]"
                         data-testid="textarea-additionalComments"
                       />
@@ -594,8 +602,9 @@ export default function Onboard() {
                 name="nameOnCard"
                 render={({ field }) => (
                   <FormItem>
+                    <div className="text-lg font-bold text-black mb-2">NAME ON CARD</div>
                     <FormControl>
-                      <Input {...field} placeholder="Name On Card" data-testid="input-nameOnCard" />
+                      <Input {...field} placeholder="John Doe" data-testid="input-nameOnCard" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -607,10 +616,11 @@ export default function Onboard() {
                 name="creditCardNumber"
                 render={({ field }) => (
                   <FormItem>
+                    <div className="text-lg font-bold text-black mb-2">CARD NUMBER</div>
                     <FormControl>
                       <Input 
                         {...field} 
-                        placeholder="Card number"
+                        placeholder="4111 1111 1111 1111"
                         data-testid="input-creditCardNumber"
                       />
                     </FormControl>
@@ -619,6 +629,7 @@ export default function Onboard() {
                 )}
               />
 
+              <div className="text-lg font-bold text-black mb-2">EXPIRY DATE</div>
               <div className="grid grid-cols-2 gap-3">
                 <FormField
                   control={form.control}
@@ -626,7 +637,7 @@ export default function Onboard() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} placeholder="MM" maxLength={2} data-testid="input-expiryMonth" />
+                        <Input {...field} placeholder="12" maxLength={2} data-testid="input-expiryMonth" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -638,7 +649,7 @@ export default function Onboard() {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} placeholder="YY" maxLength={2} data-testid="input-expiryYear" />
+                        <Input {...field} placeholder="25" maxLength={2} data-testid="input-expiryYear" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -651,10 +662,11 @@ export default function Onboard() {
                 name="cvv"
                 render={({ field }) => (
                   <FormItem>
+                    <div className="text-lg font-bold text-black mb-2">SECURITY CODE</div>
                     <FormControl>
                       <Input 
                         {...field} 
-                        placeholder="CVC"
+                        placeholder="123"
                         maxLength={4}
                         data-testid="input-cvv"
                       />
