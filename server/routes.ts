@@ -380,44 +380,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Coupon validation endpoint
   app.post("/api/validate-coupon", async (req, res) => {
+    console.log("=== COUPON VALIDATION REQUEST ===");
+    console.log("Request body:", JSON.stringify(req.body, null, 2));
+    console.log("Request headers:", req.headers);
+    
+    // Set explicit JSON content type
+    res.set('Content-Type', 'application/json');
+    
     try {
       const { code } = req.body;
       
       if (!code || typeof code !== 'string') {
-        return res.status(400).json({ 
+        const response = { 
           valid: false, 
           message: "Coupon code is required" 
-        });
+        };
+        console.log("Sending response:", response);
+        return res.status(400).json(response);
       }
 
-      // Active coupon codes from Sweep&Go dashboard
-      const coupons = {
+      // Check against your active Sweep&Go coupon codes
+      const activeCoupons = {
         'TESTER': { discount: 100, type: 'percent', description: 'Free service for testing' }
       };
 
-      const coupon = coupons[code.toUpperCase()];
+      const coupon = activeCoupons[code.toUpperCase()];
       
       if (coupon) {
-        return res.json({
+        const response = {
           valid: true,
           code: code.toUpperCase(),
           discount: coupon.discount,
           type: coupon.type,
           description: coupon.description
-        });
+        };
+        console.log("Sending success response:", response);
+        return res.json(response);
       } else {
-        return res.json({
+        const response = {
           valid: false,
           message: "Invalid coupon code"
-        });
+        };
+        console.log("Sending invalid response:", response);
+        return res.json(response);
       }
     } catch (error) {
       console.error("Coupon validation error:", error);
-      res.status(500).json({ 
+      const response = { 
         valid: false, 
         message: "Error validating coupon" 
-      });
+      };
+      console.log("Sending error response:", response);
+      res.status(500).json(response);
     }
+    console.log("=== END COUPON VALIDATION ===");
   });
 
   // Quote request endpoint - integrates with Sweep&Go
