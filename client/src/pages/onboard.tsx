@@ -78,7 +78,37 @@ export default function Onboard() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [onboardingResponse, setOnboardingResponse] = useState<any>(null);
 
-  // Payment form for Step 3 (moved to top level to fix hook error)
+  // All form instances at top level to fix React hook errors
+  const quoteForm = useForm<QuoteFormData>({
+    resolver: zodResolver(quoteFormSchema),
+    defaultValues: {
+      zipCode: "",
+      numberOfDogs: 1,
+      serviceFrequency: "once_a_week",
+      lastCleanedTimeframe: "one_month",
+      email: "",
+      cellPhone: ""
+    },
+  });
+
+  const customerForm = useForm<CustomerInfoData>({
+    resolver: zodResolver(customerInfoSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      homeAddress: "",
+      city: "",
+      state: "FL",
+      homePhone: "",
+      gateLocation: "",
+      contactImmediately: false,
+      preferredDays: "",
+      dogsOnProperty: "",
+      notificationPreference: "",
+      additionalComments: ""
+    },
+  });
+
   const paymentForm = useForm<PaymentInfoData>({
     resolver: zodResolver(paymentInfoSchema),
     defaultValues: {
@@ -194,18 +224,6 @@ export default function Onboard() {
 
   // Step 1 Component - Get Your Free Estimate
   const renderStep1 = () => {
-    const form = useForm<QuoteFormData>({
-      resolver: zodResolver(quoteFormSchema),
-      defaultValues: {
-        zipCode: "",
-        numberOfDogs: 1,
-        serviceFrequency: "once_a_week",
-        lastCleanedTimeframe: "one_month",
-        email: "",
-        cellPhone: ""
-      },
-    });
-
     const onSubmitQuote = (data: QuoteFormData) => {
       console.log("Submitting quote request:", data);
       setQuoteData(data);
@@ -220,10 +238,10 @@ export default function Onboard() {
           </div>
         </CardHeader>
         <CardContent className="p-6">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmitQuote)} className="space-y-4">
+          <Form {...quoteForm}>
+            <form onSubmit={quoteForm.handleSubmit(onSubmitQuote)} className="space-y-4">
               <FormField
-                control={form.control}
+                control={quoteForm.control}
                 name="zipCode"
                 render={({ field }) => (
                   <FormItem>
@@ -242,7 +260,7 @@ export default function Onboard() {
               />
 
               <FormField
-                control={form.control}
+                control={quoteForm.control}
                 name="numberOfDogs"
                 render={({ field }) => (
                   <FormItem>
@@ -265,7 +283,7 @@ export default function Onboard() {
               />
 
               <FormField
-                control={form.control}
+                control={quoteForm.control}
                 name="serviceFrequency"
                 render={({ field }) => (
                   <FormItem>
@@ -288,7 +306,7 @@ export default function Onboard() {
               />
 
               <FormField
-                control={form.control}
+                control={quoteForm.control}
                 name="lastCleanedTimeframe"
                 render={({ field }) => (
                   <FormItem>
@@ -314,7 +332,7 @@ export default function Onboard() {
               />
 
               <FormField
-                control={form.control}
+                control={quoteForm.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
@@ -334,7 +352,7 @@ export default function Onboard() {
               />
 
               <FormField
-                control={form.control}
+                control={quoteForm.control}
                 name="cellPhone"
                 render={({ field }) => (
                   <FormItem>
@@ -370,24 +388,6 @@ export default function Onboard() {
 
   // Step 2 Component - Pricing + Customer Details
   const renderStep2 = () => {
-    const form = useForm<CustomerInfoData>({
-      resolver: zodResolver(customerInfoSchema),
-      defaultValues: {
-        firstName: "",
-        lastName: "",
-        homeAddress: "",
-        city: "",
-        state: "FL",
-        homePhone: "",
-        gateLocation: "",
-        contactImmediately: false,
-        preferredDays: "",
-        dogsOnProperty: "",
-        notificationPreference: "",
-        additionalComments: ""
-      },
-    });
-
     const onSubmitCustomerInfo = (data: CustomerInfoData) => {
       console.log("Customer info:", data);
       setCustomerData(data);
@@ -447,12 +447,12 @@ export default function Onboard() {
           <CardTitle className="text-xl font-bold">Complete Your Information</CardTitle>
         </CardHeader>
         <CardContent className="p-6">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmitCustomerInfo)} className="space-y-4">
+          <Form {...customerForm}>
+            <form onSubmit={customerForm.handleSubmit(onSubmitCustomerInfo)} className="space-y-4">
               <div className="text-sm font-bold text-black mb-2">YOUR NAME</div>
               <div className="grid grid-cols-2 gap-3">
                 <FormField
-                  control={form.control}
+                  control={customerForm.control}
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
@@ -464,7 +464,7 @@ export default function Onboard() {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={customerForm.control}
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
@@ -478,7 +478,7 @@ export default function Onboard() {
               </div>
 
               <FormField
-                control={form.control}
+                control={customerForm.control}
                 name="homeAddress"
                 render={({ field }) => (
                   <FormItem>
@@ -494,7 +494,7 @@ export default function Onboard() {
               <div className="text-sm font-bold text-black mb-2">CITY & STATE</div>
               <div className="grid grid-cols-2 gap-3">
                 <FormField
-                  control={form.control}
+                  control={customerForm.control}
                   name="city"
                   render={({ field }) => (
                     <FormItem>
@@ -506,7 +506,7 @@ export default function Onboard() {
                   )}
                 />
                 <FormField
-                  control={form.control}
+                  control={customerForm.control}
                   name="state"
                   render={({ field }) => (
                     <FormItem>
@@ -528,7 +528,7 @@ export default function Onboard() {
               </div>
 
               <FormField
-                control={form.control}
+                control={customerForm.control}
                 name="homePhone"
                 render={({ field }) => (
                   <FormItem>
@@ -542,7 +542,7 @@ export default function Onboard() {
               />
 
               <FormField
-                control={form.control}
+                control={customerForm.control}
                 name="additionalComments"
                 render={({ field }) => (
                   <FormItem>
