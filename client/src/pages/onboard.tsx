@@ -56,7 +56,8 @@ const paymentInfoSchema = z.object({
   creditCardNumber: z.string().min(13, "Valid card number required"),
   expiryMonth: z.string().min(2, "Valid month required"),
   expiryYear: z.string().min(2, "Valid year required"),
-  cvv: z.string().min(3, "Valid CVV required")
+  cvv: z.string().min(3, "Valid CVV required"),
+  couponCode: z.string().optional()
 });
 
 type QuoteFormData = z.infer<typeof quoteFormSchema>;
@@ -70,6 +71,7 @@ export default function Onboard() {
   const [quoteData, setQuoteData] = useState<QuoteFormData | null>(null);
   const [customerData, setCustomerData] = useState<CustomerInfoData | null>(null);
   const [pricingInfo, setPricingInfo] = useState<any>(null);
+  const [appliedCoupon, setAppliedCoupon] = useState<{code: string, discount: number, type: 'percent' | 'fixed'} | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [onboardingResponse, setOnboardingResponse] = useState<any>(null);
 
@@ -571,6 +573,10 @@ export default function Onboard() {
 
   // Step 3 Component - Payment Setup
   const renderStep3 = () => {
+    const [couponCode, setCouponCode] = useState("");
+    const [couponValidationLoading, setCouponValidationLoading] = useState(false);
+    const [couponValidationMessage, setCouponValidationMessage] = useState("");
+    
     const form = useForm<PaymentInfoData>({
       resolver: zodResolver(paymentInfoSchema),
       defaultValues: {
@@ -578,17 +584,101 @@ export default function Onboard() {
         creditCardNumber: "",
         expiryMonth: "",
         expiryYear: "",
-        cvv: ""
+        cvv: "",
+        couponCode: ""
       },
     });
+    
+    const validateCoupon = async () => {
+      if (!couponCode.trim()) {
+        setCouponValidationMessage("Please enter a coupon code");
+        return;
+      }
+      
+      setCouponValidationLoading(true);
+      setCouponValidationMessage("");
+      
+      try {
+        const response = await apiRequest("POST", "/api/validate-coupon", { code: couponCode });
+        const data = await response.json();
+        
+        if (data.valid) {
+          setAppliedCoupon({
+            code: data.code,
+            discount: data.discount,
+            type: data.type
+          });
+          setCouponValidationMessage(`✅ ${data.description} applied!`);
+          form.setValue("couponCode", data.code);
+        } else {
+          setAppliedCoupon(null);
+          setCouponValidationMessage(`❌ ${data.message}`);
+          form.setValue("couponCode", "");
+        }
+      } catch (error) {
+        console.error("Coupon validation failed:", error);
+        setCouponValidationMessage("❌ Error validating coupon");
+        setAppliedCoupon(null);
+      } finally {
+        setCouponValidationLoading(false);
+      }
+    };
 
     const onSubmitPayment = (data: PaymentInfoData) => {
       console.log("Payment info:", data);
       submitOnboardingMutation.mutate(data);
     };
 
+    const calculateDiscountedPrice = () => {
+      if (!pricingInfo || !appliedCoupon) return null;
+      
+      const originalPrice = parseFloat(pricingInfo.estimatedPrice || '100.00');
+      let discountAmount = 0;
+      
+      if (appliedCoupon.type === 'percent') {
+        discountAmount = originalPrice * (appliedCoupon.discount / 100);
+      } else {
+        discountAmount = appliedCoupon.discount;
+      }
+      
+      const finalPrice = Math.max(0, originalPrice - discountAmount);
+      
+      return {
+        originalPrice,
+        discountAmount,
+        finalPrice
+      };
+    };
+
+    const pricingCalculation = calculateDiscountedPrice();
+
     return (
       <Card className="neu-raised bg-white max-w-md mx-auto shadow-lg">
+        {pricingInfo && (
+          <div className="text-center mb-6">
+            <div className="bg-orange-600 text-white py-6 px-6 rounded-lg mb-6">
+              <h3 className="text-2xl font-bold mb-2">Your Monthly Service Plan</h3>
+              
+              {appliedCoupon && pricingCalculation ? (
+                <>
+                  <div className="text-lg line-through opacity-75">${pricingCalculation.originalPrice.toFixed(2)}</div>
+                  <div className="text-4xl font-black">${pricingCalculation.finalPrice.toFixed(2)}</div>
+                  <div className="text-sm bg-green-500/20 text-green-100 px-3 py-1 rounded-full inline-block mt-2">
+                    You save ${pricingCalculation.discountAmount.toFixed(2)} with {appliedCoupon.code}!
+                  </div>
+                </>
+              ) : (
+                <div className="text-4xl font-black">${pricingInfo.estimatedPrice}</div>
+              )}
+              
+              <div className="text-lg">per month</div>
+              <div className="text-xs mt-3 opacity-90">
+                Billed monthly. We fear no pile.
+              </div>
+            </div>
+          </div>
+        )}
+        
         <CardHeader className="text-center">
           <div className="bg-orange-600 text-white py-4 px-6 rounded-lg mb-4">
             <CardTitle className="text-2xl font-bold">Almost Done... Set Up Auto Pay!</CardTitle>
@@ -678,6 +768,49 @@ export default function Onboard() {
                 )}
               />
 
+              {/* Coupon Code Section */}
+              <div className="bg-orange-50/30 p-4 rounded-lg border border-orange-100">
+                <div className="text-sm font-bold text-black mb-2">COUPON CODE (OPTIONAL)</div>
+                <div className="flex gap-2">
+                  <Input 
+                    value={couponCode}
+                    onChange={(e) => {
+                      setCouponCode(e.target.value.toUpperCase());
+                      setCouponValidationMessage("");
+                      if (appliedCoupon) {
+                        setAppliedCoupon(null);
+                        form.setValue("couponCode", "");
+                      }
+                    }}
+                    placeholder="Enter coupon code"
+                    className="bg-white border-orange-200 focus:border-orange-300"
+                    data-testid="input-couponCode"
+                  />
+                  <Button 
+                    type="button"
+                    onClick={validateCoupon}
+                    disabled={couponValidationLoading || !couponCode.trim()}
+                    className="bg-orange-600 hover:bg-orange-700 text-white px-4"
+                    data-testid="button-applyCoupon"
+                  >
+                    {couponValidationLoading ? "..." : "APPLY"}
+                  </Button>
+                </div>
+                {couponValidationMessage && (
+                  <div className="text-sm mt-2 font-medium">
+                    {couponValidationMessage}
+                  </div>
+                )}
+                {appliedCoupon && (
+                  <div className="text-xs mt-1 text-green-700 font-bold">
+                    {appliedCoupon.type === 'percent' 
+                      ? `${appliedCoupon.discount}% discount will be applied to your first bill` 
+                      : `$${appliedCoupon.discount} discount will be applied to your first bill`
+                    }
+                  </div>
+                )}
+              </div>
+              
               <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded">
                 * Choose a card to be used for your payments. When you add a card, we will 
                 apply $1.50 test charge to verify it. This is a temporary authorization and not 

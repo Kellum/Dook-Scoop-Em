@@ -378,6 +378,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Coupon validation endpoint
+  app.post("/api/validate-coupon", async (req, res) => {
+    try {
+      const { code } = req.body;
+      
+      if (!code || typeof code !== 'string') {
+        return res.status(400).json({ 
+          valid: false, 
+          message: "Coupon code is required" 
+        });
+      }
+
+      // Predefined coupon codes - can be moved to database later
+      const coupons = {
+        'FIRSTCLEAN': { discount: 25, type: 'percent', description: '25% off your first service' },
+        'WELCOME20': { discount: 20, type: 'percent', description: '20% off for new customers' },
+        'SAVE10': { discount: 10, type: 'fixed', description: '$10 off your service' },
+        'NEIGHBOR': { discount: 15, type: 'percent', description: '15% neighbor referral discount' },
+        'EARLYBIRD': { discount: 5, type: 'fixed', description: '$5 off for early signup' }
+      };
+
+      const coupon = coupons[code.toUpperCase()];
+      
+      if (coupon) {
+        return res.json({
+          valid: true,
+          code: code.toUpperCase(),
+          discount: coupon.discount,
+          type: coupon.type,
+          description: coupon.description
+        });
+      } else {
+        return res.json({
+          valid: false,
+          message: "Invalid coupon code"
+        });
+      }
+    } catch (error) {
+      console.error("Coupon validation error:", error);
+      res.status(500).json({ 
+        valid: false, 
+        message: "Error validating coupon" 
+      });
+    }
+  });
+
   // Quote request endpoint - integrates with Sweep&Go
   app.post("/api/quote", async (req, res) => {
     try {
