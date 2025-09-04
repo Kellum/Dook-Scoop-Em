@@ -72,6 +72,9 @@ export default function Onboard() {
   const [customerData, setCustomerData] = useState<CustomerInfoData | null>(null);
   const [pricingInfo, setPricingInfo] = useState<any>(null);
   const [appliedCoupon, setAppliedCoupon] = useState<{code: string, discount: number, type: 'percent' | 'fixed'} | null>(null);
+  const [couponCode, setCouponCode] = useState("");
+  const [couponValidationLoading, setCouponValidationLoading] = useState(false);
+  const [couponValidationMessage, setCouponValidationMessage] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [onboardingResponse, setOnboardingResponse] = useState<any>(null);
 
@@ -571,12 +574,42 @@ export default function Onboard() {
     );
   };
 
+  // Coupon validation function
+  const validateCoupon = async () => {
+    if (!couponCode.trim()) {
+      setCouponValidationMessage("Please enter a coupon code");
+      return;
+    }
+    
+    setCouponValidationLoading(true);
+    setCouponValidationMessage("");
+    
+    try {
+      const response = await apiRequest("POST", "/api/validate-coupon", { code: couponCode });
+      const data = await response.json();
+      
+      if (data.valid) {
+        setAppliedCoupon({
+          code: data.code,
+          discount: data.discount,
+          type: data.type
+        });
+        setCouponValidationMessage(`✅ ${data.description} applied!`);
+      } else {
+        setAppliedCoupon(null);
+        setCouponValidationMessage(`❌ ${data.message}`);
+      }
+    } catch (error) {
+      console.error("Coupon validation failed:", error);
+      setCouponValidationMessage("❌ Error validating coupon");
+      setAppliedCoupon(null);
+    } finally {
+      setCouponValidationLoading(false);
+    }
+  };
+
   // Step 3 Component - Payment Setup
   const renderStep3 = () => {
-    const [couponCode, setCouponCode] = useState("");
-    const [couponValidationLoading, setCouponValidationLoading] = useState(false);
-    const [couponValidationMessage, setCouponValidationMessage] = useState("");
-    
     const form = useForm<PaymentInfoData>({
       resolver: zodResolver(paymentInfoSchema),
       defaultValues: {
@@ -588,41 +621,6 @@ export default function Onboard() {
         couponCode: ""
       },
     });
-    
-    const validateCoupon = async () => {
-      if (!couponCode.trim()) {
-        setCouponValidationMessage("Please enter a coupon code");
-        return;
-      }
-      
-      setCouponValidationLoading(true);
-      setCouponValidationMessage("");
-      
-      try {
-        const response = await apiRequest("POST", "/api/validate-coupon", { code: couponCode });
-        const data = await response.json();
-        
-        if (data.valid) {
-          setAppliedCoupon({
-            code: data.code,
-            discount: data.discount,
-            type: data.type
-          });
-          setCouponValidationMessage(`✅ ${data.description} applied!`);
-          form.setValue("couponCode", data.code);
-        } else {
-          setAppliedCoupon(null);
-          setCouponValidationMessage(`❌ ${data.message}`);
-          form.setValue("couponCode", "");
-        }
-      } catch (error) {
-        console.error("Coupon validation failed:", error);
-        setCouponValidationMessage("❌ Error validating coupon");
-        setAppliedCoupon(null);
-      } finally {
-        setCouponValidationLoading(false);
-      }
-    };
 
     const onSubmitPayment = (data: PaymentInfoData) => {
       console.log("Payment info:", data);
@@ -779,7 +777,6 @@ export default function Onboard() {
                       setCouponValidationMessage("");
                       if (appliedCoupon) {
                         setAppliedCoupon(null);
-                        form.setValue("couponCode", "");
                       }
                     }}
                     placeholder="Enter coupon code"
