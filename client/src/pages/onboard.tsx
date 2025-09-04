@@ -386,99 +386,32 @@ export default function Onboard() {
               })()}</div>
               <div className="text-lg">per cleanup</div>
               
-              {/* Zip code-based marketing copy */}
+              {/* Florida-themed rotating quotes */}
               {(() => {
-                const zipCode = quoteData?.zipCode || '';
                 const monthlyPrice = pricingInfo.estimatedPrice || '100.00';
                 
-                // Zip code regions and their marketing copy
-                const zipCodeCopy = {
-                  // Northside / Yulee / Amelia Island / Nassau
-                  northside: {
-                    zips: ['32034', '32097', '32041', '32226', '32218'],
-                    copy: [
-                      { main: "Less than the gas it takes to sit in Yulee traffic to the island.", sub: "We battle the piles so you don't battle the bridge." },
-                      { main: "Less than concert parking—without the wait at the causeway.", sub: "Your yard stays calmer than A1A at rush." },
-                      { main: "Less than your Uber Eats lunch on the island.", sub: "Fresh yard, fresh air, fewer detours." }
-                    ]
-                  },
-                  // Jacksonville Beach / Neptune Beach / Atlantic Beach / Mayport
-                  beaches: {
-                    zips: ['32250', '32266', '32233', '32224'],
-                    copy: [
-                      { main: "Less than sunscreen + snacks for a beach day.", sub: "Your yard stays clearer than the pier at sunrise." },
-                      { main: "Less than parking for a busy beach weekend.", sub: "Sand between toes, not surprises underfoot." },
-                      { main: "Less than your post-surf burrito run.", sub: "We scoop so you can chase waves, not landmines." }
-                    ]
-                  },
-                  // Riverside / Avondale / Murray Hill / Springfield / San Marco / Downtown
-                  riverside: {
-                    zips: ['32202', '32204', '32205', '32206', '32207'],
-                    copy: [
-                      { main: "Less than brunch for two on King Street.", sub: "Your lawn stays fresh long after the mimosas wear off." },
-                      { main: "Less than a night out on the riverfront.", sub: "A clean lawn without the valet wait." },
-                      { main: "Less than your Bold Bean habit this week.", sub: "Sip slow; we'll handle the fast clean." }
-                    ]
-                  },
-                  // Southside / Baymeadows / Deerwood / Nocatee / Ponte Vedra
-                  southside: {
-                    zips: ['32216', '32217', '32224', '32225', '32246', '32256', '32257', '32081', '32082'],
-                    copy: [
-                      { main: "Less than your Target run you didn't plan on.", sub: "No surprises in the yard this time." },
-                      { main: "Less than topping off your tank on JTB days.", sub: "Fueled by poop-free yards." },
-                      { main: "Less than your Uber Eats lunch in Nocatee.", sub: "Clean lawn delivered on autopilot." }
-                    ]
-                  },
-                  // Westside / Orange Park / Middleburg
-                  westside: {
-                    zips: ['32210', '32221', '32222', '32244', '32073', '32065', '32068'],
-                    copy: [
-                      { main: "Less than the toll of sitting on Blanding at rush hour.", sub: "We scoop so you keep your sanity." },
-                      { main: "Less than concert parking—no traffic jam required.", sub: "Backyard clarity beats brake lights." },
-                      { main: "Less than your drive-thru detour this week.", sub: "Zero lines, zero landmines." }
-                    ]
-                  },
-                  // Arlington / Regency / Intracoastal
-                  arlington: {
-                    zips: ['32211', '32225', '32246'],
-                    copy: [
-                      { main: "Less than takeout on Atlantic Boulevard.", sub: "Fresh yard, hot food, no mess." },
-                      { main: "Less than concert parking—right across the bridge.", sub: "Your lawn, but make it breathable." },
-                      { main: "Less than the 'just this once' impulse buys.", sub: "Consistently clean > occasionally chaotic." }
-                    ]
-                  },
-                  // General Jax / Fallback
-                  general: {
-                    zips: ['32003', '32007', '32033', '32035', '32058', '32064', '32080', '32145', '32254', '32258', '32277'],
-                    copy: [
-                      { main: "Less than your Uber Eats lunch this week.", sub: "A clean lawn delivered automatically." },
-                      { main: "Less than concert parking—no wristband needed.", sub: "Everyday yard, headline cleanliness." },
-                      { main: "Less than your weekly grocery store impulse buys.", sub: "Clean lawn, zero guilt." }
-                    ]
-                  }
-                };
+                // 10 rotating Florida-themed quotes
+                const floridaQuotes = [
+                  "Costs less than the sunglasses you swore you wouldn't lose… and did.",
+                  "Cheaper than the ice you bought just to keep more ice from melting.",
+                  "Less than the therapy session you needed after I-95 construction season.",
+                  "Friendlier than the gator you spotted sunbathing by the ditch.",
+                  "Costs less than the carnival game you lost in three seconds.",
+                  "Cheaper than the bottled water you panic-grabbed before a storm.",
+                  "Less than the fireworks you impulse-bought on the drive back from Georgia.",
+                  "Costs less than the fried shrimp basket you couldn't resist at a roadside shack.",
+                  "Cheaper than the pair of flops you sacrificed to the ocean.",
+                  "Friendlier than the line you sat through at Buc-ee's for beaver nuggets."
+                ];
 
-                // Find the region for this zip code
-                let selectedCopy = null;
-                for (const region of Object.values(zipCodeCopy)) {
-                  if (region.zips.includes(zipCode)) {
-                    // Randomly select one of the 3 copy options
-                    const randomIndex = Math.floor(Math.random() * region.copy.length);
-                    selectedCopy = region.copy[randomIndex];
-                    break;
-                  }
-                }
-
-                // Fallback to general copy if zip not found
-                if (!selectedCopy) {
-                  const randomIndex = Math.floor(Math.random() * zipCodeCopy.general.copy.length);
-                  selectedCopy = zipCodeCopy.general.copy[randomIndex];
-                }
+                // Randomly select one quote
+                const randomIndex = Math.floor(Math.random() * floridaQuotes.length);
+                const selectedQuote = floridaQuotes[randomIndex];
 
                 return (
                   <div className="text-sm mt-3 opacity-90">
-                    <div className="italic mb-1">{selectedCopy.main}</div>
-                    <div className="text-xs">${monthlyPrice} billed monthly. {selectedCopy.sub}</div>
+                    <div className="italic mb-1">{selectedQuote}</div>
+                    <div className="text-xs">${monthlyPrice} billed monthly. We fear no pile.</div>
                   </div>
                 );
               })()}
