@@ -390,13 +390,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Predefined coupon codes - can be moved to database later
+      // Active coupon codes from Sweep&Go dashboard
       const coupons = {
-        'FIRSTCLEAN': { discount: 25, type: 'percent', description: '25% off your first service' },
-        'WELCOME20': { discount: 20, type: 'percent', description: '20% off for new customers' },
-        'SAVE10': { discount: 10, type: 'fixed', description: '$10 off your service' },
-        'NEIGHBOR': { discount: 15, type: 'percent', description: '15% neighbor referral discount' },
-        'EARLYBIRD': { discount: 5, type: 'fixed', description: '$5 off for early signup' }
+        'TESTER': { discount: 100, type: 'percent', description: 'Free service for testing' }
       };
 
       const coupon = coupons[code.toUpperCase()];
