@@ -111,24 +111,53 @@ export class SweepAndGoAPI {
     }
 
     try {
-      const queryParams = new URLSearchParams({
-        slug: this.organizationSlug,
-        email: email,
-      });
-      
-      const url = `${SWEEPANDGO_BASE_URL}/v2/client_on_boarding/check_client_email_exists?${queryParams}`;
-      const response = await fetch(url, {
-        method: "GET",
-        headers: this.getHeaders(),
-      });
+      // Try multiple possible endpoint formats
+      const endpoints = [
+        // Original format
+        {
+          url: `${SWEEPANDGO_BASE_URL}/v2/client_on_boarding/check_client_email_exists`,
+          params: { slug: this.organizationSlug, email: email }
+        },
+        // Alternative format 1
+        {
+          url: `${SWEEPANDGO_BASE_URL}/v2/clients/check_email`,
+          params: { organization: this.organizationSlug, email: email }
+        },
+        // Alternative format 2  
+        {
+          url: `${SWEEPANDGO_BASE_URL}/v1/clients/email_exists`,
+          params: { organization_slug: this.organizationSlug, email: email }
+        }
+      ];
 
-      if (!response.ok) {
-        console.error("Sweep&Go email check failed:", response.statusText);
-        return false;
+      for (const endpoint of endpoints) {
+        try {
+          const queryParams = new URLSearchParams(endpoint.params);
+          const url = `${endpoint.url}?${queryParams}`;
+          
+          console.log(`Trying email check endpoint: ${url}`);
+          
+          const response = await fetch(url, {
+            method: "GET",
+            headers: this.getHeaders(),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            console.log(`Email check successful: ${email} exists:`, data.exists || false);
+            return data.exists || false;
+          } else {
+            const errorText = await response.text();
+            console.log(`Endpoint ${endpoint.url} failed: ${response.status} ${response.statusText}`, errorText);
+          }
+        } catch (endpointError) {
+          console.log(`Endpoint ${endpoint.url} error:`, endpointError);
+          continue;
+        }
       }
 
-      const data = await response.json();
-      return data.exists || false;
+      console.error("All email check endpoints failed for:", email);
+      return false;
     } catch (error) {
       console.error("Error checking client email:", error);
       return false;
