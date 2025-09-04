@@ -212,7 +212,7 @@ export default function Onboard() {
                     <FormControl>
                       <Input 
                         {...field} 
-                        placeholder="Zip Code"
+                        placeholder="Your Zip Code (e.g. 32226)"
                         className="text-center text-lg py-3"
                         data-testid="input-zipCode"
                       />
@@ -230,7 +230,7 @@ export default function Onboard() {
                     <Select onValueChange={(value) => field.onChange(parseInt(value))} value={field.value?.toString()}>
                       <FormControl>
                         <SelectTrigger className="text-gray-500" data-testid="select-numberOfDogs">
-                          <SelectValue placeholder="Number Of Dogs*" />
+                          <SelectValue placeholder="How many dogs do you have?" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -252,7 +252,7 @@ export default function Onboard() {
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="text-gray-500" data-testid="select-serviceFrequency">
-                          <SelectValue placeholder="Cleanup Frequency*" />
+                          <SelectValue placeholder="How often do you need service?" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -274,7 +274,7 @@ export default function Onboard() {
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="text-gray-500" data-testid="select-lastCleanedTimeframe">
-                          <SelectValue placeholder="Last Time Yard Was Thoroughly Cleaned*" />
+                          <SelectValue placeholder="When was your yard last professionally cleaned?" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -300,7 +300,7 @@ export default function Onboard() {
                       <Input 
                         {...field} 
                         type="email"
-                        placeholder="Your Email Address*"
+                        placeholder="Email address for quote (e.g. john@example.com)"
                         className="text-gray-500"
                         data-testid="input-email"
                       />
@@ -319,7 +319,7 @@ export default function Onboard() {
                       <Input 
                         {...field} 
                         type="tel"
-                        placeholder="Cell Phone Number*"
+                        placeholder="Cell phone for updates (e.g. 904-555-1234)"
                         className="text-gray-500"
                         data-testid="input-cellPhone"
                       />
