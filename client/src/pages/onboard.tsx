@@ -227,10 +227,11 @@ export default function Onboard() {
                 name="numberOfDogs"
                 render={({ field }) => (
                   <FormItem>
+                    <div className="text-lg font-bold text-black mb-2">HOW MANY DOGS?</div>
                     <Select onValueChange={(value) => field.onChange(parseInt(value))} value={field.value?.toString()}>
                       <FormControl>
                         <SelectTrigger className="text-gray-500" data-testid="select-numberOfDogs">
-                          <SelectValue placeholder="How many dogs do you have?" />
+                          <SelectValue placeholder="Select number of dogs" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -249,10 +250,11 @@ export default function Onboard() {
                 name="serviceFrequency"
                 render={({ field }) => (
                   <FormItem>
+                    <div className="text-lg font-bold text-black mb-2">CLEANUP FREQUENCY</div>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="text-gray-500" data-testid="select-serviceFrequency">
-                          <SelectValue placeholder="How often do you need service?" />
+                          <SelectValue placeholder="Choose frequency" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -271,10 +273,11 @@ export default function Onboard() {
                 name="lastCleanedTimeframe"
                 render={({ field }) => (
                   <FormItem>
+                    <div className="text-lg font-bold text-black mb-2">LAST PROFESSIONAL CLEANUP</div>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="text-gray-500" data-testid="select-lastCleanedTimeframe">
-                          <SelectValue placeholder="When was your yard last professionally cleaned?" />
+                          <SelectValue placeholder="When was it last cleaned?" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
