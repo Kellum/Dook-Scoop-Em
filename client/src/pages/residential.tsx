@@ -223,6 +223,21 @@ export default function Residential() {
                 </tbody>
               </table>
             </div>
+            <div className="text-center mt-6 pb-4">
+              <button
+                onClick={() => {
+                  const section = document.getElementById('comparison-section');
+                  if (section) {
+                    const yOffset = -50; // 50px buffer from top
+                    const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                  }
+                }}
+                className="text-green-600 hover:text-green-700 font-medium text-lg transition-colors"
+              >
+                with everything included. <span className="underline">Learn more</span>
+              </button>
+            </div>
           </div>
 
           {/* Pricing Notes */}
