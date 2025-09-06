@@ -202,7 +202,7 @@ export default function Residential() {
                   More Dogs? No Problem!
                 </h4>
                 <p className="text-gray-600">
-                  Each additional dog adds just <span className="font-bold text-orange-600">$7 per month</span>. 
+                  Each additional dog adds just <span className="font-bold text-orange-600">$5 per dog, per visit</span>. 
                   Got a pack? We've got you covered.
                 </p>
               </CardContent>
