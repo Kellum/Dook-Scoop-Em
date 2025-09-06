@@ -130,9 +130,14 @@ export default function ProductsWeUse() {
             <h2 className="text-3xl md:text-4xl font-black text-gray-800 mb-6">
               Sanitizing vs. Deodorizing: What's the Difference?
             </h2>
-            <p className="text-lg text-gray-600 max-w-4xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-4xl mx-auto mb-4">
               Some companies use chlorine-based sanitizers like Wysiwash. We chose Simple Green Yard & Pet Safe instead. Here's why that matters for your yard.
             </p>
+            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 max-w-4xl mx-auto">
+              <p className="text-sm text-blue-800">
+                <strong>Important:</strong> We LOVE Wysiwash - it's an excellent product! It's just not meant for grass, repeatedly, for long-term use if used incorrectly. It has its place in professional cleaning, but backyards need a gentler approach.
+              </p>
+            </div>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8 mb-8">
@@ -153,7 +158,7 @@ export default function ProductsWeUse() {
                   <p className="text-gray-600 text-sm">Kill bacteria on contact using chlorine chemistry (calcium hypochlorite). Originally designed for kennels, pools, and hard surfaces.</p>
                 </div>
                 <div className="bg-white p-4 rounded-lg">
-                  <h4 className="font-bold text-gray-800 mb-2">The Trade-offs:</h4>
+                  <h4 className="font-bold text-gray-800 mb-2">The Trade-offs: <span className="underline">(if used improperly)</span></h4>
                   <ul className="text-gray-600 text-sm space-y-1">
                     <li>• Can stress grass and cause yellowing</li>
                     <li>• Leaves salt buildup in soil over time</li>
