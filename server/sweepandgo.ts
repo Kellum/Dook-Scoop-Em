@@ -267,6 +267,15 @@ export class SweepAndGoAPI {
     serviceFrequency: string;
     lastCleanedTimeframe: string;
     initialCleanupRequired: boolean;
+    
+    // New Sweep&Go specific fields
+    cleanupNotificationType?: string;
+    cleanupNotificationChannel?: string;
+    gatedCommunity?: string;
+    gateLocation?: string;
+    dogNames?: string[];
+    
+    // Legacy fields for compatibility
     notificationType: string;
     notificationChannel: string;
     howHeardAboutUs?: string;
@@ -299,8 +308,14 @@ export class SweepAndGoAPI {
         home_phone_number: onboardingData.homePhone || "",
         cell_phone_number: onboardingData.cellPhone,
         initial_cleanup_required: onboardingData.initialCleanupRequired ? "yes" : "no",
-        cleanup_notification_type: onboardingData.notificationType,
-        cleanup_notification_channel: onboardingData.notificationChannel,
+        
+        // Use new Sweep&Go API fields when available, fallback to legacy fields
+        cleanup_notification_type: onboardingData.cleanupNotificationType || onboardingData.notificationType,
+        cleanup_notification_channel: onboardingData.cleanupNotificationChannel || onboardingData.notificationChannel,
+        gated_community: onboardingData.gatedCommunity || "",
+        gate_location: onboardingData.gateLocation || "",
+        dog_name: onboardingData.dogNames || [], // Array field for dog names
+        
         how_heard_about_us: onboardingData.howHeardAboutUs || "Website",
         additional_comment: onboardingData.additionalComments || "",
         credit_card_token: onboardingData.creditCardToken,
