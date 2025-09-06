@@ -454,7 +454,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const sweepAndGoPricing = await sweepAndGoAPI.getPricing({
         zipCode: validatedData.zipCode,
         numberOfDogs: validatedData.numberOfDogs,
-        frequency: validatedData.serviceFrequency
+        frequency: validatedData.serviceFrequency,
+        lastCleanedTimeframe: validatedData.lastCleanedTimeframe || "one_month"
       });
       
       console.log("Sweep&Go pricing response:", sweepAndGoPricing);

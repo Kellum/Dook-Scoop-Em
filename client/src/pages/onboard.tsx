@@ -29,6 +29,7 @@ const quoteFormSchema = z.object({
   zipCode: z.string().min(5, "Valid zip code required"),
   numberOfDogs: z.number().min(1).max(10),
   serviceFrequency: z.enum(["once_a_week", "twice_a_week", "one_time"]),
+  lastCleanedTimeframe: z.enum(["never", "one_week", "one_month", "three_months", "six_months", "one_year"]),
   email: z.string().email("Valid email required"),
   cellPhone: z.string().min(10, "Valid phone number required")
 });
@@ -84,6 +85,7 @@ export default function Onboard() {
       zipCode: "",
       numberOfDogs: 1,
       serviceFrequency: "once_a_week",
+      lastCleanedTimeframe: "one_month",
       email: "",
       cellPhone: ""
     },
@@ -302,6 +304,31 @@ export default function Onboard() {
                 )}
               />
 
+              <FormField
+                control={quoteForm.control}
+                name="lastCleanedTimeframe"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="text-sm font-bold text-black mb-2">WHEN WAS YOUR YARD LAST THOROUGHLY CLEANED?</div>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="text-gray-500 bg-orange-50/30 border-orange-100 focus:border-orange-200" data-testid="select-lastCleanedTimeframe">
+                          <SelectValue placeholder="Select timeframe" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="never">Never / First time service</SelectItem>
+                        <SelectItem value="one_week">1 week ago</SelectItem>
+                        <SelectItem value="one_month">1 month ago</SelectItem>
+                        <SelectItem value="three_months">3 months ago</SelectItem>
+                        <SelectItem value="six_months">6 months ago</SelectItem>
+                        <SelectItem value="one_year">1 year ago or more</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <FormField
                 control={quoteForm.control}

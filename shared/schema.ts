@@ -127,6 +127,7 @@ export const onboardingSubmissions = pgTable("onboarding_submissions", {
   cellPhone: text("cell_phone").notNull(),
   numberOfDogs: integer("number_of_dogs").notNull(),
   serviceFrequency: text("service_frequency").notNull(), // once_a_week, every_two_weeks, etc
+  lastCleanedTimeframe: text("last_cleaned_timeframe").notNull().default("one_month"), // never, one_week, one_month, three_months, six_months, one_year
   initialCleanupRequired: boolean("initial_cleanup_required").default(true),
   notificationType: text("notification_type").default("completed,on_the_way"), // notification preferences
   notificationChannel: text("notification_channel").default("sms"), // sms, email, call
@@ -285,6 +286,9 @@ export const insertOnboardingSubmissionSchema = createInsertSchema(onboardingSub
   numberOfDogs: z.number().min(1, "Please select number of dogs").max(10, "Maximum 10 dogs allowed"),
   serviceFrequency: z.enum(["once_a_week", "twice_a_week", "one_time"], {
     errorMap: () => ({ message: "Please select a service frequency" })
+  }),
+  lastCleanedTimeframe: z.enum(["never", "one_week", "one_month", "three_months", "six_months", "one_year"], {
+    errorMap: () => ({ message: "Please select when your yard was last cleaned" })
   }),
   initialCleanupRequired: z.boolean().default(true),
   notificationType: z.string().default("completed,on_the_way"),

@@ -169,6 +169,7 @@ export class SweepAndGoAPI {
     frequency: string;
     numberOfDogs: number;
     zipCode: string;
+    lastCleanedTimeframe: string;
   }): Promise<any> {
     if (!this.apiToken || !this.organizationSlug) {
       console.log("Sweep&Go API not configured - skipping pricing");
@@ -188,8 +189,8 @@ export class SweepAndGoAPI {
         clean_up_frequency: frequencyMap[params.frequency] || params.frequency,
         number_of_dogs: params.numberOfDogs.toString(),
         zip_code: params.zipCode,
-        // Add default value since Sweep&Go API still requires this field
-        last_time_yard_was_thoroughly_cleaned: "one_month"
+        // Use the actual user input for when yard was last cleaned
+        last_time_yard_was_thoroughly_cleaned: params.lastCleanedTimeframe
       });
 
       const url = `${SWEEPANDGO_BASE_URL}/v2/client_on_boarding/price_registration_form?${queryParams}`;
@@ -200,7 +201,7 @@ export class SweepAndGoAPI {
         clean_up_frequency: frequencyMap[params.frequency] || params.frequency,
         number_of_dogs: params.numberOfDogs.toString(),
         zip_code: params.zipCode,
-        last_time_yard_was_thoroughly_cleaned: "one_month"
+        last_time_yard_was_thoroughly_cleaned: params.lastCleanedTimeframe
       });
 
       const response = await fetch(url, {
