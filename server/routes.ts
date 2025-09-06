@@ -490,6 +490,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
           estimatedPrice = sweepAndGoPricing.per_cleanup_price;
           console.log("Found price in per_cleanup_price:", estimatedPrice);
         }
+        // Check for one-time pricing in custom_price.short_description (e.g., "$50")
+        else if (sweepAndGoPricing.custom_price?.short_description) {
+          const customPriceStr = sweepAndGoPricing.custom_price.short_description;
+          // Extract numeric value from strings like "$50" or "50"
+          const priceMatch = customPriceStr.match(/\$?(\d+(?:\.\d{2})?)/);
+          if (priceMatch) {
+            estimatedPrice = priceMatch[1];
+            console.log("Found price in custom_price.short_description:", estimatedPrice);
+          }
+        }
       }
       
       // Store quote request in database
