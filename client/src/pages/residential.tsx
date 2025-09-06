@@ -556,7 +556,7 @@ export default function Residential() {
 
           <div className="mt-8 p-6 bg-orange-100 rounded-lg text-center">
             <h4 className="text-xl font-black text-gray-800 mb-2">
-              Potential Monthly Savings: $18-38
+              Potential Monthly Savings: $18-$49
             </h4>
             <p className="text-gray-600">
               That's what you'd pay extra elsewhere. With us, it's just included. Because why wouldn't it be?
