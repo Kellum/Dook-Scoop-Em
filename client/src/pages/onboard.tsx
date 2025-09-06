@@ -29,7 +29,6 @@ const quoteFormSchema = z.object({
   zipCode: z.string().min(5, "Valid zip code required"),
   numberOfDogs: z.number().min(1).max(10),
   serviceFrequency: z.enum(["once_a_week", "twice_a_week", "one_time"]),
-  lastCleanedTimeframe: z.enum(["one_week", "one_month", "three_months", "six_months", "one_year", "never"]),
   email: z.string().email("Valid email required"),
   cellPhone: z.string().min(10, "Valid phone number required")
 });
@@ -85,7 +84,6 @@ export default function Onboard() {
       zipCode: "",
       numberOfDogs: 1,
       serviceFrequency: "once_a_week",
-      lastCleanedTimeframe: "one_month",
       email: "",
       cellPhone: ""
     },
@@ -139,7 +137,6 @@ export default function Onboard() {
         zipCode: data.zipCode,
         numberOfDogs: data.numberOfDogs,
         serviceFrequency: frequencyMap[data.serviceFrequency],
-        lastCleanedTimeframe: data.lastCleanedTimeframe,
         urgency: "this_week", // Default urgency for onboarding flow
         preferredContactMethod: "email",
         message: "Customer onboarding quote request"
@@ -170,7 +167,6 @@ export default function Onboard() {
         zipCode: quoteData.zipCode,
         numberOfDogs: quoteData.numberOfDogs,
         serviceFrequency: quoteData.serviceFrequency,
-        lastCleanedTimeframe: quoteData.lastCleanedTimeframe,
         email: quoteData.email,
         cellPhone: quoteData.cellPhone,
         
@@ -183,7 +179,7 @@ export default function Onboard() {
         homePhone: customerData.homePhone || "",
         
         // Service details - use defaults for fields not in the flow
-        initialCleanupRequired: quoteData.lastCleanedTimeframe === "never" || quoteData.lastCleanedTimeframe === "one_year",
+        initialCleanupRequired: false, // Disabled last cleaned check per user request
         notificationType: "completed,on_the_way",
         notificationChannel: "sms",
         howHeardAboutUs: "",
@@ -305,31 +301,6 @@ export default function Onboard() {
                 )}
               />
 
-              <FormField
-                control={quoteForm.control}
-                name="lastCleanedTimeframe"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="text-sm font-bold text-black mb-2">LAST PROFESSIONAL CLEANUP</div>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="text-gray-500 bg-orange-50/30 border-orange-100 focus:border-orange-200" data-testid="select-lastCleanedTimeframe">
-                          <SelectValue placeholder="When was it last cleaned?" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="one_week">Last week</SelectItem>
-                        <SelectItem value="one_month">Last month</SelectItem>
-                        <SelectItem value="three_months">3 months ago</SelectItem>
-                        <SelectItem value="six_months">6 months ago</SelectItem>
-                        <SelectItem value="one_year">Over a year ago</SelectItem>
-                        <SelectItem value="never">Never cleaned professionally</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
               <FormField
                 control={quoteForm.control}

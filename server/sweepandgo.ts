@@ -166,7 +166,6 @@ export class SweepAndGoAPI {
 
   // Get pricing for client onboarding
   async getPricing(params: {
-    lastCleanedTimeframe: string;
     frequency: string;
     numberOfDogs: number;
     zipCode: string;
@@ -186,7 +185,6 @@ export class SweepAndGoAPI {
 
       const queryParams = new URLSearchParams({
         organization: this.organizationSlug,
-        last_time_yard_was_thoroughly_cleaned: params.lastCleanedTimeframe,
         clean_up_frequency: frequencyMap[params.frequency] || params.frequency,
         number_of_dogs: params.numberOfDogs.toString(),
         zip_code: params.zipCode,
@@ -197,7 +195,6 @@ export class SweepAndGoAPI {
       console.log("Sweep&Go pricing request URL:", url);
       console.log("Pricing parameters:", {
         organization: this.organizationSlug,
-        last_time_yard_was_thoroughly_cleaned: params.lastCleanedTimeframe,
         clean_up_frequency: frequencyMap[params.frequency] || params.frequency,
         number_of_dogs: params.numberOfDogs.toString(),
         zip_code: params.zipCode,
