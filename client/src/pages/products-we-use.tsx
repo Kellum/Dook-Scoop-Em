@@ -32,7 +32,7 @@ export default function ProductsWeUse() {
                 <Star className="w-12 h-12 text-green-600" />
               </div>
               <CardTitle className="text-3xl md:text-4xl font-black text-gray-800 mb-2">
-                On Stage: Simple Green Outdoor Pet
+                In Your Yard: Simple Green Outdoor Pet
               </CardTitle>
               <p className="text-lg text-gray-600 font-bold">
                 This is the product your yard sees.
@@ -82,7 +82,7 @@ export default function ProductsWeUse() {
                 <Shield className="w-12 h-12 text-blue-600" />
               </div>
               <CardTitle className="text-3xl md:text-4xl font-black text-gray-800 mb-2">
-                Backstage: KennelSol
+                For Our Tools: KennelSol
               </CardTitle>
               <p className="text-lg text-gray-600 font-bold">
                 This is what keeps our gear spotless between jobs. What we sanitize our tools with.
