@@ -462,11 +462,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Extract estimated price from Sweep&Go response if available
       let estimatedPrice = null;
-      if (sweepAndGoPricing && !sweepAndGoPricing.error && sweepAndGoPricing.price) {
-        // Extract the actual price value from the price object
-        estimatedPrice = typeof sweepAndGoPricing.price === 'object' 
-          ? sweepAndGoPricing.price.value 
-          : sweepAndGoPricing.price.toString();
+      if (sweepAndGoPricing && !sweepAndGoPricing.error) {
+        // Log full response structure to debug pricing
+        console.log("=== PRICING DEBUG ===");
+        console.log("Full pricing response structure:", JSON.stringify(sweepAndGoPricing, null, 2));
+        console.log("===================");
+        
+        // Try multiple sources for pricing data
+        if (sweepAndGoPricing.price) {
+          estimatedPrice = typeof sweepAndGoPricing.price === 'object' 
+            ? sweepAndGoPricing.price.value 
+            : sweepAndGoPricing.price.toString();
+          console.log("Found price in .price field:", estimatedPrice);
+        }
+        // Check for price in show_price_options or other nested fields
+        else if (sweepAndGoPricing.show_price_options?.price) {
+          estimatedPrice = sweepAndGoPricing.show_price_options.price;
+          console.log("Found price in show_price_options.price:", estimatedPrice);
+        }
+        // Check for any other price-related fields
+        else if (sweepAndGoPricing.pricing?.price) {
+          estimatedPrice = sweepAndGoPricing.pricing.price;
+          console.log("Found price in pricing.price:", estimatedPrice);
+        }
+        // Look for per-cleanup pricing
+        else if (sweepAndGoPricing.per_cleanup_price) {
+          estimatedPrice = sweepAndGoPricing.per_cleanup_price;
+          console.log("Found price in per_cleanup_price:", estimatedPrice);
+        }
       }
       
       // Store quote request in database
