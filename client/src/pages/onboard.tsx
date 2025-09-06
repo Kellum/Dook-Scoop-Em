@@ -28,7 +28,7 @@ import { z } from "zod";
 const quoteFormSchema = z.object({
   zipCode: z.string().min(5, "Valid zip code required"),
   numberOfDogs: z.number().min(1).max(10),
-  serviceFrequency: z.enum(["once_a_week", "every_two_weeks", "once_a_month"]),
+  serviceFrequency: z.enum(["once_a_week", "twice_a_week", "one_time"]),
   lastCleanedTimeframe: z.enum(["one_week", "one_month", "three_months", "six_months", "one_year", "never"]),
   email: z.string().email("Valid email required"),
   cellPhone: z.string().min(10, "Valid phone number required")
