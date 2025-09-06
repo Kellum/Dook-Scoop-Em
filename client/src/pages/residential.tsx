@@ -57,18 +57,18 @@ export default function Residential() {
                   </div>
                   <div className="text-center p-3 bg-gray-50 rounded">
                     <div className="text-sm font-bold text-gray-600">2 Dogs</div>
-                    <div className="text-xl font-black text-gray-900">$28.75</div>
-                    <div className="text-xs text-gray-500 italic">billed monthly at $115</div>
+                    <div className="text-xl font-black text-gray-900">$32.50</div>
+                    <div className="text-xs text-gray-500 italic">billed monthly at $130</div>
                   </div>
                   <div className="text-center p-3 bg-gray-50 rounded">
                     <div className="text-sm font-bold text-gray-600">3 Dogs</div>
-                    <div className="text-xl font-black text-gray-900">$30.00</div>
-                    <div className="text-xs text-gray-500 italic">billed monthly at $120</div>
+                    <div className="text-xl font-black text-gray-900">$37.50</div>
+                    <div className="text-xs text-gray-500 italic">billed monthly at $150</div>
                   </div>
                   <div className="text-center p-3 bg-gray-50 rounded">
                     <div className="text-sm font-bold text-gray-600">4 Dogs</div>
-                    <div className="text-xl font-black text-gray-900">$31.25</div>
-                    <div className="text-xs text-gray-500 italic">billed monthly at $125</div>
+                    <div className="text-xl font-black text-gray-900">$42.50</div>
+                    <div className="text-xs text-gray-500 italic">billed monthly at $170</div>
                   </div>
                 </div>
               </CardContent>
@@ -87,23 +87,23 @@ export default function Residential() {
                 <div className="grid grid-cols-2 gap-3">
                   <div className="text-center p-3 bg-white rounded">
                     <div className="text-sm font-bold text-gray-600">1 Dog</div>
-                    <div className="text-xl font-black text-gray-900">$32.50</div>
-                    <div className="text-xs text-gray-500 italic">billed monthly at $130</div>
+                    <div className="text-xl font-black text-gray-900">$17.00</div>
+                    <div className="text-xs text-gray-500 italic">billed monthly at $136</div>
                   </div>
                   <div className="text-center p-3 bg-white rounded">
                     <div className="text-sm font-bold text-gray-600">2 Dogs</div>
-                    <div className="text-xl font-black text-gray-900">$33.75</div>
-                    <div className="text-xs text-gray-500 italic">billed monthly at $135</div>
+                    <div className="text-xl font-black text-gray-900">$22.00</div>
+                    <div className="text-xs text-gray-500 italic">billed monthly at $176</div>
                   </div>
                   <div className="text-center p-3 bg-white rounded">
                     <div className="text-sm font-bold text-gray-600">3 Dogs</div>
-                    <div className="text-xl font-black text-gray-900">$35.00</div>
-                    <div className="text-xs text-gray-500 italic">billed monthly at $140</div>
+                    <div className="text-xl font-black text-gray-900">$27.00</div>
+                    <div className="text-xs text-gray-500 italic">billed monthly at $216</div>
                   </div>
                   <div className="text-center p-3 bg-white rounded">
                     <div className="text-sm font-bold text-gray-600">4 Dogs</div>
-                    <div className="text-xl font-black text-gray-900">$37.50</div>
-                    <div className="text-xs text-gray-500 italic">billed monthly at $150</div>
+                    <div className="text-xl font-black text-gray-900">$32.00</div>
+                    <div className="text-xs text-gray-500 italic">billed monthly at $256</div>
                   </div>
                 </div>
               </CardContent>
@@ -149,16 +149,16 @@ export default function Residential() {
                       <div className="text-sm text-gray-500 italic">billed monthly at $110</div>
                     </td>
                     <td className="px-6 py-6 text-center">
-                      <div className="text-2xl font-black text-gray-900">$28.75</div>
-                      <div className="text-sm text-gray-500 italic">billed monthly at $115</div>
+                      <div className="text-2xl font-black text-gray-900">$32.50</div>
+                      <div className="text-sm text-gray-500 italic">billed monthly at $130</div>
                     </td>
                     <td className="px-6 py-6 text-center">
-                      <div className="text-2xl font-black text-gray-900">$30.00</div>
-                      <div className="text-sm text-gray-500 italic">billed monthly at $120</div>
+                      <div className="text-2xl font-black text-gray-900">$37.50</div>
+                      <div className="text-sm text-gray-500 italic">billed monthly at $150</div>
                     </td>
                     <td className="px-6 py-6 text-center">
-                      <div className="text-2xl font-black text-gray-900">$31.25</div>
-                      <div className="text-sm text-gray-500 italic">billed monthly at $125</div>
+                      <div className="text-2xl font-black text-gray-900">$42.50</div>
+                      <div className="text-sm text-gray-500 italic">billed monthly at $170</div>
                     </td>
                   </tr>
                   <tr className="hover:bg-gray-50 bg-orange-50">
@@ -172,20 +172,20 @@ export default function Residential() {
                       </div>
                     </td>
                     <td className="px-6 py-6 text-center">
-                      <div className="text-2xl font-black text-gray-900">$32.50</div>
-                      <div className="text-sm text-gray-500 italic">billed monthly at $130</div>
+                      <div className="text-2xl font-black text-gray-900">$17.00</div>
+                      <div className="text-sm text-gray-500 italic">billed monthly at $136</div>
                     </td>
                     <td className="px-6 py-6 text-center">
-                      <div className="text-2xl font-black text-gray-900">$33.75</div>
-                      <div className="text-sm text-gray-500 italic">billed monthly at $135</div>
+                      <div className="text-2xl font-black text-gray-900">$22.00</div>
+                      <div className="text-sm text-gray-500 italic">billed monthly at $176</div>
                     </td>
                     <td className="px-6 py-6 text-center">
-                      <div className="text-2xl font-black text-gray-900">$35.00</div>
-                      <div className="text-sm text-gray-500 italic">billed monthly at $140</div>
+                      <div className="text-2xl font-black text-gray-900">$27.00</div>
+                      <div className="text-sm text-gray-500 italic">billed monthly at $216</div>
                     </td>
                     <td className="px-6 py-6 text-center">
-                      <div className="text-2xl font-black text-gray-900">$37.50</div>
-                      <div className="text-sm text-gray-500 italic">billed monthly at $150</div>
+                      <div className="text-2xl font-black text-gray-900">$32.00</div>
+                      <div className="text-sm text-gray-500 italic">billed monthly at $256</div>
                     </td>
                   </tr>
                 </tbody>
