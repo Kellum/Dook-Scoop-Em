@@ -422,6 +422,28 @@ export default function Residential() {
                 </div>
               </CardContent>
             </Card>
+
+            <Card className="neu-raised">
+              <CardContent className="p-4">
+                <h4 className="font-black text-gray-800 mb-3">Cleaning Other Parts of the Yard</h4>
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="flex items-center justify-between p-3 bg-red-50 rounded">
+                    <span className="font-bold text-gray-700">Most Competitors</span>
+                    <div className="flex items-center">
+                      <X className="w-4 h-4 text-red-500 mr-2" />
+                      <span className="text-red-600 font-bold">$3-7 extra per visit</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-green-50 rounded">
+                    <span className="font-bold text-gray-700">Dook Scoop 'Em</span>
+                    <div className="flex items-center">
+                      <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                      <span className="text-green-600 font-bold">FREE</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Desktop Comparison Table (hidden on mobile) */}
@@ -501,6 +523,23 @@ export default function Residential() {
                       <div className="flex items-center justify-center">
                         <X className="w-5 h-5 text-red-500 mr-2" />
                         <span className="text-red-600 font-bold">$2-5 extra per visit</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <div className="flex items-center justify-center">
+                        <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
+                        <span className="text-green-600 font-bold">Included FREE</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap font-bold text-gray-900">
+                      Cleaning Other Parts of the Yard
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <div className="flex items-center justify-center">
+                        <X className="w-5 h-5 text-red-500 mr-2" />
+                        <span className="text-red-600 font-bold">$3-7 extra per visit</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-center">
