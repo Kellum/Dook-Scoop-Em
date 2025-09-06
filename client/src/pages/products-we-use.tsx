@@ -135,7 +135,7 @@ export default function ProductsWeUse() {
             </p>
             <div className="bg-blue-50 border-l-4 border-blue-400 p-4 max-w-4xl mx-auto">
               <p className="text-sm text-blue-800">
-                <strong>Important:</strong> We LOVE Wysiwash - it's an excellent product and we use it! It's (chlorine-based sanitizers) just not meant for grass, repeatedly, for long-term use if used incorrectly. It has its place in professional cleaning, but backyards need a gentler approach. In our opinion.
+                <strong>Important:</strong> We LOVE Wysiwash - it's an excellent product and we use it! It's (chlorine-based sanitizers) just not meant for grass, repeatedly, for long-term use if used incorrectly. It has its place in professional cleaning, but backyards need a gentler approach. In our opinion.<br /><br />"We don't want to scorch the earth" as Les Grossman might say.
               </p>
             </div>
           </div>
