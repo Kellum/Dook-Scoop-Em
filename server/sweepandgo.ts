@@ -188,6 +188,8 @@ export class SweepAndGoAPI {
         clean_up_frequency: frequencyMap[params.frequency] || params.frequency,
         number_of_dogs: params.numberOfDogs.toString(),
         zip_code: params.zipCode,
+        // Add default value since Sweep&Go API still requires this field
+        last_time_yard_was_thoroughly_cleaned: "one_month"
       });
 
       const url = `${SWEEPANDGO_BASE_URL}/v2/client_on_boarding/price_registration_form?${queryParams}`;
@@ -198,6 +200,7 @@ export class SweepAndGoAPI {
         clean_up_frequency: frequencyMap[params.frequency] || params.frequency,
         number_of_dogs: params.numberOfDogs.toString(),
         zip_code: params.zipCode,
+        last_time_yard_was_thoroughly_cleaned: "one_month"
       });
 
       const response = await fetch(url, {

@@ -372,26 +372,29 @@ export default function Onboard() {
             <div className="bg-orange-600 text-white py-6 px-6 rounded-lg mb-6">
               <h3 className="text-2xl font-bold mb-2">{quoteData?.serviceFrequency === 'one_time' ? 'Your One-Time Cleanup Price' : 'Your Price Per Visit'}</h3>
               <div className="text-4xl font-black">{(() => {
-                // Get price from Sweep&Go response
-                const sweepGoPrice = pricingInfo?.pricing?.details?.custom_price?.short_description || '$50';
+                // Get price from Sweep&Go response - use the correct API field
+                const apiPriceValue = pricingInfo?.pricing?.details?.price?.value;
                 const frequency = quoteData?.serviceFrequency || 'once_a_week';
                 
                 if (frequency === 'one_time') {
-                  return sweepGoPrice;
+                  return apiPriceValue ? `$${apiPriceValue}` : 'Price TBD';
                 } else {
-                  // For recurring services, parse the price and calculate per-visit
-                  const monthlyPrice = parseFloat(sweepGoPrice.replace('$', ''));
-                  const visitsPerMonth = frequency === 'once_a_week' ? 4 : 
-                                       frequency === 'twice_a_week' ? 8 : 1;
-                  return `~$${(monthlyPrice / visitsPerMonth).toFixed(2)}`;
+                  // For recurring services, calculate per-visit from monthly price
+                  if (apiPriceValue) {
+                    const monthlyPrice = parseFloat(apiPriceValue);
+                    const visitsPerMonth = frequency === 'once_a_week' ? 4 : 
+                                         frequency === 'twice_a_week' ? 8 : 1;
+                    return `$${(monthlyPrice / visitsPerMonth).toFixed(2)}`;
+                  }
+                  return 'Price TBD';
                 }
               })()}</div>
               <div className="text-lg">per cleanup</div>
               
               {/* Florida-themed rotating quotes */}
               {(() => {
-                const sweepGoPrice = pricingInfo?.pricing?.details?.custom_price?.short_description || '$50';
-                const displayPrice = sweepGoPrice;
+                const apiPriceValue = pricingInfo?.pricing?.details?.price?.value;
+                const displayPrice = apiPriceValue ? `$${apiPriceValue}` : 'Price TBD';
                 
                 // 10 rotating Florida-themed quotes
                 const floridaQuotes = [
@@ -622,8 +625,9 @@ export default function Onboard() {
     const calculateDiscountedPrice = () => {
       if (!pricingInfo || !appliedCoupon) return null;
       
-      const sweepGoPrice = pricingInfo?.pricing?.details?.custom_price?.short_description || '$50';
-      const originalPrice = parseFloat(sweepGoPrice.replace('$', ''));
+      const apiPriceValue = pricingInfo?.pricing?.details?.price?.value;
+      if (!apiPriceValue) return null;
+      const originalPrice = parseFloat(apiPriceValue);
       let discountAmount = 0;
       
       if (appliedCoupon.type === 'percent') {
@@ -659,7 +663,10 @@ export default function Onboard() {
                   </div>
                 </>
               ) : (
-                <div className="text-4xl font-black">{pricingInfo?.pricing?.details?.custom_price?.short_description || '$50'}</div>
+                <div className="text-4xl font-black">{(() => {
+                  const apiPriceValue = pricingInfo?.pricing?.details?.price?.value;
+                  return apiPriceValue ? `$${apiPriceValue}` : 'Price TBD';
+                })()}</div>
               )}
               
               {quoteData?.serviceFrequency !== 'one_time' && <div className="text-lg">per month</div>}
