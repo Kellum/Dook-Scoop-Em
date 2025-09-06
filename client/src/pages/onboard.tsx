@@ -142,9 +142,10 @@ export default function Onboard() {
         message: "Customer onboarding quote request"
       });
     },
-    onSuccess: (response) => {
-      console.log("Quote response:", response);
-      setPricingInfo(response);
+    onSuccess: async (response) => {
+      const data = await response.json();
+      console.log("Quote response:", data);
+      setPricingInfo(data);
       setCurrentStep(2);
     },
     onError: (error: any) => {
