@@ -93,7 +93,6 @@ export const quoteRequests = pgTable("quote_requests", {
   zipCode: text("zip_code").notNull(),
   numberOfDogs: integer("number_of_dogs").notNull(),
   serviceFrequency: text("service_frequency").notNull(), // weekly, bi_weekly, monthly
-  lastCleanedTimeframe: text("last_cleaned_timeframe").notNull(), // one_week, one_month, etc.
   urgency: text("urgency").notNull(),
   preferredContactMethod: text("preferred_contact_method").default("email"), // email, phone, text
   message: text("message"),
@@ -128,7 +127,6 @@ export const onboardingSubmissions = pgTable("onboarding_submissions", {
   cellPhone: text("cell_phone").notNull(),
   numberOfDogs: integer("number_of_dogs").notNull(),
   serviceFrequency: text("service_frequency").notNull(), // once_a_week, every_two_weeks, etc
-  lastCleanedTimeframe: text("last_cleaned_timeframe").notNull(),
   initialCleanupRequired: boolean("initial_cleanup_required").default(true),
   notificationType: text("notification_type").default("completed,on_the_way"), // notification preferences
   notificationChannel: text("notification_channel").default("sms"), // sms, email, call
@@ -257,7 +255,6 @@ export const insertQuoteRequestSchema = createInsertSchema(quoteRequests).omit({
   zipCode: z.string().min(5, "Please enter a valid zip code"),
   numberOfDogs: z.number().min(1, "Please select number of dogs").max(10, "Please contact us for 10+ dogs"),
   serviceFrequency: z.enum(["weekly", "twice_weekly", "one_time"], { required_error: "Please select service frequency" }),
-  lastCleanedTimeframe: z.enum(["one_week", "one_month", "three_months", "six_months", "one_year", "never"], { required_error: "Please let us know when your yard was last cleaned" }),
   urgency: z.enum(["asap", "this_week", "next_week", "within_month", "planning_ahead"], { required_error: "Please select your timing preference" }),
   preferredContactMethod: z.enum(["email", "phone", "text"]).default("email"),
   message: z.string().optional(),
@@ -288,9 +285,6 @@ export const insertOnboardingSubmissionSchema = createInsertSchema(onboardingSub
   numberOfDogs: z.number().min(1, "Please select number of dogs").max(10, "Maximum 10 dogs allowed"),
   serviceFrequency: z.enum(["once_a_week", "twice_a_week", "one_time"], {
     errorMap: () => ({ message: "Please select a service frequency" })
-  }),
-  lastCleanedTimeframe: z.enum(["one_week", "one_month", "three_months", "six_months", "one_year", "never"], {
-    errorMap: () => ({ message: "Please select when your yard was last cleaned" })
   }),
   initialCleanupRequired: z.boolean().default(true),
   notificationType: z.string().default("completed,on_the_way"),
