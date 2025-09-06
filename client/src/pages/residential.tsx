@@ -78,7 +78,7 @@ export default function Residential() {
                     onClick={() => {
                       const section = document.getElementById('comparison-section');
                       if (section) {
-                        const yOffset = -50; // 50px buffer from top
+                        const yOffset = -120; // Buffer for navbar + spacing
                         const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
                         window.scrollTo({ top: y, behavior: 'smooth' });
                       }
@@ -128,7 +128,7 @@ export default function Residential() {
                     onClick={() => {
                       const section = document.getElementById('comparison-section');
                       if (section) {
-                        const yOffset = -50; // 50px buffer from top
+                        const yOffset = -120; // Buffer for navbar + spacing
                         const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
                         window.scrollTo({ top: y, behavior: 'smooth' });
                       }
