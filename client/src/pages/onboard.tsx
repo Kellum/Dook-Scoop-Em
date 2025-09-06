@@ -399,20 +399,28 @@ export default function Onboard() {
         {pricingInfo && (
           <div className="text-center mb-6">
             <div className="bg-orange-600 text-white py-6 px-6 rounded-lg mb-6">
-              <h3 className="text-2xl font-bold mb-2">Your Price Per Visit</h3>
-              <div className="text-4xl font-black">~${(() => {
-                // The estimatedPrice from Sweep&Go is the MONTHLY price, so we need to calculate per-visit
-                const monthlyPrice = parseFloat(pricingInfo.estimatedPrice || '100.00');
+              <h3 className="text-2xl font-bold mb-2">{quoteData?.serviceFrequency === 'one_time' ? 'Your One-Time Cleanup Price' : 'Your Price Per Visit'}</h3>
+              <div className="text-4xl font-black">{(() => {
+                // Get price from Sweep&Go response
+                const sweepGoPrice = pricingInfo?.pricing?.details?.custom_price?.short_description || '$50';
                 const frequency = quoteData?.serviceFrequency || 'once_a_week';
-                const visitsPerMonth = frequency === 'once_a_week' ? 4 : 
-                                     frequency === 'twice_a_week' ? 8 : 1;
-                return (monthlyPrice / visitsPerMonth).toFixed(2);
+                
+                if (frequency === 'one_time') {
+                  return sweepGoPrice;
+                } else {
+                  // For recurring services, parse the price and calculate per-visit
+                  const monthlyPrice = parseFloat(sweepGoPrice.replace('$', ''));
+                  const visitsPerMonth = frequency === 'once_a_week' ? 4 : 
+                                       frequency === 'twice_a_week' ? 8 : 1;
+                  return `~$${(monthlyPrice / visitsPerMonth).toFixed(2)}`;
+                }
               })()}</div>
               <div className="text-lg">per cleanup</div>
               
               {/* Florida-themed rotating quotes */}
               {(() => {
-                const monthlyPrice = pricingInfo.estimatedPrice || '100.00';
+                const sweepGoPrice = pricingInfo?.pricing?.details?.custom_price?.short_description || '$50';
+                const displayPrice = sweepGoPrice;
                 
                 // 10 rotating Florida-themed quotes
                 const floridaQuotes = [
@@ -435,7 +443,7 @@ export default function Onboard() {
                 return (
                   <div className="text-sm mt-3 opacity-90">
                     <div className="italic mb-1">{selectedQuote}</div>
-                    <div className="text-xs">${monthlyPrice} billed monthly. We fear no pile.</div>
+                    <div className="text-xs">{displayPrice} {quoteData?.serviceFrequency === 'one_time' ? 'one-time payment' : 'billed monthly'}. We fear no pile.</div>
                   </div>
                 );
               })()}
@@ -643,7 +651,8 @@ export default function Onboard() {
     const calculateDiscountedPrice = () => {
       if (!pricingInfo || !appliedCoupon) return null;
       
-      const originalPrice = parseFloat(pricingInfo.estimatedPrice || '100.00');
+      const sweepGoPrice = pricingInfo?.pricing?.details?.custom_price?.short_description || '$50';
+      const originalPrice = parseFloat(sweepGoPrice.replace('$', ''));
       let discountAmount = 0;
       
       if (appliedCoupon.type === 'percent') {
@@ -668,7 +677,7 @@ export default function Onboard() {
         {pricingInfo && (
           <div className="text-center mb-6">
             <div className="bg-orange-600 text-white py-6 px-6 rounded-lg mb-6">
-              <h3 className="text-2xl font-bold mb-2">Your Monthly Service Plan</h3>
+              <h3 className="text-2xl font-bold mb-2">{quoteData?.serviceFrequency === 'one_time' ? 'Your One-Time Payment' : 'Your Monthly Service Plan'}</h3>
               
               {appliedCoupon && pricingCalculation ? (
                 <>
@@ -679,12 +688,12 @@ export default function Onboard() {
                   </div>
                 </>
               ) : (
-                <div className="text-4xl font-black">${pricingInfo.estimatedPrice}</div>
+                <div className="text-4xl font-black">{pricingInfo?.pricing?.details?.custom_price?.short_description || '$50'}</div>
               )}
               
-              <div className="text-lg">per month</div>
+              {quoteData?.serviceFrequency !== 'one_time' && <div className="text-lg">per month</div>}
               <div className="text-xs mt-3 opacity-90">
-                Billed monthly. We fear no pile.
+                {quoteData?.serviceFrequency === 'one_time' ? 'One-time payment.' : 'Billed monthly.'} We fear no pile.
               </div>
             </div>
           </div>
