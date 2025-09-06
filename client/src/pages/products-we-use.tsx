@@ -124,6 +124,91 @@ export default function ProductsWeUse() {
           </Card>
         </section>
 
+        {/* Sanitizing vs. Deodorizing Section */}
+        <section className="mb-20">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-black text-gray-800 mb-6">
+              Sanitizing vs. Deodorizing: What's the Difference?
+            </h2>
+            <p className="text-lg text-gray-600 max-w-4xl mx-auto">
+              Some companies use chlorine-based sanitizers like Wysiwash. We chose Simple Green Yard & Pet Safe instead. Here's why that matters for your yard.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8 mb-8">
+            {/* Chlorine-Based Sanitizers Column */}
+            <Card className="neu-raised bg-red-50">
+              <CardHeader className="text-center">
+                <div className="flex justify-center mb-4">
+                  <Zap className="w-10 h-10 text-red-600" />
+                </div>
+                <CardTitle className="text-2xl font-black text-gray-800">
+                  Chlorine-Based Sanitizers
+                </CardTitle>
+                <p className="text-gray-600 font-bold">Like Wysiwash</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="bg-white p-4 rounded-lg">
+                  <h4 className="font-bold text-gray-800 mb-2">What They Do:</h4>
+                  <p className="text-gray-600 text-sm">Kill bacteria on contact using chlorine chemistry (calcium hypochlorite). Originally designed for kennels, pools, and hard surfaces.</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg">
+                  <h4 className="font-bold text-gray-800 mb-2">The Trade-offs:</h4>
+                  <ul className="text-gray-600 text-sm space-y-1">
+                    <li>• Can stress grass and cause yellowing</li>
+                    <li>• Leaves salt buildup in soil over time</li>
+                    <li>• Must be carefully diluted to avoid damage</li>
+                    <li>• Effects don't last once chlorine evaporates</li>
+                    <li>• Not designed for everyday backyards</li>
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Simple Green Column */}
+            <Card className="neu-raised bg-green-50">
+              <CardHeader className="text-center">
+                <div className="flex justify-center mb-4">
+                  <Leaf className="w-10 h-10 text-green-600" />
+                </div>
+                <CardTitle className="text-2xl font-black text-gray-800">
+                  Odor-Focused Deodorizing
+                </CardTitle>
+                <p className="text-gray-600 font-bold">Our Simple Green Approach</p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="bg-white p-4 rounded-lg">
+                  <h4 className="font-bold text-gray-800 mb-2">What It Does:</h4>
+                  <p className="text-gray-600 text-sm">Breaks down odor-causing compounds at the source using enzymes and surfactants. Purpose-built for pet areas and grass.</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg">
+                  <h4 className="font-bold text-gray-800 mb-2">The Benefits:</h4>
+                  <ul className="text-gray-600 text-sm space-y-1">
+                    <li>• Non-toxic and biodegradable</li>
+                    <li>• Safe for grass, pets, and families</li>
+                    <li>• Ready-to-use, no mixing required</li>
+                    <li>• Leaves no harmful residue</li>
+                    <li>• Specifically designed for backyards</li>
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* The Truth Section */}
+          <Card className="neu-raised bg-orange-50">
+            <CardContent className="p-8 text-center">
+              <h3 className="text-2xl font-black text-gray-800 mb-4">The Truth About Yard Sanitization</h3>
+              <p className="text-lg text-gray-600 mb-4">
+                <strong>No outdoor yard spray will sterilize grass for a week.</strong> Chlorine sanitizers kill bacteria on contact, but once the chlorine evaporates, it's gone.
+              </p>
+              <p className="text-gray-600">
+                Simple Green focuses on what really matters in your yard: <span className="font-bold text-orange-600">breaking down pet waste smells and keeping the area pleasant</span>, without promising impossible "long-term sanitization."
+              </p>
+            </CardContent>
+          </Card>
+        </section>
+
         {/* Why It Matters Section */}
         <section className="mb-20">
           <div className="text-center mb-12">
