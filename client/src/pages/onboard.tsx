@@ -372,8 +372,8 @@ export default function Onboard() {
             <div className="bg-orange-600 text-white py-6 px-6 rounded-lg mb-6">
               <h3 className="text-2xl font-bold mb-2">{quoteData?.serviceFrequency === 'one_time' ? 'Your One-Time Cleanup Price' : 'Your Price Per Visit'}</h3>
               <div className="text-4xl font-black">{(() => {
-                // Get price from Sweep&Go response - use the correct API field
-                const apiPriceValue = pricingInfo?.pricing?.details?.price?.value;
+                // Get price from Sweep&Go response - use the processed estimatedPrice
+                const apiPriceValue = pricingInfo?.pricing?.estimatedPrice;
                 const frequency = quoteData?.serviceFrequency || 'once_a_week';
                 
                 if (frequency === 'one_time') {
@@ -393,7 +393,7 @@ export default function Onboard() {
               
               {/* Florida-themed rotating quotes */}
               {(() => {
-                const apiPriceValue = pricingInfo?.pricing?.details?.price?.value;
+                const apiPriceValue = pricingInfo?.pricing?.estimatedPrice;
                 const displayPrice = apiPriceValue ? `$${apiPriceValue}` : 'Price TBD';
                 
                 // 10 rotating Florida-themed quotes
@@ -625,7 +625,7 @@ export default function Onboard() {
     const calculateDiscountedPrice = () => {
       if (!pricingInfo || !appliedCoupon) return null;
       
-      const apiPriceValue = pricingInfo?.pricing?.details?.price?.value;
+      const apiPriceValue = pricingInfo?.pricing?.estimatedPrice;
       if (!apiPriceValue) return null;
       const originalPrice = parseFloat(apiPriceValue);
       let discountAmount = 0;
@@ -664,7 +664,7 @@ export default function Onboard() {
                 </>
               ) : (
                 <div className="text-4xl font-black">{(() => {
-                  const apiPriceValue = pricingInfo?.pricing?.details?.price?.value;
+                  const apiPriceValue = pricingInfo?.pricing?.estimatedPrice;
                   return apiPriceValue ? `$${apiPriceValue}` : 'Price TBD';
                 })()}</div>
               )}
