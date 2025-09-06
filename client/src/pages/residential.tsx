@@ -73,6 +73,21 @@ export default function Residential() {
                     <div className="text-xs text-gray-500 italic">billed monthly at $170</div>
                   </div>
                 </div>
+                <div className="text-center mt-4 px-4 pb-4">
+                  <button
+                    onClick={() => {
+                      const section = document.getElementById('comparison-section');
+                      if (section) {
+                        const yOffset = -50; // 50px buffer from top
+                        const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                        window.scrollTo({ top: y, behavior: 'smooth' });
+                      }
+                    }}
+                    className="text-green-600 hover:text-green-700 font-medium text-sm transition-colors"
+                  >
+                    with everything included. <span className="underline">Learn more</span>
+                  </button>
+                </div>
               </CardContent>
             </Card>
 
@@ -107,6 +122,21 @@ export default function Residential() {
                     <div className="text-xl font-black text-gray-900">$32.00</div>
                     <div className="text-xs text-gray-500 italic">billed monthly at $256</div>
                   </div>
+                </div>
+                <div className="text-center mt-4 px-4 pb-4">
+                  <button
+                    onClick={() => {
+                      const section = document.getElementById('comparison-section');
+                      if (section) {
+                        const yOffset = -50; // 50px buffer from top
+                        const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                        window.scrollTo({ top: y, behavior: 'smooth' });
+                      }
+                    }}
+                    className="text-green-600 hover:text-green-700 font-medium text-sm transition-colors"
+                  >
+                    with everything included. <span className="underline">Learn more</span>
+                  </button>
                 </div>
               </CardContent>
             </Card>
@@ -323,7 +353,7 @@ export default function Residential() {
         </section>
 
         {/* Comparison Chart */}
-        <section className="mb-20">
+        <section id="comparison-section" className="mb-20">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-black text-gray-800 mb-6">
               Others Charge Extra. We Don't.
