@@ -129,6 +129,19 @@ export const onboardingSubmissions = pgTable("onboarding_submissions", {
   serviceFrequency: text("service_frequency").notNull(), // once_a_week, every_two_weeks, etc
   lastCleanedTimeframe: text("last_cleaned_timeframe").notNull().default("one_month"), // never, one_week, one_month, three_months, six_months, one_year
   initialCleanupRequired: boolean("initial_cleanup_required").default(true),
+  
+  // Notification preferences (Sweep&Go API fields)
+  cleanupNotificationType: text("cleanup_notification_type").default("completed,on_the_way"), // completed, on_the_way, etc.
+  cleanupNotificationChannel: text("cleanup_notification_channel").default("sms"), // sms, email, call
+  
+  // Property access information  
+  gatedCommunity: text("gated_community"), // Name of gated community if applicable
+  gateLocation: text("gate_location"), // left, right, alley, no_gate, other
+  
+  // Dog information
+  dogNames: text("dog_names").array(), // Array of dog names
+  
+  // Legacy fields (keeping for compatibility)
   notificationType: text("notification_type").default("completed,on_the_way"), // notification preferences
   notificationChannel: text("notification_channel").default("sms"), // sms, email, call
   howHeardAboutUs: text("how_heard_about_us"),
@@ -291,6 +304,15 @@ export const insertOnboardingSubmissionSchema = createInsertSchema(onboardingSub
     errorMap: () => ({ message: "Please select when your yard was last cleaned" })
   }),
   initialCleanupRequired: z.boolean().default(true),
+  
+  // New Sweep&Go specific fields
+  cleanupNotificationType: z.string().default("completed,on_the_way"),
+  cleanupNotificationChannel: z.enum(["sms", "email", "call"]).default("sms"),
+  gatedCommunity: z.string().optional(),
+  gateLocation: z.enum(["left", "right", "alley", "no_gate", "other"]).optional(),
+  dogNames: z.array(z.string()).optional(),
+  
+  // Legacy fields (keeping for compatibility)
   notificationType: z.string().default("completed,on_the_way"),
   notificationChannel: z.enum(["sms", "email", "call"]).default("sms"),
   howHeardAboutUs: z.string().optional(),

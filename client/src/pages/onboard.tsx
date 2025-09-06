@@ -42,7 +42,15 @@ const customerInfoSchema = z.object({
   city: z.string().min(1, "City required"),
   state: z.string().min(2, "State required"),
   homePhone: z.string().optional(),
-  gateLocation: z.string().optional(),
+  
+  // New Sweep&Go specific fields
+  cleanupNotificationType: z.string().default("completed,on_the_way"),
+  cleanupNotificationChannel: z.enum(["sms", "email", "call"]).default("sms"),
+  gatedCommunity: z.string().optional(),
+  gateLocation: z.enum(["left", "right", "alley", "no_gate", "other"]).optional(),
+  dogNames: z.array(z.string()).optional(),
+  
+  // Legacy fields
   contactImmediately: z.boolean().default(false),
   preferredDays: z.string().optional(),
   dogsOnProperty: z.string().optional(),
@@ -100,7 +108,15 @@ export default function Onboard() {
       city: "",
       state: "FL",
       homePhone: "",
-      gateLocation: "",
+      
+      // New Sweep&Go fields
+      cleanupNotificationType: "completed,on_the_way",
+      cleanupNotificationChannel: "sms" as const,
+      gatedCommunity: "",
+      gateLocation: undefined as any,
+      dogNames: [] as string[],
+      
+      // Legacy fields
       contactImmediately: false,
       preferredDays: "",
       dogsOnProperty: "",
@@ -181,8 +197,17 @@ export default function Onboard() {
         state: customerData.state,
         homePhone: customerData.homePhone || "",
         
-        // Service details - use defaults for fields not in the flow
+        // Service details - use new Sweep&Go specific fields
         initialCleanupRequired: false, // Disabled last cleaned check per user request
+        
+        // New Sweep&Go API fields
+        cleanupNotificationType: customerData.cleanupNotificationType || "completed,on_the_way",
+        cleanupNotificationChannel: customerData.cleanupNotificationChannel || "sms",
+        gatedCommunity: customerData.gatedCommunity || "",
+        gateLocation: customerData.gateLocation || "",
+        dogNames: customerData.dogNames || [],
+        
+        // Legacy fields for compatibility
         notificationType: "completed,on_the_way",
         notificationChannel: "sms",
         howHeardAboutUs: "",
@@ -551,16 +576,108 @@ export default function Onboard() {
                 )}
               />
 
+              {/* Cleanup Notifications */}
+              <FormField
+                control={customerForm.control}
+                name="cleanupNotificationChannel"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="text-sm font-bold text-black mb-2">HOW WOULD YOU LIKE TO BE NOTIFIED?</div>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="text-gray-500 bg-orange-50/30 border-orange-100 focus:border-orange-200" data-testid="select-cleanupNotificationChannel">
+                          <SelectValue placeholder="Choose notification method" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="sms">Text Message (SMS)</SelectItem>
+                        <SelectItem value="email">Email</SelectItem>
+                        <SelectItem value="call">Phone Call</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Gated Community */}
+              <FormField
+                control={customerForm.control}
+                name="gatedCommunity"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="text-sm font-bold text-black mb-2">GATED COMMUNITY NAME (if applicable)</div>
+                    <FormControl>
+                      <Input {...field} placeholder="Enter community name" className="bg-orange-50/30 border-orange-100 focus:border-orange-200" data-testid="input-gatedCommunity" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Gate Location */}
+              <FormField
+                control={customerForm.control}
+                name="gateLocation"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="text-sm font-bold text-black mb-2">GATE LOCATION</div>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="text-gray-500 bg-orange-50/30 border-orange-100 focus:border-orange-200" data-testid="select-gateLocation">
+                          <SelectValue placeholder="Select gate location" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="no_gate">No Gate</SelectItem>
+                        <SelectItem value="left">Left Side</SelectItem>
+                        <SelectItem value="right">Right Side</SelectItem>
+                        <SelectItem value="alley">Back Alley</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Dog Names */}
+              <div className="space-y-2">
+                <div className="text-sm font-bold text-black mb-2">DOG NAMES (optional)</div>
+                <div className="text-xs text-gray-600 mb-2">Add your dog's names to help our crew provide personalized service</div>
+                <FormField
+                  control={customerForm.control}
+                  name="dogNames"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input 
+                          placeholder="Enter dog names separated by commas (e.g., Max, Bella, Charlie)"
+                          value={field.value?.join(", ") || ""} 
+                          onChange={(e) => {
+                            const names = e.target.value.split(",").map(name => name.trim()).filter(name => name);
+                            field.onChange(names);
+                          }}
+                          className="bg-orange-50/30 border-orange-100 focus:border-orange-200"
+                          data-testid="input-dogNames"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
               <FormField
                 control={customerForm.control}
                 name="additionalComments"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="text-sm font-bold text-black mb-2">SPECIAL INSTRUCTIONS</div>
+                    <div className="text-sm font-bold text-black mb-2">SPECIAL INSTRUCTIONS & AREAS TO CLEAN</div>
                     <FormControl>
                       <Textarea 
                         {...field} 
-                        placeholder="Gate code, dog behavior notes, etc."
+                        placeholder="Gate code, dog behavior notes, specific yard areas to focus on, etc."
                         className="min-h-[80px] bg-orange-50/30 border-orange-100 focus:border-orange-200"
                         data-testid="textarea-additionalComments"
                       />
