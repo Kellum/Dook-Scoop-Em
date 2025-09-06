@@ -33,7 +33,9 @@ export default function Residential() {
               Simple, Honest Pricing
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              No hidden fees, no surprise charges. Just clean yards and happy dogs.
+              No hidden fees, no surprise charges. Everything included. No seriously.
+              <br />
+              Just clean yards and happy dogs.
             </p>
           </div>
 
