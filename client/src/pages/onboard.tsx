@@ -653,10 +653,21 @@ export default function Onboard() {
                       <FormControl>
                         <Input 
                           placeholder="Enter dog names separated by commas (e.g., Max, Bella, Charlie)"
-                          value={field.value?.join(", ") || ""} 
+                          defaultValue={field.value?.join(", ") || ""} 
                           onChange={(e) => {
-                            const names = e.target.value.split(",").map(name => name.trim()).filter(name => name);
+                            // Allow user to type freely, including commas
+                            const inputValue = e.target.value;
+                            // Convert to array only when there are actual names
+                            const names = inputValue.split(",").map(name => name.trim()).filter(name => name.length > 0);
                             field.onChange(names);
+                          }}
+                          onBlur={(e) => {
+                            // Process the final input on blur to clean up the display
+                            const inputValue = e.target.value;
+                            const names = inputValue.split(",").map(name => name.trim()).filter(name => name.length > 0);
+                            field.onChange(names);
+                            // Update the input display to show clean format
+                            e.target.value = names.join(", ");
                           }}
                           className="bg-orange-50/30 border-orange-100 focus:border-orange-200"
                           data-testid="input-dogNames"
