@@ -660,6 +660,7 @@ export default function Onboard() {
                           }}
                           className="bg-orange-50/30 border-orange-100 focus:border-orange-200"
                           data-testid="input-dogNames"
+                          type="text"
                         />
                       </FormControl>
                       <FormMessage />
