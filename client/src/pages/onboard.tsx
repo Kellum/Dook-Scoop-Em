@@ -220,12 +220,10 @@ export default function Onboard() {
       
       return apiRequest("POST", "/api/onboard", fullOnboardingData);
     },
-    onSuccess: (response) => {
-      console.log("=== ONBOARDING SUCCESS HANDLER ===");
-      console.log("Response received:", response);
-      console.log("Setting onboardingResponse:", response);
-      console.log("Setting isSubmitted to true");
-      setOnboardingResponse(response);
+    onSuccess: async (response) => {
+      // Parse the JSON response data
+      const data = await response.json();
+      setOnboardingResponse(data);
       setIsSubmitted(true);
       
       // Track onboarding submission
@@ -1001,10 +999,6 @@ export default function Onboard() {
   };
 
   // Success Page
-  console.log("=== RENDER CHECK ===");
-  console.log("isSubmitted:", isSubmitted);
-  console.log("onboardingResponse:", onboardingResponse);
-  
   if (isSubmitted && onboardingResponse) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
