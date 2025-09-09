@@ -216,6 +216,10 @@ export default function Onboard() {
         
         // Payment info
         nameOnCard: paymentData.nameOnCard,
+        creditCardNumber: paymentData.creditCardNumber,
+        expiryMonth: paymentData.expiryMonth,
+        expiryYear: paymentData.expiryYear,
+        cvv: paymentData.cvv,
       };
       
       return apiRequest("POST", "/api/onboard", fullOnboardingData);

@@ -318,6 +318,10 @@ export const insertOnboardingSubmissionSchema = createInsertSchema(onboardingSub
   howHeardAboutUs: z.string().optional(),
   additionalComments: z.string().optional(),
   nameOnCard: z.string().min(2, "Name on card is required"),
+  creditCardNumber: z.string().min(13, "Please enter a valid credit card number"),
+  expiryMonth: z.string().length(2, "Please enter valid expiry month (MM)"),
+  expiryYear: z.string().length(2, "Please enter valid expiry year (YY)"),  
+  cvv: z.string().min(3, "Please enter valid CVV"),
 });
 
 export type InsertOnboardingSubmission = z.infer<typeof insertOnboardingSubmissionSchema>;
