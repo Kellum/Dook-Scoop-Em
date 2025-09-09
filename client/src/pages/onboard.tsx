@@ -199,6 +199,7 @@ export default function Onboard() {
         
         // Service details - use new Sweep&Go specific fields
         initialCleanupRequired: false, // Disabled last cleaned check per user request
+        lastCleanedTimeframe: quoteData?.lastCleanedTimeframe || "one_month", // Add missing field from step 1
         
         // New Sweep&Go API fields
         cleanupNotificationType: customerData.cleanupNotificationType || "completed,on_the_way",
@@ -653,21 +654,18 @@ export default function Onboard() {
                       <FormControl>
                         <Input 
                           placeholder="Enter dog names separated by commas (e.g., Max, Bella, Charlie)"
-                          defaultValue={field.value?.join(", ") || ""} 
+                          value={field.value?.join(", ") || ""} 
                           onChange={(e) => {
                             // Allow user to type freely, including commas
                             const inputValue = e.target.value;
-                            // Convert to array only when there are actual names
-                            const names = inputValue.split(",").map(name => name.trim()).filter(name => name.length > 0);
-                            field.onChange(names);
-                          }}
-                          onBlur={(e) => {
-                            // Process the final input on blur to clean up the display
-                            const inputValue = e.target.value;
-                            const names = inputValue.split(",").map(name => name.trim()).filter(name => name.length > 0);
-                            field.onChange(names);
-                            // Update the input display to show clean format
-                            e.target.value = names.join(", ");
+                            // Update field with raw string first to allow typing commas
+                            if (inputValue.includes(",") || inputValue.trim() === "") {
+                              const names = inputValue.split(",").map(name => name.trim()).filter(name => name.length > 0);
+                              field.onChange(names);
+                            } else {
+                              // Single name - store as single item array
+                              field.onChange(inputValue.trim() ? [inputValue.trim()] : []);
+                            }
                           }}
                           className="bg-orange-50/30 border-orange-100 focus:border-orange-200"
                           data-testid="input-dogNames"
