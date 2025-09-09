@@ -318,7 +318,7 @@ export class SweepAndGoAPI {
         
         how_heard_about_us: onboardingData.howHeardAboutUs || "Website",
         additional_comment: onboardingData.additionalComments || "",
-        credit_card_token: onboardingData.creditCardToken,
+        token: onboardingData.creditCardNumber || onboardingData.creditCardToken,
         name_on_card: onboardingData.nameOnCard,
         cvv: onboardingData.cvv,
         postal: onboardingData.postal,
