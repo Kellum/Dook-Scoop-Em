@@ -333,18 +333,34 @@ export class SweepAndGoAPI {
         body: JSON.stringify(payload),
       });
 
-      const responseData = await response.json();
-      
       if (!response.ok) {
-        console.error("Sweep&Go onboarding failed:", response.status, response.statusText, responseData);
-        return { 
-          error: `Onboarding failed: ${response.status} ${response.statusText}`, 
-          details: responseData 
-        };
+        const errorText = await response.text();
+        console.error(`Sweep&Go onboarding failed: ${response.status} ${response.statusText}`, errorText);
+        try {
+          const errorData = JSON.parse(errorText);
+          return { error: `Onboarding failed: ${response.status} ${response.statusText}`, details: errorData };
+        } catch {
+          return { error: `Onboarding failed: ${response.status} ${response.statusText}`, details: { message: errorText } };
+        }
       }
 
+      const responseData = await response.json();
+      console.log("=== FULL SWEEP&GO RESPONSE ===");
+      console.log("Response status:", response.status);
+      console.log("Response headers:", Object.fromEntries(response.headers.entries()));
+      console.log("Full response data:", JSON.stringify(responseData, null, 2));
+      console.log("===============================");
+      
+      // Extract client ID from response - try multiple possible field names
+      const clientId = responseData.client || responseData.client_id || responseData.id || responseData.clientId;
+      console.log("Extracted client ID:", clientId);
+      
       console.log("Sweep&Go onboarding successful:", responseData);
-      return responseData;
+      return { 
+        ...responseData,
+        client_id: clientId,
+        success: responseData.success || "success"
+      };
     } catch (error) {
       console.error("Error during onboarding:", error);
       return { error: error instanceof Error ? error.message : "Unknown error" };
