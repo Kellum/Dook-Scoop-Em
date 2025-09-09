@@ -595,6 +595,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         serviceFrequency: validatedData.serviceFrequency,
         lastCleanedTimeframe: validatedData.lastCleanedTimeframe,
         initialCleanupRequired: validatedData.initialCleanupRequired,
+        
+        // New Sweep&Go specific fields
+        cleanupNotificationType: validatedData.cleanupNotificationType,
+        cleanupNotificationChannel: validatedData.cleanupNotificationChannel,
+        gatedCommunity: validatedData.gatedCommunity,
+        gateLocation: validatedData.gateLocation,
+        dogNames: validatedData.dogNames,
+        
+        // Legacy fields for compatibility
         notificationType: validatedData.notificationType,
         notificationChannel: validatedData.notificationChannel,
         howHeardAboutUs: validatedData.howHeardAboutUs,
