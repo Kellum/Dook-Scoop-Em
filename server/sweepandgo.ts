@@ -307,7 +307,7 @@ export class SweepAndGoAPI {
         state: onboardingData.state,
         home_phone_number: onboardingData.homePhone || "",
         cell_phone_number: onboardingData.cellPhone,
-        initial_cleanup_required: onboardingData.initialCleanupRequired,
+        initial_cleanup_required: onboardingData.initialCleanupRequired ? 1 : 0,
         
         // Use new Sweep&Go API fields when available, fallback to legacy fields
         cleanup_notification_type: onboardingData.cleanupNotificationType || onboardingData.notificationType,
