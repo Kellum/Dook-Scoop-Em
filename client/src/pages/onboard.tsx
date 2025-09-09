@@ -1020,7 +1020,7 @@ export default function Onboard() {
               
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                 <h4 className="font-bold text-blue-800 mb-2">What's Next:</h4>
-                <p className="text-blue-700">{onboardingResponse.nextSteps}</p>
+                <div className="text-blue-700 whitespace-pre-line">{onboardingResponse.nextSteps}</div>
               </div>
               
               {onboardingResponse.sweepAndGoClientId && (
