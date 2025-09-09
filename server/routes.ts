@@ -643,8 +643,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           : "There was an issue setting up your service. We'll contact you to resolve this.",
         sweepAndGoClientId: clientId,
         nextSteps: finalStatus === "completed"
-          ? "You'll receive a confirmation email with your service schedule. We'll be in touch before your first visit!"
-          : "Our team will contact you within 24 hours to complete your setup and process payment.",
+          ? "2 things:\n1.) We will send you an email with your dashboard login details so that you can manage your account with us.\n\n2.) Someone from our team will reach out to you to confirm the details of our service to you :)"
+          : "2 things:\n1.) We will send you an email with your dashboard login details so that you can manage your account with us.\n\n2.) Someone from our team will reach out to you to confirm the details of our service to you :)",
         error: errorMessage
       };
       
