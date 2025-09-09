@@ -294,6 +294,14 @@ export class SweepAndGoAPI {
     try {
       const url = `${SWEEPANDGO_BASE_URL}/v1/residential/onboarding`;
       
+      console.log("=== DEBUGGING SWEEP&GO DATA MAPPING ===");
+      console.log("Received cleanupNotificationType:", onboardingData.cleanupNotificationType);
+      console.log("Received cleanupNotificationChannel:", onboardingData.cleanupNotificationChannel);
+      console.log("Received gatedCommunity:", onboardingData.gatedCommunity);
+      console.log("Received gateLocation:", onboardingData.gateLocation);
+      console.log("Received dogNames:", onboardingData.dogNames);
+      console.log("=======================================");
+      
       const payload = {
         zip_code: onboardingData.zipCode,
         number_of_dogs: onboardingData.numberOfDogs,
@@ -307,7 +315,7 @@ export class SweepAndGoAPI {
         state: onboardingData.state,
         home_phone_number: onboardingData.homePhone || "",
         cell_phone_number: onboardingData.cellPhone,
-        initial_cleanup_required: onboardingData.initialCleanupRequired,
+        initial_cleanup_required: onboardingData.initialCleanupRequired ? "true" : "false",
         
         // Use new Sweep&Go API fields when available, fallback to legacy fields
         cleanup_notification_type: onboardingData.cleanupNotificationType || onboardingData.notificationType,
