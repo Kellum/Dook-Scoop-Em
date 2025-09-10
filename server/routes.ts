@@ -324,6 +324,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
           `
         };
 
+        // MailerSend format
+        const mailerSendPayload = {
+          from: {
+            email: "noreply@dookscoop.com", 
+            name: "Dook Scoop Em Contact Form"
+          },
+          to: [
+            {
+              email: "ryan@dookscoop.com",
+              name: "Ryan"
+            }
+          ],
+          subject: emailContent.subject,
+          html: emailContent.html,
+          text: emailContent.text
+        };
+
         if (process.env.MAILERSEND_API_KEY) {
           // Use MailerSend API
           const emailResponse = await fetch('https://api.mailersend.com/v1/email', {
@@ -332,12 +349,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${process.env.MAILERSEND_API_KEY}`
             },
-            body: JSON.stringify(emailContent)
+            body: JSON.stringify(mailerSendPayload)
           });
 
           if (emailResponse.ok) {
-            console.log("Contact form email sent successfully via API");
+            console.log("Contact form email sent successfully via MailerSend API");
           } else {
+            const errorText = await emailResponse.text();
+            console.error("MailerSend API failed:", emailResponse.status, emailResponse.statusText, errorText);
             console.log("API failed, trying SMTP fallback");
             await transporter.sendMail({
               from: '"Dook Scoop Em Contact Form" <noreply@dookscoop.com>',
