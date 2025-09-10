@@ -419,7 +419,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Check against your active Sweep&Go coupon codes
-      const activeCoupons = {
+      const activeCoupons: Record<string, { discount: number; type: string; description: string }> = {
         'TESTER': { discount: 100, type: 'percent', description: 'Free service for testing' }
       };
 
