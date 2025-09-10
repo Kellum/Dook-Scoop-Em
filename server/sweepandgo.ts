@@ -345,11 +345,35 @@ export class SweepAndGoAPI {
       }
 
       const responseData = await response.json();
-      console.log("=== FULL SWEEP&GO RESPONSE ===");
+      console.log("=== SWEEP&GO ONBOARDING RESPONSE ===");
       console.log("Response status:", response.status);
-      console.log("Response headers:", Object.fromEntries(response.headers.entries()));
       console.log("Full response data:", JSON.stringify(responseData, null, 2));
-      console.log("===============================");
+      console.log("====================================");
+      
+      // If onboarding was successful but only returned { success: "success" },
+      // we need to search for the newly created client
+      if (responseData.success === "success" && !responseData.client) {
+        console.log("Onboarding successful, searching for newly created client...");
+        
+        // Search for the client using their email
+        const clientData = await this.searchClientByEmail(onboardingData.email);
+        if (clientData && clientData.client) {
+          console.log("Found client via search:", clientData.client);
+          return {
+            success: "success",
+            client_id: clientData.client,
+            client: clientData.client,
+            full_response: { ...responseData, clientData }
+          };
+        } else {
+          console.log("Could not find client after onboarding");
+          return {
+            success: "success",
+            client_id: null,
+            warning: "Client created but ID not retrievable"
+          };
+        }
+      }
       
       // Extract client ID from response - try multiple possible field names
       const clientId = responseData.client || responseData.client_id || responseData.id || responseData.clientId;
@@ -364,6 +388,47 @@ export class SweepAndGoAPI {
     } catch (error) {
       console.error("Error during onboarding:", error);
       return { error: error instanceof Error ? error.message : "Unknown error" };
+    }
+  }
+
+  async searchClientByEmail(email: string) {
+    try {
+      const url = `${SWEEPANDGO_BASE_URL}/v2/clients/client_search`;
+      
+      const payload = {
+        email: email
+      };
+
+      console.log("Searching for client by email:", email);
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: this.getHeaders(),
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`Client search failed: ${response.status} ${response.statusText}`, errorText);
+        return null;
+      }
+
+      const responseData = await response.json();
+      console.log("=== CLIENT SEARCH RESPONSE ===");
+      console.log("Search response:", JSON.stringify(responseData, null, 2));
+      console.log("==============================");
+      
+      // Return the first client found (most recent)
+      if (responseData && Array.isArray(responseData) && responseData.length > 0) {
+        return responseData[0]; // Return the first/most recent client
+      } else if (responseData && responseData.client) {
+        return responseData; // Single client response
+      }
+      
+      return null;
+    } catch (error) {
+      console.error("Error searching for client:", error);
+      return null;
     }
   }
 }
