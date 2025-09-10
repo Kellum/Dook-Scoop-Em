@@ -288,7 +288,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         const emailContent = {
           from: {
-            email: "noreply@dookscoop.com",
+            email: "noreply@dookscoopem.com",
             name: "Dook Scoop Em Contact Form"
           },
           to: [
@@ -327,7 +327,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // MailerSend format
         const mailerSendPayload = {
           from: {
-            email: "noreply@dookscoop.com", 
+            email: "noreply@dookscoopem.com", 
             name: "Dook Scoop Em Contact Form"
           },
           to: [
@@ -359,7 +359,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             console.error("MailerSend API failed:", emailResponse.status, emailResponse.statusText, errorText);
             console.log("API failed, trying SMTP fallback");
             await transporter.sendMail({
-              from: '"Dook Scoop Em Contact Form" <noreply@dookscoop.com>',
+              from: '"Dook Scoop Em Contact Form" <noreply@dookscoopem.com>',
               to: 'ryan@dookscoop.com',
               subject: emailContent.subject,
               html: emailContent.html,
@@ -370,7 +370,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         } else {
           // Fallback to SMTP
           await transporter.sendMail({
-            from: '"Dook Scoop Em Contact Form" <noreply@dookscoop.com>',
+            from: '"Dook Scoop Em Contact Form" <noreply@dookscoopem.com>',
             to: 'ryan@dookscoop.com',
             subject: emailContent.subject,
             html: emailContent.html,
