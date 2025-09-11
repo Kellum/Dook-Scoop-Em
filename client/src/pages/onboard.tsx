@@ -943,47 +943,7 @@ export default function Onboard() {
             )}
           </div>
 
-          {/* Coupon Code Section - keeping existing functionality */}
-          <div className="bg-orange-50/30 p-4 rounded-lg border border-orange-100">
-            <div className="text-sm font-bold text-black mb-2">COUPON CODE (OPTIONAL)</div>
-            <div className="flex gap-2">
-              <Input 
-                value={couponCode}
-                onChange={(e) => {
-                  setCouponCode(e.target.value.toUpperCase());
-                  setCouponValidationMessage("");
-                  if (appliedCoupon) {
-                    setAppliedCoupon(null);
-                  }
-                }}
-                placeholder="Enter coupon code"
-                className="bg-white border-orange-200 focus:border-orange-300"
-                data-testid="input-couponCode"
-              />
-              <Button 
-                type="button"
-                onClick={validateCoupon}
-                disabled={couponValidationLoading || !couponCode.trim()}
-                className="bg-orange-600 hover:bg-orange-700 text-white px-4"
-                data-testid="button-applyCoupon"
-              >
-                {couponValidationLoading ? "..." : "APPLY"}
-              </Button>
-            </div>
-            {couponValidationMessage && (
-              <div className="text-sm mt-2 font-medium">
-                {couponValidationMessage}
-              </div>
-            )}
-            {appliedCoupon && (
-              <div className="text-xs mt-1 text-green-700 font-bold">
-                {appliedCoupon.type === 'percent' 
-                  ? `${appliedCoupon.discount}% discount will be applied to your first bill` 
-                  : `$${appliedCoupon.discount} discount will be applied to your first bill`
-                }
-              </div>
-            )}
-          </div>
+{/* Coupon Code Section - moved outside form to prevent Stripe Elements re-renders */}
           
           <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded">
             🔐 <strong>Secure Payment:</strong> Your card information is encrypted and processed securely by Stripe. 
@@ -1080,6 +1040,48 @@ export default function Onboard() {
             </div>
           </CardHeader>
           <CardContent className="p-6">
+            {/* Coupon Code Section - separate from Stripe form to prevent re-renders */}
+            <div className="bg-orange-50/30 p-4 rounded-lg border border-orange-100 mb-6">
+              <div className="text-sm font-bold text-black mb-2">COUPON CODE (OPTIONAL)</div>
+              <div className="flex gap-2">
+                <Input 
+                  value={couponCode}
+                  onChange={(e) => {
+                    setCouponCode(e.target.value.toUpperCase());
+                    setCouponValidationMessage("");
+                    if (appliedCoupon) {
+                      setAppliedCoupon(null);
+                    }
+                  }}
+                  placeholder="Enter coupon code"
+                  className="bg-white border-orange-200 focus:border-orange-300"
+                  data-testid="input-couponCode"
+                />
+                <Button 
+                  type="button"
+                  onClick={validateCoupon}
+                  disabled={couponValidationLoading || !couponCode.trim()}
+                  className="bg-orange-600 hover:bg-orange-700 text-white px-4"
+                  data-testid="button-applyCoupon"
+                >
+                  {couponValidationLoading ? "..." : "APPLY"}
+                </Button>
+              </div>
+              {couponValidationMessage && (
+                <div className="text-sm mt-2 font-medium">
+                  {couponValidationMessage}
+                </div>
+              )}
+              {appliedCoupon && (
+                <div className="text-xs mt-1 text-green-700 font-bold">
+                  {appliedCoupon.type === 'percent' 
+                    ? `${appliedCoupon.discount}% discount will be applied to your first bill` 
+                    : `$${appliedCoupon.discount} discount will be applied to your first bill`
+                  }
+                </div>
+              )}
+            </div>
+            
             <StripePaymentForm />
           </CardContent>
         </Card>
