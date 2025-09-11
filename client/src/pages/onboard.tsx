@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -861,8 +861,8 @@ export default function Onboard() {
       }
     };
 
-    // Neumorphic styling for Stripe CardElement (memoized to prevent re-renders)
-    const cardElementOptions = useMemo(() => ({
+    // Neumorphic styling for Stripe CardElement (useRef to freeze identity)
+    const cardElementOptionsRef = useRef({
       style: {
         base: {
           fontSize: '16px',
@@ -884,7 +884,7 @@ export default function Onboard() {
         },
       },
       hidePostalCode: true,
-    }), []);
+    });
 
     // Simplified submit button logic - use useWatch to prevent re-renders
     const nameOnCard = useWatch({ control: paymentForm.control, name: "nameOnCard" }) || "";
@@ -927,7 +927,7 @@ export default function Onboard() {
               data-testid="stripe-card-element"
             >
               <CardElement
-                options={cardElementOptions}
+                options={cardElementOptionsRef.current}
                 onChange={(event) => {
                   console.log("🎯 Stripe CardElement onChange:", {
                     complete: event.complete,
