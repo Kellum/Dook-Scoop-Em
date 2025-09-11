@@ -1040,8 +1040,7 @@ export default function Onboard() {
     const pricingCalculation = calculateDiscountedPrice();
 
     return (
-      <Elements stripe={stripePromise} options={elementsOptions}>
-        <Card className="neu-raised bg-white max-w-md mx-auto shadow-lg">
+      <Card className="neu-raised bg-white max-w-md mx-auto shadow-lg">
           {pricingInfo && (
             <div className="text-center mb-6">
               <div className="bg-orange-600 text-white py-6 px-6 rounded-lg mb-6">
@@ -1121,7 +1120,6 @@ export default function Onboard() {
             <StripePaymentForm />
           </CardContent>
         </Card>
-      </Elements>
     );
   };
 
@@ -1175,39 +1173,41 @@ export default function Onboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      <Navigation />
-      
-      <main className="container mx-auto px-4 py-16">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-black text-gray-800 mb-4">
-            DOOK SCOOP 'EM
-          </h1>
-          
-          {/* Progress Indicator */}
-          <div className="flex justify-center items-center space-x-4 mb-8">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 1 ? 'bg-orange-600 text-white' : 'bg-gray-300 text-gray-600'}`}>
-              1
-            </div>
-            <div className={`w-8 h-1 ${currentStep >= 2 ? 'bg-orange-600' : 'bg-gray-300'}`}></div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 2 ? 'bg-orange-600 text-white' : 'bg-gray-300 text-gray-600'}`}>
-              2
-            </div>
-            <div className={`w-8 h-1 ${currentStep >= 3 ? 'bg-orange-600' : 'bg-gray-300'}`}></div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 3 ? 'bg-orange-600 text-white' : 'bg-gray-300 text-gray-600'}`}>
-              3
+    <Elements stripe={stripePromise} options={elementsOptions}>
+      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+        <Navigation />
+        
+        <main className="container mx-auto px-4 py-16">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-black text-gray-800 mb-4">
+              DOOK SCOOP 'EM
+            </h1>
+            
+            {/* Progress Indicator */}
+            <div className="flex justify-center items-center space-x-4 mb-8">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 1 ? 'bg-orange-600 text-white' : 'bg-gray-300 text-gray-600'}`}>
+                1
+              </div>
+              <div className={`w-8 h-1 ${currentStep >= 2 ? 'bg-orange-600' : 'bg-gray-300'}`}></div>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 2 ? 'bg-orange-600 text-white' : 'bg-gray-300 text-gray-600'}`}>
+                2
+              </div>
+              <div className={`w-8 h-1 ${currentStep >= 3 ? 'bg-orange-600' : 'bg-gray-300'}`}></div>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 3 ? 'bg-orange-600 text-white' : 'bg-gray-300 text-gray-600'}`}>
+                3
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Render Current Step */}
-        {currentStep === 1 && renderStep1()}
-        {currentStep === 2 && renderStep2()}
-        {currentStep === 3 && renderStep3()}
-      </main>
+          {/* Render Current Step */}
+          {currentStep === 1 && renderStep1()}
+          {currentStep === 2 && renderStep2()}
+          {currentStep === 3 && renderStep3()}
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </Elements>
   );
 }
