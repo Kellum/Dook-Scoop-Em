@@ -30,6 +30,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 // Initialize Stripe with the publishable key from Sweep&Go
+// Using existing working key from the application
 const stripePromise = loadStripe("pk_live_51E0qGmKJu52Qq7xnrxTqELFLHxv5TcszizlC6u2pCsAs2yi3LgJTXslgjI9AkDxVjyWojAgc7S9OqsfXCK2nwxrk0010NIY4d3");
 
 // Step 1: Basic quote info
@@ -785,39 +786,63 @@ export default function Onboard() {
     const [cardComplete, setCardComplete] = useState(false);
 
     const onSubmitPayment = async (data: PaymentInfoData) => {
-      if (!stripe || !elements) {
-        setCardError("Stripe not loaded. Please refresh and try again.");
+      // Enhanced validation and defensive checks
+      if (!stripe) {
+        console.error("Stripe not loaded");
+        setCardError("Payment system not ready. Please refresh and try again.");
         return;
       }
 
+      if (!elements) {
+        console.error("Stripe Elements not loaded");
+        setCardError("Payment system not ready. Please refresh and try again.");
+        return;
+      }
+
+      // Get CardElement with more robust checking
       const cardElement = elements.getElement(CardElement);
       if (!cardElement) {
-        setCardError("Card information not found. Please refresh and try again.");
+        console.error("CardElement not found");
+        setCardError("Payment form not ready. Please refresh and try again.");
+        return;
+      }
+
+      // Verify card is complete before proceeding
+      if (!cardComplete) {
+        setCardError("Please complete your card information.");
         return;
       }
 
       console.log("Creating secure token...");
+      setCardError(null); // Clear any previous errors
       
       try {
-        // Create secure Stripe token
-        const { token, error } = await stripe.createToken(cardElement, {
+        // Add small delay to ensure element is stable
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Create secure Stripe token with additional error handling
+        const result = await stripe.createToken(cardElement, {
           name: data.nameOnCard,
         });
 
-        if (error) {
-          setCardError(error.message || "Payment processing error");
+        if (result.error) {
+          console.error("Stripe token creation error:", result.error);
+          setCardError(result.error.message || "Payment processing error");
           return;
         }
 
-        if (token) {
-          console.log("Secure token created:", token.id);
+        if (result.token) {
+          console.log("✅ Secure token created successfully:", result.token.id);
           // Submit with secure token instead of raw card data
           submitOnboardingMutation.mutate({
             ...data,
-            stripeToken: token.id
+            stripeToken: result.token.id
           });
+        } else {
+          console.error("No token returned from Stripe");
+          setCardError("Payment processing failed. Please try again.");
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error("Token creation failed:", error);
         setCardError("Payment processing failed. Please try again.");
       }
@@ -1019,7 +1044,7 @@ export default function Onboard() {
     const pricingCalculation = calculateDiscountedPrice();
 
     return (
-      <Elements stripe={stripePromise}>
+      <Elements stripe={stripePromise} options={{ locale: 'en' }}>
         <Card className="neu-raised bg-white max-w-md mx-auto shadow-lg">
           {pricingInfo && (
             <div className="text-center mb-6">
