@@ -240,9 +240,9 @@ export default function Onboard() {
       }
       
       toast({
-        title: response.success ? "Welcome to Dook Scoop 'Em!" : "Onboarding In Progress",
-        description: response.message,
-        variant: response.success ? "default" : "destructive"
+        title: data.success ? "Welcome to Dook Scoop 'Em!" : "Onboarding In Progress",
+        description: data.message,
+        variant: data.success ? "default" : "destructive"
       });
     },
     onError: (error: any) => {
@@ -807,9 +807,10 @@ export default function Onboard() {
         return;
       }
 
-      // Verify card is complete before proceeding
+      // Verify card is complete before proceeding  
       if (!cardComplete) {
-        setCardError("Please complete your card information.");
+        console.log("❌ Card not complete, cannot submit");
+        setCardError("Please complete all card fields (number, expiry, CVC, postal code).");
         return;
       }
 
@@ -872,13 +873,17 @@ export default function Onboard() {
       },
     };
 
-    // Debug logging for submit button state
-    const submitButtonDisabled = submitOnboardingMutation.isPending || !stripe || !cardComplete || !paymentForm.getValues("nameOnCard");
-    console.log("Submit button disabled:", submitButtonDisabled, {
+    // Simplified submit button logic - just check if card and name are present
+    const nameOnCard = paymentForm.watch("nameOnCard") || "";
+    const submitButtonDisabled = submitOnboardingMutation.isPending || !stripe || !cardComplete || nameOnCard.trim().length < 2;
+    
+    console.log("🔄 Submit button state:", {
+      disabled: submitButtonDisabled,
       pending: submitOnboardingMutation.isPending,
       stripeLoaded: !!stripe,
       cardComplete,
-      nameOnCard: paymentForm.getValues("nameOnCard")
+      nameOnCard: nameOnCard,
+      nameLength: nameOnCard.trim().length
     });
 
     return (
@@ -917,16 +922,40 @@ export default function Onboard() {
               <CardElement
                 options={cardElementOptions}
                 onChange={(event) => {
-                  console.log("Stripe Card Element changed:", event);
-                  setCardError(event.error ? event.error.message : null);
+                  console.log("🎯 Stripe CardElement onChange:", {
+                    complete: event.complete,
+                    error: event.error?.message,
+                    empty: event.empty,
+                    elementType: event.elementType
+                  });
+                  
+                  // Clear errors when user is typing
+                  if (!event.error) {
+                    setCardError(null);
+                  } else {
+                    setCardError(event.error.message);
+                  }
+                  
+                  // Update completion state
                   setCardComplete(event.complete);
                   
-                  // Additional debug logging
+                  // Enhanced debug logging
                   if (event.complete) {
-                    console.log("✅ Card information is complete and valid");
+                    console.log("✅ Card is COMPLETE and valid!");
+                  } else if (event.error) {
+                    console.log("❌ Card error:", event.error.message);
                   } else {
-                    console.log("❌ Card information incomplete or invalid");
+                    console.log("⏳ Card incomplete but no errors");
                   }
+                }}
+                onReady={() => {
+                  console.log("🚀 Stripe CardElement is ready!");
+                }}
+                onFocus={() => {
+                  console.log("👆 CardElement focused");
+                }}
+                onBlur={() => {
+                  console.log("👋 CardElement blurred");
                 }}
               />
             </div>
