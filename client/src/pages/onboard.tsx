@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -885,8 +885,8 @@ export default function Onboard() {
       hidePostalCode: true,
     }), []);
 
-    // Simplified submit button logic - just check if card and name are present
-    const nameOnCard = paymentForm.watch("nameOnCard") || "";
+    // Simplified submit button logic - use useWatch to prevent re-renders
+    const nameOnCard = useWatch({ control: paymentForm.control, name: "nameOnCard" }) || "";
     const submitButtonDisabled = submitOnboardingMutation.isPending || !stripe || !cardComplete || nameOnCard.trim().length < 2;
     
     console.log("🔄 Submit button state:", {
