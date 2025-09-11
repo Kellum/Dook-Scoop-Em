@@ -822,7 +822,8 @@ export default function Onboard() {
       }
 
       console.log("Creating secure token...");
-      setCardError(null); // Clear any previous errors
+      // Don't clear errors here - it causes re-render and unmounts CardElement
+      // setCardError(null);
       
       try {
         // Get fresh element reference right before token creation
@@ -889,14 +890,8 @@ export default function Onboard() {
     const nameOnCard = useWatch({ control: paymentForm.control, name: "nameOnCard" }) || "";
     const submitButtonDisabled = submitOnboardingMutation.isPending || !stripe || !cardComplete || nameOnCard.trim().length < 2;
     
-    console.log("🔄 Submit button state:", {
-      disabled: submitButtonDisabled,
-      pending: submitOnboardingMutation.isPending,
-      stripeLoaded: !!stripe,
-      cardComplete,
-      nameOnCard: nameOnCard,
-      nameLength: nameOnCard.trim().length
-    });
+    // Debug logging removed to prevent re-renders during submission
+    // console.log("🔄 Submit button state:", { ... });
 
     return (
       <Form {...paymentForm}>
