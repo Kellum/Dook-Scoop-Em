@@ -282,9 +282,8 @@ export class SweepAndGoAPI {
     additionalComments?: string;
     nameOnCard: string;
     creditCardToken: string;
-    cvv: string;
     postal: string;
-    expiry: string;
+    // Note: cvv and expiry are embedded in the secure token
   }): Promise<any> {
     if (!this.apiToken) {
       console.log("Sweep&Go API not configured - skipping onboarding");
@@ -318,11 +317,10 @@ export class SweepAndGoAPI {
         
         how_heard_about_us: onboardingData.howHeardAboutUs || "Website",
         additional_comment: onboardingData.additionalComments || "",
-        token: onboardingData.creditCardToken,
+        token: onboardingData.creditCardToken, // Secure Stripe token
         name_on_card: onboardingData.nameOnCard,
-        cvv: onboardingData.cvv,
         postal: onboardingData.postal,
-        expiry: onboardingData.expiry,
+        // Note: cvv and expiry are embedded in the secure Stripe token
       };
 
       console.log("Sweep&Go onboarding request:", JSON.stringify(payload, null, 2));

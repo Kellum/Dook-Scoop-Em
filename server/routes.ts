@@ -628,12 +628,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         howHeardAboutUs: validatedData.howHeardAboutUs,
         additionalComments: validatedData.additionalComments,
         nameOnCard: validatedData.nameOnCard,
-        // Use actual payment data from frontend
-        creditCardToken: validatedData.creditCardNumber || "tok_placeholder", // Real card number
-        cvv: validatedData.cvv || "123", // Real CVV  
+        // Use secure Stripe token instead of raw card data
+        creditCardToken: validatedData.creditCardToken, // Secure Stripe token
         postal: validatedData.zipCode, // Using zip code as postal
-        expiry: validatedData.expiryMonth && validatedData.expiryYear ? 
-          `${validatedData.expiryMonth}${validatedData.expiryYear.slice(-2)}` : "1225" // Real expiry
+        // Note: cvv and expiry are securely embedded in the Stripe token
       });
       
       console.log("Sweep&Go onboarding response:", sweepAndGoResponse);
