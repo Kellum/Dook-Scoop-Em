@@ -480,9 +480,11 @@ export default function Onboard() {
                   "Friendlier than the line you sat through at Buc-ee's for beaver nuggets."
                 ];
 
-                // Randomly select one quote
-                const randomIndex = Math.floor(Math.random() * floridaQuotes.length);
-                const selectedQuote = floridaQuotes[randomIndex];
+                // Randomly select one quote (memoized to prevent re-renders)
+                const selectedQuote = useMemo(() => {
+                  const randomIndex = Math.floor(Math.random() * floridaQuotes.length);
+                  return floridaQuotes[randomIndex];
+                }, []);
 
                 return (
                   <div className="text-sm mt-3 opacity-90">
