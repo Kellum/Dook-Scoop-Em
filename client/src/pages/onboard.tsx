@@ -1201,9 +1201,15 @@ export default function Onboard() {
           </div>
 
           {/* Render Current Step */}
-          {currentStep === 1 && renderStep1()}
-          {currentStep === 2 && renderStep2()}
-          {currentStep === 3 && renderStep3()}
+          <div className={currentStep === 1 ? 'block' : 'hidden'}>
+            {renderStep1()}
+          </div>
+          <div className={currentStep === 2 ? 'block' : 'hidden'}>
+            {renderStep2()}
+          </div>
+          <div className={currentStep === 3 ? 'block' : 'hidden'}>
+            {renderStep3()}
+          </div>
         </main>
 
         <Footer />
