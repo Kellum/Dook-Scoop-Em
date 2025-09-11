@@ -1,0 +1,212 @@
+
+Ryan Kellum <ryan@dookscoop.com>
+Wed, Sep 10, 6:45 AM (1 day ago)
+to hello
+
+Hi there!
+
+Looking forward to launching my website but i'm running into an issue with my onboarding form using hooks from the API
+
+We have a 3 step form and on the final step, they are prompted to put in their credit card info.
+
+The form submits correctly and the new client is created in the Sweep & Go dashboard, but the credit card info is not saved.
+
+The below is from one of my team members. Can you provide any insight at all for me?
+
+
+Problem Identified
+
+
+
+Sweep&Go is only returning:
+
+
+{
+
+"success": "success"
+
+}
+
+
+
+But according to their API docs, it should return a full client object like:
+
+
+
+{
+
+"client": "rcl_XXXXXXXXXX",
+
+"status": "active",
+
+"email": "john@doe.com",
+
+// ... plus all client details
+
+}
+
+
+
+
+
+💡 Why Credit Cards Aren't Showing in Sweep $ Go dashboard for new clients
+
+
+
+The minimal response means:
+
+✅ The API call succeeds (HTTP 200)
+✅ Some client record gets created
+❌ But no proper client ID is returned
+❌ So the credit card data has nowhere to attach
+🔧 Potential Solutions
+
+
+
+This could be due to:
+
+Wrong API endpoint - Maybe /residential/onboarding is just for validation, not full client creation
+Missing required fields - The API might need additional parameters to return full client data
+Two-step process - Maybe we need a separate call to finalize the client creation
+API configuration issue - Your Sweep&Go account might need different settings
+
+📞 Next Steps
+
+
+I'd recommend:
+
+Contact Sweep&Go support - Ask them why the onboarding API only returns { "success": "success" } instead of the full client object
+Check API documentation - See if there's a different endpoint for complete client creation
+Verify account settings - Make sure your Sweep&Go API configuration supports full client creation
+The good news is the integration is working - we just need Sweep&Go to return the proper client data so the credit card information gets associated correctly!
+
+_______________________________
+
+Any and all help is greatly appreciated <3 
+
+Ryan Kellum
+dookscoopem.com
+
+
+Sweep&Go
+Attachments
+Wed, Sep 10, 3:44 PM (15 hours ago)
+to me
+
+Hey Ryan,
+
+ 
+
+thank you for checking and I have just reviewed:
+https://dookscoopem.com/onboard (Your custom form)
+
+https://client.sweepandgo.com/dook-scoop-em-pinq9/register  (Our prebuilt form) 
+
+ 
+
+I appreciate the innovation but it seems there are some major issues with your credit card form implementation. 
+
+See attached. The credit card number is not even validated for length. 
+
+ 
+
+Aren't you using the Stripe iframe credit card tokenizer? 
+
+ 
+
+Did you build this form yourself using chat GPT or did you hire a web developer? 
+
+ 
+
+Thanks
+
+
+Ogy
+
+ 
+
+ 
+
+
+
+ One attachment
+  •  Scanned by Gmail
+
+Sweep&Go
+Wed, Sep 10, 4:29 PM (14 hours ago)
+to me
+
+Hey Ryan
+
+
+I've just spoken with one of our developers and have additional info below: 
+
+ 
+
+I think the issue with your Stripe integration might be how you're initializing Stripe Elements. To securely collect card details (card number, CVC, expiry, Name on card etc.), Stripe requires using the publishable key. The publishable key is the one that starts with pk_....
+
+
+You’ll need to use that publishable key when creating the Stripe object on the client side.
+
+
+From there you can mount the card input fields (card number, expiration, CVC, name on card) into your UI.
+
+The stripe key is: 
+
+ 
+
+pk_live_51E0qGmKJu52Qq7xnrxTqELFLHxv5TcszizlC6u2pCsAs2yi3LgJTXslgjI9AkDxVjyWojAgc7S9OqsfXCK2nwxrk0010NIY4d3
+
+ 
+
+Is that the one you're using? 
+
+ 
+
+Thanks
+
+
+Ogy
+
+ 
+
+ 
+
+
+
+-----Original message-----
+From: Sweep&Go
+Sent: Wednesday, September 10 2025, 3:44 pm
+To: Ryan Kellum <ryan@dookscoop.com>
+Subject: RE: API onboarding Credit Card question/issue
+ 
+Hey Ryan,
+
+ 
+
+thank you for checking and I have just reviewed:
+https://dookscoopem.com/onboard (Your custom form)
+
+https://client.sweepandgo.com/dook-scoop-em-pinq9/register  (Our prebuilt form) 
+
+ 
+
+I appreciate the innovation but it seems there are some major issues with your credit card form implementation. 
+
+See attached. The credit card number is not even validated for length. 
+
+ 
+
+Aren't you using the Stripe iframe credit card tokenizer? 
+
+ 
+
+Did you build this form yourself using chat GPT or did you hire a web developer? 
+
+ 
+
+Thanks
+
+
+Ogy
+
