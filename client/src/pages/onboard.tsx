@@ -33,6 +33,14 @@ import { Elements, CardElement, useStripe, useElements } from "@stripe/react-str
 // Using existing working key from the application
 const stripePromise = loadStripe("pk_live_51E0qGmKJu52Qq7xnrxTqELFLHxv5TcszizlC6u2pCsAs2yi3LgJTXslgjI9AkDxVjyWojAgc7S9OqsfXCK2nwxrk0010NIY4d3");
 
+// Memoized Elements options to prevent re-renders
+const elementsOptions = {
+  locale: 'en' as const,
+  appearance: {
+    theme: 'stripe' as const,
+  },
+};
+
 // Step 1: Basic quote info
 const quoteFormSchema = z.object({
   zipCode: z.string().min(5, "Valid zip code required"),
@@ -954,7 +962,7 @@ export default function Onboard() {
                   }
                 }}
                 onReady={() => {
-                  console.log("🚀 Stripe CardElement is ready!");
+                  console.log("🚀 Stripe CardElement is ready! (should only see this ONCE per page load)");
                 }}
                 onFocus={() => {
                   console.log("👆 CardElement focused");
@@ -1038,7 +1046,7 @@ export default function Onboard() {
     const pricingCalculation = calculateDiscountedPrice();
 
     return (
-      <Elements stripe={stripePromise} options={{ locale: 'en' }}>
+      <Elements stripe={stripePromise} options={elementsOptions}>
         <Card className="neu-raised bg-white max-w-md mx-auto shadow-lg">
           {pricingInfo && (
             <div className="text-center mb-6">
