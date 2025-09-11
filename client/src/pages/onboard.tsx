@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -818,11 +818,15 @@ export default function Onboard() {
       setCardError(null); // Clear any previous errors
       
       try {
-        // Add small delay to ensure element is stable
-        await new Promise(resolve => setTimeout(resolve, 100));
+        // Get fresh element reference right before token creation
+        const freshCardElement = elements.getElement(CardElement);
+        if (!freshCardElement) {
+          setCardError("Payment form not ready. Please refresh and try again.");
+          return;
+        }
         
-        // Create secure Stripe token with additional error handling
-        const result = await stripe.createToken(cardElement, {
+        // Create secure Stripe token with fresh element reference
+        const result = await stripe.createToken(freshCardElement, {
           name: data.nameOnCard,
         });
 
@@ -849,8 +853,8 @@ export default function Onboard() {
       }
     };
 
-    // Neumorphic styling for Stripe CardElement
-    const cardElementOptions = {
+    // Neumorphic styling for Stripe CardElement (memoized to prevent re-renders)
+    const cardElementOptions = useMemo(() => ({
       style: {
         base: {
           fontSize: '16px',
@@ -871,7 +875,8 @@ export default function Onboard() {
           iconColor: '#059669',
         },
       },
-    };
+      hidePostalCode: true,
+    }), []);
 
     // Simplified submit button logic - just check if card and name are present
     const nameOnCard = paymentForm.watch("nameOnCard") || "";
