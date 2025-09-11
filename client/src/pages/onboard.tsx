@@ -19,7 +19,8 @@ import {
   AlertCircle, 
   ArrowRight,
   ArrowLeft,
-  DollarSign 
+  DollarSign,
+  Check
 } from "lucide-react";
 import { insertOnboardingSubmissionSchema } from "@shared/schema";
 import { z } from "zod";
@@ -846,6 +847,15 @@ export default function Onboard() {
       },
     };
 
+    // Debug logging for submit button state
+    const submitButtonDisabled = submitOnboardingMutation.isPending || !stripe || !cardComplete || !paymentForm.getValues("nameOnCard");
+    console.log("Submit button disabled:", submitButtonDisabled, {
+      pending: submitOnboardingMutation.isPending,
+      stripeLoaded: !!stripe,
+      cardComplete,
+      nameOnCard: paymentForm.getValues("nameOnCard")
+    });
+
     return (
       <Form {...paymentForm}>
         <form onSubmit={paymentForm.handleSubmit(onSubmitPayment)} className="space-y-4">
@@ -882,8 +892,16 @@ export default function Onboard() {
               <CardElement
                 options={cardElementOptions}
                 onChange={(event) => {
+                  console.log("Stripe Card Element changed:", event);
                   setCardError(event.error ? event.error.message : null);
                   setCardComplete(event.complete);
+                  
+                  // Additional debug logging
+                  if (event.complete) {
+                    console.log("✅ Card information is complete and valid");
+                  } else {
+                    console.log("❌ Card information incomplete or invalid");
+                  }
                 }}
               />
             </div>
@@ -960,7 +978,7 @@ export default function Onboard() {
             </Button>
             <Button 
               type="submit"
-              disabled={submitOnboardingMutation.isPending || !stripe || !cardComplete}
+              disabled={submitButtonDisabled}
               className="flex-1 neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold disabled:opacity-50"
               data-testid="button-submit"
             >
