@@ -34,8 +34,8 @@ import { Elements, CardElement, useStripe, useElements } from "@stripe/react-str
 const PUBLISHABLE_KEY = "pk_live_51E0qGmKJu52Qq7xnrxTqELFLHxv5TcszizlC6u2pCsAs2yi3LgJTXslgjI9AkDxVjyWojAgc7S9OqsfXCK2nwxrk0010NIY4d3";
 const getStripe = () => (window as any).__stripePromise || ((window as any).__stripePromise = loadStripe(PUBLISHABLE_KEY));
 
-// Persistent CardElement component that mounts once and never unmounts
-const PersistentCardElement = React.memo(({ 
+// Single CardElement component that mounts once and never unmounts
+const SingleCardElement = ({ 
   onCardChange, 
   onReady, 
   onFocus, 
@@ -101,9 +101,7 @@ const PersistentCardElement = React.memo(({
       )}
     </div>
   );
-});
-
-PersistentCardElement.displayName = 'PersistentCardElement';
+};
 
 // Memoized Elements options to prevent re-renders
 const elementsOptions = {
@@ -979,18 +977,19 @@ export default function Onboard() {
     };
 
 
-    // Simplified submit button logic - use useWatch to prevent re-renders
+    // Simplified submit button logic - compute inline for direct state access
     const nameOnCard = useWatch({ control: paymentForm.control, name: "nameOnCard" }) || "";
-    const submitButtonDisabled = submitOnboardingMutation.isPending || !stripe || !cardComplete || nameOnCard.trim().length < 2;
+    const disabled = submitOnboardingMutation.isPending || !stripe || !elements || !cardComplete || !nameOnCard?.trim();
     
     // Debug submit button state to see what's blocking it
     console.log("🔄 Submit button debug:", { 
       isPending: submitOnboardingMutation.isPending, 
-      stripeReady: !!stripe, 
+      stripeReady: !!stripe,
+      elementsReady: !!elements,
       cardComplete, 
       nameOnCard, 
       nameLength: nameOnCard.trim().length,
-      disabled: submitButtonDisabled 
+      disabled 
     });
 
     return (
@@ -1015,15 +1014,6 @@ export default function Onboard() {
             )}
           />
 
-          {/* Persistent CardElement - INSIDE the form but stable */}
-          <PersistentCardElement
-            onCardChange={handleCardChange}
-            onReady={handleCardReady}
-            onFocus={handleCardFocus}
-            onBlur={handleCardBlur}
-            cardError={cardError}
-            cardComplete={cardComplete}
-          />
 
 {/* Coupon Code Section - moved outside form to prevent Stripe Elements re-renders */}
           
@@ -1045,7 +1035,7 @@ export default function Onboard() {
             </Button>
             <Button 
               type="submit"
-              disabled={submitButtonDisabled}
+              disabled={disabled}
               className="flex-1 neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold disabled:opacity-50"
               data-testid="button-submit"
             >
@@ -1218,8 +1208,12 @@ export default function Onboard() {
     );
   }
 
+  // Stable refs for Elements provider to prevent remounts
+  const stripePromiseRef = useRef(getStripe());
+  const elementsOptionsRef = useRef(elementsOptions);
+
   return (
-    <Elements stripe={getStripe()} options={elementsOptions}>
+    <Elements stripe={stripePromiseRef.current} options={elementsOptionsRef.current}>
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
         <Navigation />
         
@@ -1255,6 +1249,18 @@ export default function Onboard() {
           </div>
           <div className={currentStep === 3 ? 'block' : 'hidden'}>
             {renderStep3()}
+          </div>
+
+          {/* Single CardElement - always mounted, visibility controlled by CSS */}
+          <div className={currentStep === 3 ? 'block' : 'hidden'}>
+            <SingleCardElement
+              onCardChange={handleCardChange}
+              onReady={handleCardReady}
+              onFocus={handleCardFocus}
+              onBlur={handleCardBlur}
+              cardError={cardError}
+              cardComplete={cardComplete}
+            />
           </div>
         </main>
 
