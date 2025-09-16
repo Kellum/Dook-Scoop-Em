@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useCallback } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,6 +32,77 @@ import { Elements, CardElement, useStripe, useElements } from "@stripe/react-str
 // Initialize Stripe with the publishable key from Sweep&Go
 // Using existing working key from the application
 const stripePromise = loadStripe("pk_live_51E0qGmKJu52Qq7xnrxTqELFLHxv5TcszizlC6u2pCsAs2yi3LgJTXslgjI9AkDxVjyWojAgc7S9OqsfXCK2nwxrk0010NIY4d3");
+
+// Persistent CardElement component that mounts once and never unmounts
+const PersistentCardElement = React.memo(({ 
+  onCardChange, 
+  onReady, 
+  onFocus, 
+  onBlur, 
+  cardError, 
+  cardComplete 
+}: {
+  onCardChange: (event: any) => void;
+  onReady: () => void;
+  onFocus: () => void;
+  onBlur: () => void;
+  cardError: string | null;
+  cardComplete: boolean;
+}) => {
+  // Frozen options to prevent remounts
+  const cardElementOptionsRef = useRef({
+    style: {
+      base: {
+        fontSize: '16px',
+        color: '#111827',
+        fontFamily: '"Inter", sans-serif',
+        fontWeight: '500',
+        '::placeholder': {
+          color: '#9CA3AF',
+        },
+        backgroundColor: 'transparent',
+      },
+      invalid: {
+        color: '#EF4444',
+        iconColor: '#EF4444',
+      },
+      complete: {
+        color: '#059669',
+        iconColor: '#059669',
+      },
+    },
+    hidePostalCode: true,
+  });
+
+  return (
+    <div>
+      <div className="text-sm font-bold text-black mb-2">CARD INFORMATION</div>
+      <div 
+        className={`
+          bg-orange-50/30 border border-orange-100 rounded-lg p-4 transition-all duration-200
+          ${cardComplete ? 'border-green-500 bg-green-50/20' : 'focus-within:border-orange-200'}
+          ${cardError ? 'border-red-500 bg-red-50/20' : ''}
+        `}
+        data-testid="stripe-card-element"
+      >
+        <CardElement
+          options={cardElementOptionsRef.current}
+          onChange={onCardChange}
+          onReady={onReady}
+          onFocus={onFocus}
+          onBlur={onBlur}
+        />
+      </div>
+      {cardError && (
+        <div className="text-sm text-red-600 mt-1 font-medium">
+          {cardError}
+        </div>
+      )}
+    </div>
+  );
+});
+
+PersistentCardElement.displayName = 'PersistentCardElement';
 
 // Memoized Elements options to prevent re-renders
 const elementsOptions = {
