@@ -146,7 +146,6 @@ export const onboardingSubmissions = pgTable("onboarding_submissions", {
   notificationChannel: text("notification_channel").default("sms"), // sms, email, call
   howHeardAboutUs: text("how_heard_about_us"),
   additionalComments: text("additional_comments"),
-  nameOnCard: text("name_on_card").notNull(),
   sweepAndGoResponse: text("sweepandgo_response"), // JSON response from Sweep&Go onboarding
   sweepAndGoClientId: text("sweepandgo_client_id"), // Client ID from Sweep&Go if successful
   status: text("status").default("pending"), // pending, completed, failed
@@ -309,7 +308,7 @@ export const insertOnboardingSubmissionSchema = createInsertSchema(onboardingSub
   cleanupNotificationType: z.string().default("completed,on_the_way"),
   cleanupNotificationChannel: z.enum(["sms", "email", "call"]).default("sms"),
   gatedCommunity: z.string().optional(),
-  gateLocation: z.enum(["left", "right", "alley", "no_gate", "other"]).optional(),
+  gateLocation: z.enum(["left", "right", "alley", "no_gate", "other"]).optional().or(z.literal("")).transform(val => val === "" ? "no_gate" : val),
   dogNames: z.array(z.string()).optional(),
   
   // Legacy fields (keeping for compatibility)
@@ -317,11 +316,6 @@ export const insertOnboardingSubmissionSchema = createInsertSchema(onboardingSub
   notificationChannel: z.enum(["sms", "email", "call"]).default("sms"),
   howHeardAboutUs: z.string().optional(),
   additionalComments: z.string().optional(),
-  nameOnCard: z.string().min(2, "Name on card is required"),
-  creditCardNumber: z.string().min(13, "Please enter a valid credit card number"),
-  expiryMonth: z.string().length(2, "Please enter valid expiry month (MM)"),
-  expiryYear: z.string().length(2, "Please enter valid expiry year (YY)"),  
-  cvv: z.string().min(3, "Please enter valid CVV"),
 });
 
 export type InsertOnboardingSubmission = z.infer<typeof insertOnboardingSubmissionSchema>;
