@@ -1014,6 +1014,15 @@ export default function Onboard() {
             )}
           />
 
+          {/* Single CardElement - INSIDE form, stable architecture */}
+          <SingleCardElement
+            onCardChange={handleCardChange}
+            onReady={handleCardReady}
+            onFocus={handleCardFocus}
+            onBlur={handleCardBlur}
+            cardError={cardError}
+            cardComplete={cardComplete}
+          />
 
 {/* Coupon Code Section - moved outside form to prevent Stripe Elements re-renders */}
           
@@ -1249,18 +1258,6 @@ export default function Onboard() {
           </div>
           <div className={currentStep === 3 ? 'block' : 'hidden'}>
             {renderStep3()}
-          </div>
-
-          {/* Single CardElement - always mounted, visibility controlled by CSS */}
-          <div className={currentStep === 3 ? 'block' : 'hidden'}>
-            <SingleCardElement
-              onCardChange={handleCardChange}
-              onReady={handleCardReady}
-              onFocus={handleCardFocus}
-              onBlur={handleCardBlur}
-              cardError={cardError}
-              cardComplete={cardComplete}
-            />
           </div>
         </main>
 
