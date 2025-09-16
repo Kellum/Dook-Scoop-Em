@@ -219,6 +219,51 @@ export default function Onboard() {
     },
   });
 
+  // CardElement state and stable callbacks
+  const [cardError, setCardError] = useState<string | null>(null);
+  const [cardComplete, setCardComplete] = useState(false);
+
+  // Stable callbacks to prevent CardElement remounts
+  const handleCardChange = useCallback((event: any) => {
+    console.log("🎯 Stripe CardElement onChange:", {
+      complete: event.complete,
+      error: event.error?.message,
+      empty: event.empty,
+      elementType: event.elementType
+    });
+    
+    // Clear errors when user is typing
+    if (!event.error) {
+      setCardError(null);
+    } else {
+      setCardError(event.error.message);
+    }
+    
+    // Update completion state
+    setCardComplete(event.complete);
+    
+    // Enhanced debug logging
+    if (event.complete) {
+      console.log("✅ Card is COMPLETE and valid!");
+    } else if (event.error) {
+      console.log("❌ Card error:", event.error.message);
+    } else {
+      console.log("⏳ Card incomplete but no errors");
+    }
+  }, []);
+
+  const handleCardReady = useCallback(() => {
+    console.log("🚀 Stripe CardElement is ready! (should only see this ONCE per page load)");
+  }, []);
+
+  const handleCardFocus = useCallback(() => {
+    console.log("👆 CardElement focused");
+  }, []);
+
+  const handleCardBlur = useCallback(() => {
+    console.log("👋 CardElement blurred");
+  }, []);
+
   // Get quote pricing mutation
   const getQuoteMutation = useMutation({
     mutationFn: async (data: QuoteFormData) => {
@@ -932,30 +977,6 @@ export default function Onboard() {
       }
     };
 
-    // Neumorphic styling for Stripe CardElement (useRef to freeze identity)
-    const cardElementOptionsRef = useRef({
-      style: {
-        base: {
-          fontSize: '16px',
-          color: '#111827',
-          fontFamily: '"Inter", sans-serif',
-          fontWeight: '500',
-          '::placeholder': {
-            color: '#9CA3AF',
-          },
-          backgroundColor: 'transparent',
-        },
-        invalid: {
-          color: '#EF4444',
-          iconColor: '#EF4444',
-        },
-        complete: {
-          color: '#059669',
-          iconColor: '#059669',
-        },
-      },
-      hidePostalCode: true,
-    });
 
     // Simplified submit button logic - use useWatch to prevent re-renders
     const nameOnCard = useWatch({ control: paymentForm.control, name: "nameOnCard" }) || "";
@@ -985,70 +1006,6 @@ export default function Onboard() {
               </FormItem>
             )}
           />
-
-          {/* Secure Stripe CardElement with neumorphic styling */}
-          <div>
-            <div className="text-sm font-bold text-black mb-2">CARD INFORMATION</div>
-            <div 
-              className={`
-                bg-orange-50/30 border border-orange-100 rounded-lg p-4 transition-all duration-200
-                ${cardComplete ? 'border-green-500 bg-green-50/20' : 'focus-within:border-orange-200'}
-                ${cardError ? 'border-red-500 bg-red-50/20' : ''}
-              `}
-              data-testid="stripe-card-element"
-            >
-              <CardElement
-                options={cardElementOptionsRef.current}
-                onChange={(event) => {
-                  console.log("🎯 Stripe CardElement onChange:", {
-                    complete: event.complete,
-                    error: event.error?.message,
-                    empty: event.empty,
-                    elementType: event.elementType
-                  });
-                  
-                  // Clear errors when user is typing
-                  if (!event.error) {
-                    setCardError(null);
-                  } else {
-                    setCardError(event.error.message);
-                  }
-                  
-                  // Update completion state
-                  setCardComplete(event.complete);
-                  
-                  // Enhanced debug logging
-                  if (event.complete) {
-                    console.log("✅ Card is COMPLETE and valid!");
-                  } else if (event.error) {
-                    console.log("❌ Card error:", event.error.message);
-                  } else {
-                    console.log("⏳ Card incomplete but no errors");
-                  }
-                }}
-                onReady={() => {
-                  console.log("🚀 Stripe CardElement is ready! (should only see this ONCE per page load)");
-                }}
-                onFocus={() => {
-                  console.log("👆 CardElement focused");
-                }}
-                onBlur={() => {
-                  console.log("👋 CardElement blurred");
-                }}
-              />
-            </div>
-            {cardError && (
-              <div className="text-sm text-red-600 mt-1 font-medium">
-                {cardError}
-              </div>
-            )}
-            {cardComplete && (
-              <div className="text-sm text-green-600 mt-1 font-medium flex items-center">
-                <Check className="w-4 h-4 mr-1" />
-                Card information is complete and valid
-              </div>
-            )}
-          </div>
 
 {/* Coupon Code Section - moved outside form to prevent Stripe Elements re-renders */}
           
@@ -1280,6 +1237,18 @@ export default function Onboard() {
           </div>
           <div className={currentStep === 3 ? 'block' : 'hidden'}>
             {renderStep3()}
+          </div>
+
+          {/* Persistent CardElement - mounts once and never unmounts */}
+          <div className={currentStep === 3 ? 'block' : 'hidden'}>
+            <PersistentCardElement
+              onCardChange={handleCardChange}
+              onReady={handleCardReady}
+              onFocus={handleCardFocus}
+              onBlur={handleCardBlur}
+              cardError={cardError}
+              cardComplete={cardComplete}
+            />
           </div>
         </main>
 
