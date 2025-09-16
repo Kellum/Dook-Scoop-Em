@@ -1007,6 +1007,16 @@ export default function Onboard() {
             )}
           />
 
+          {/* Persistent CardElement - INSIDE the form but stable */}
+          <PersistentCardElement
+            onCardChange={handleCardChange}
+            onReady={handleCardReady}
+            onFocus={handleCardFocus}
+            onBlur={handleCardBlur}
+            cardError={cardError}
+            cardComplete={cardComplete}
+          />
+
 {/* Coupon Code Section - moved outside form to prevent Stripe Elements re-renders */}
           
           <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded">
@@ -1237,18 +1247,6 @@ export default function Onboard() {
           </div>
           <div className={currentStep === 3 ? 'block' : 'hidden'}>
             {renderStep3()}
-          </div>
-
-          {/* Persistent CardElement - mounts once and never unmounts */}
-          <div className={currentStep === 3 ? 'block' : 'hidden'}>
-            <PersistentCardElement
-              onCardChange={handleCardChange}
-              onReady={handleCardReady}
-              onFocus={handleCardFocus}
-              onBlur={handleCardBlur}
-              cardError={cardError}
-              cardComplete={cardComplete}
-            />
           </div>
         </main>
 
