@@ -29,9 +29,10 @@ import { z } from "zod";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
-// Initialize Stripe with the publishable key from Sweep&Go
+// Initialize Stripe with HMR-safe singleton pattern  
 // Using existing working key from the application
-const stripePromise = loadStripe("pk_live_51E0qGmKJu52Qq7xnrxTqELFLHxv5TcszizlC6u2pCsAs2yi3LgJTXslgjI9AkDxVjyWojAgc7S9OqsfXCK2nwxrk0010NIY4d3");
+const PUBLISHABLE_KEY = "pk_live_51E0qGmKJu52Qq7xnrxTqELFLHxv5TcszizlC6u2pCsAs2yi3LgJTXslgjI9AkDxVjyWojAgc7S9OqsfXCK2nwxrk0010NIY4d3";
+const getStripe = () => (window as any).__stripePromise || ((window as any).__stripePromise = loadStripe(PUBLISHABLE_KEY));
 
 // Persistent CardElement component that mounts once and never unmounts
 const PersistentCardElement = React.memo(({ 
@@ -982,8 +983,15 @@ export default function Onboard() {
     const nameOnCard = useWatch({ control: paymentForm.control, name: "nameOnCard" }) || "";
     const submitButtonDisabled = submitOnboardingMutation.isPending || !stripe || !cardComplete || nameOnCard.trim().length < 2;
     
-    // Debug logging removed to prevent re-renders during submission
-    // console.log("🔄 Submit button state:", { ... });
+    // Debug submit button state to see what's blocking it
+    console.log("🔄 Submit button debug:", { 
+      isPending: submitOnboardingMutation.isPending, 
+      stripeReady: !!stripe, 
+      cardComplete, 
+      nameOnCard, 
+      nameLength: nameOnCard.trim().length,
+      disabled: submitButtonDisabled 
+    });
 
     return (
       <Form {...paymentForm}>
@@ -1211,7 +1219,7 @@ export default function Onboard() {
   }
 
   return (
-    <Elements stripe={stripePromise} options={elementsOptions}>
+    <Elements stripe={getStripe()} options={elementsOptions}>
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
         <Navigation />
         
