@@ -1,6 +1,6 @@
-import React, { useState, useMemo, useRef, useCallback } from "react";
+import React, { useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,103 +13,15 @@ import { apiRequest } from "@/lib/queryClient";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import { 
-  CreditCard, 
-  Shield, 
   CheckCircle, 
   AlertCircle, 
   ArrowRight,
   ArrowLeft,
-  DollarSign,
   Check
 } from "lucide-react";
 import { insertOnboardingSubmissionSchema } from "@shared/schema";
 import { z } from "zod";
 
-// Stripe imports for secure payment processing
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-
-// Initialize Stripe with HMR-safe singleton pattern  
-// Using existing working key from the application
-const PUBLISHABLE_KEY = "pk_live_51E0qGmKJu52Qq7xnrxTqELFLHxv5TcszizlC6u2pCsAs2yi3LgJTXslgjI9AkDxVjyWojAgc7S9OqsfXCK2nwxrk0010NIY4d3";
-const getStripe = () => (window as any).__stripePromise || ((window as any).__stripePromise = loadStripe(PUBLISHABLE_KEY));
-
-// Single CardElement component that mounts once and never unmounts
-const SingleCardElement = ({ 
-  onCardChange, 
-  onReady, 
-  onFocus, 
-  onBlur, 
-  cardError, 
-  cardComplete 
-}: {
-  onCardChange: (event: any) => void;
-  onReady: () => void;
-  onFocus: () => void;
-  onBlur: () => void;
-  cardError: string | null;
-  cardComplete: boolean;
-}) => {
-  // Frozen options to prevent remounts
-  const cardElementOptionsRef = useRef({
-    style: {
-      base: {
-        fontSize: '16px',
-        color: '#111827',
-        fontFamily: '"Inter", sans-serif',
-        fontWeight: '500',
-        '::placeholder': {
-          color: '#9CA3AF',
-        },
-        backgroundColor: 'transparent',
-      },
-      invalid: {
-        color: '#EF4444',
-        iconColor: '#EF4444',
-      },
-      complete: {
-        color: '#059669',
-        iconColor: '#059669',
-      },
-    },
-    hidePostalCode: true,
-  });
-
-  return (
-    <div>
-      <div className="text-sm font-bold text-black mb-2">CARD INFORMATION</div>
-      <div 
-        className={`
-          bg-orange-50/30 border border-orange-100 rounded-lg p-4 transition-all duration-200
-          ${cardComplete ? 'border-green-500 bg-green-50/20' : 'focus-within:border-orange-200'}
-          ${cardError ? 'border-red-500 bg-red-50/20' : ''}
-        `}
-        data-testid="stripe-card-element"
-      >
-        <CardElement
-          options={cardElementOptionsRef.current}
-          onChange={onCardChange}
-          onReady={onReady}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        />
-      </div>
-      {cardError && (
-        <div className="text-sm text-red-600 mt-1 font-medium">
-          {cardError}
-        </div>
-      )}
-    </div>
-  );
-};
-
-// Memoized Elements options to prevent re-renders
-const elementsOptions = {
-  locale: 'en' as const,
-  appearance: {
-    theme: 'stripe' as const,
-  },
-};
 
 // Step 1: Basic quote info
 const quoteFormSchema = z.object({
@@ -145,16 +57,8 @@ const customerInfoSchema = z.object({
   additionalComments: z.string().optional()
 });
 
-// Step 3: Payment info - Updated for secure Stripe tokenization
-const paymentInfoSchema = z.object({
-  nameOnCard: z.string().min(1, "Name on card required"),
-  couponCode: z.string().optional()
-  // Note: creditCardNumber, expiryMonth, expiryYear, cvv removed - handled securely by Stripe Elements
-});
-
 type QuoteFormData = z.infer<typeof quoteFormSchema>;
 type CustomerInfoData = z.infer<typeof customerInfoSchema>;
-type PaymentInfoData = z.infer<typeof paymentInfoSchema>;
 type OnboardingFormData = z.infer<typeof insertOnboardingSubmissionSchema>;
 
 export default function Onboard() {
@@ -163,10 +67,6 @@ export default function Onboard() {
   const [quoteData, setQuoteData] = useState<QuoteFormData | null>(null);
   const [customerData, setCustomerData] = useState<CustomerInfoData | null>(null);
   const [pricingInfo, setPricingInfo] = useState<any>(null);
-  const [appliedCoupon, setAppliedCoupon] = useState<{code: string, discount: number, type: 'percent' | 'fixed'} | null>(null);
-  const [couponCode, setCouponCode] = useState("");
-  const [couponValidationLoading, setCouponValidationLoading] = useState(false);
-  const [couponValidationMessage, setCouponValidationMessage] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [onboardingResponse, setOnboardingResponse] = useState<any>(null);
 
@@ -209,59 +109,7 @@ export default function Onboard() {
     },
   });
 
-  const paymentForm = useForm<PaymentInfoData>({
-    resolver: zodResolver(paymentInfoSchema),
-    defaultValues: {
-      nameOnCard: "",
-      couponCode: ""
-      // Note: raw card fields removed - handled securely by Stripe Elements
-    },
-  });
 
-  // CardElement state and stable callbacks
-  const [cardError, setCardError] = useState<string | null>(null);
-  const [cardComplete, setCardComplete] = useState(false);
-
-  // Stable callbacks to prevent CardElement remounts
-  const handleCardChange = useCallback((event: any) => {
-    console.log("🎯 Stripe CardElement onChange:", {
-      complete: event.complete,
-      error: event.error?.message,
-      empty: event.empty,
-      elementType: event.elementType
-    });
-    
-    // Clear errors when user is typing
-    if (!event.error) {
-      setCardError(null);
-    } else {
-      setCardError(event.error.message);
-    }
-    
-    // Update completion state
-    setCardComplete(event.complete);
-    
-    // Enhanced debug logging
-    if (event.complete) {
-      console.log("✅ Card is COMPLETE and valid!");
-    } else if (event.error) {
-      console.log("❌ Card error:", event.error.message);
-    } else {
-      console.log("⏳ Card incomplete but no errors");
-    }
-  }, []);
-
-  const handleCardReady = useCallback(() => {
-    console.log("🚀 Stripe CardElement is ready! (should only see this ONCE per page load)");
-  }, []);
-
-  const handleCardFocus = useCallback(() => {
-    console.log("👆 CardElement focused");
-  }, []);
-
-  const handleCardBlur = useCallback(() => {
-    console.log("👋 CardElement blurred");
-  }, []);
 
   // Get quote pricing mutation
   const getQuoteMutation = useMutation({
@@ -302,9 +150,9 @@ export default function Onboard() {
     },
   });
 
-  // Final onboarding submission with Stripe tokenization
+  // Final onboarding submission - simplified to just customer info
   const submitOnboardingMutation = useMutation({
-    mutationFn: async (paymentData: PaymentInfoData & { stripeToken?: string }) => {
+    mutationFn: async (customerData: CustomerInfoData) => {
       if (!quoteData || !customerData) throw new Error("Missing required data");
       
       const fullOnboardingData = {
@@ -339,12 +187,6 @@ export default function Onboard() {
         notificationChannel: "sms",
         howHeardAboutUs: "",
         additionalComments: customerData.additionalComments || "",
-        
-        // Secure payment info using Stripe token
-        nameOnCard: paymentData.nameOnCard,
-        creditCardToken: paymentData.stripeToken, // Secure token instead of raw card data
-        postal: quoteData.zipCode, // Use zip code for billing postal
-        // Note: expiryMonth, expiryYear, cvv securely handled by Stripe and embedded in token
       };
       
       return apiRequest("POST", "/api/onboard", fullOnboardingData);
@@ -363,9 +205,9 @@ export default function Onboard() {
       }
       
       toast({
-        title: data.success ? "Welcome to Dook Scoop 'Em!" : "Onboarding In Progress",
-        description: data.message,
-        variant: data.success ? "default" : "destructive"
+        title: "Thanks! We'll be in touch soon.",
+        description: "We'll contact you within 24 hours to finalize your service setup.",
+        variant: "default"
       });
     },
     onError: (error: any) => {
@@ -547,7 +389,8 @@ export default function Onboard() {
     const onSubmitCustomerInfo = (data: CustomerInfoData) => {
       console.log("Customer info:", data);
       setCustomerData(data);
-      setCurrentStep(3);
+      // Submit the final onboarding form with the form data directly 
+      submitOnboardingMutation.mutate(data);
     };
 
     return (
@@ -854,319 +697,8 @@ export default function Onboard() {
     );
   };
 
-  // Coupon validation function
-  const validateCoupon = async () => {
-    if (!couponCode.trim()) {
-      setCouponValidationMessage("Please enter a coupon code");
-      return;
-    }
-    
-    setCouponValidationLoading(true);
-    setCouponValidationMessage("");
-    
-    try {
-      // Use direct fetch instead of apiRequest to avoid middleware issues
-      const response = await fetch("/api/validate-coupon", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ code: couponCode }),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
-      
-      if (data.valid) {
-        setAppliedCoupon({
-          code: data.code,
-          discount: data.discount,
-          type: data.type
-        });
-        setCouponValidationMessage(`✅ ${data.description} applied!`);
-      } else {
-        setAppliedCoupon(null);
-        setCouponValidationMessage(`❌ ${data.message}`);
-      }
-    } catch (error) {
-      console.error("Coupon validation failed:", error);
-      setCouponValidationMessage("❌ Error validating coupon");
-      setAppliedCoupon(null);
-    } finally {
-      setCouponValidationLoading(false);
-    }
-  };
-
-  // Secure Stripe Payment Component with neumorphic styling
-  const StripePaymentForm = () => {
-    const stripe = useStripe();
-    const elements = useElements();
-    const [cardError, setCardError] = useState<string | null>(null);
-    const [cardComplete, setCardComplete] = useState(false);
-
-    const onSubmitPayment = async (data: PaymentInfoData) => {
-      // Enhanced validation and defensive checks
-      if (!stripe) {
-        console.error("Stripe not loaded");
-        setCardError("Payment system not ready. Please refresh and try again.");
-        return;
-      }
-
-      if (!elements) {
-        console.error("Stripe Elements not loaded");
-        setCardError("Payment system not ready. Please refresh and try again.");
-        return;
-      }
-
-      // Get CardElement with more robust checking
-      const cardElement = elements.getElement(CardElement);
-      if (!cardElement) {
-        console.error("CardElement not found");
-        setCardError("Payment form not ready. Please refresh and try again.");
-        return;
-      }
-
-      // Verify card is complete before proceeding  
-      if (!cardComplete) {
-        console.log("❌ Card not complete, cannot submit");
-        setCardError("Please complete all card fields (number, expiry, CVC, postal code).");
-        return;
-      }
-
-      console.log("Creating secure token...");
-      // Don't clear errors here - it causes re-render and unmounts CardElement
-      // setCardError(null);
-      
-      try {
-        // Get fresh element reference right before token creation
-        const freshCardElement = elements.getElement(CardElement);
-        if (!freshCardElement) {
-          setCardError("Payment form not ready. Please refresh and try again.");
-          return;
-        }
-        
-        // Create secure Stripe token with fresh element reference
-        const result = await stripe.createToken(freshCardElement, {
-          name: data.nameOnCard,
-        });
-
-        if (result.error) {
-          console.error("Stripe token creation error:", result.error);
-          setCardError(result.error.message || "Payment processing error");
-          return;
-        }
-
-        if (result.token) {
-          console.log("✅ Secure token created successfully:", result.token.id);
-          // Submit with secure token instead of raw card data
-          submitOnboardingMutation.mutate({
-            ...data,
-            stripeToken: result.token.id
-          });
-        } else {
-          console.error("No token returned from Stripe");
-          setCardError("Payment processing failed. Please try again.");
-        }
-      } catch (error: any) {
-        console.error("Token creation failed:", error);
-        setCardError("Payment processing failed. Please try again.");
-      }
-    };
 
 
-    // Simplified submit button logic - compute inline for direct state access
-    const nameOnCard = useWatch({ control: paymentForm.control, name: "nameOnCard" }) || "";
-    const disabled = submitOnboardingMutation.isPending || !stripe || !elements || !cardComplete || !nameOnCard?.trim();
-    
-    // Debug submit button state to see what's blocking it
-    console.log("🔄 Submit button debug:", { 
-      isPending: submitOnboardingMutation.isPending, 
-      stripeReady: !!stripe,
-      elementsReady: !!elements,
-      cardComplete, 
-      nameOnCard, 
-      nameLength: nameOnCard.trim().length,
-      disabled 
-    });
-
-    return (
-      <Form {...paymentForm}>
-        <form onSubmit={paymentForm.handleSubmit(onSubmitPayment)} className="space-y-4">
-          <FormField
-            control={paymentForm.control}
-            name="nameOnCard"
-            render={({ field }) => (
-              <FormItem>
-                <div className="text-sm font-bold text-black mb-2">NAME ON CARD</div>
-                <FormControl>
-                  <Input 
-                    {...field} 
-                    placeholder="John Doe" 
-                    className="bg-orange-50/30 border-orange-100 focus:border-orange-200" 
-                    data-testid="input-nameOnCard" 
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Single CardElement - INSIDE form, stable architecture */}
-          <SingleCardElement
-            onCardChange={handleCardChange}
-            onReady={handleCardReady}
-            onFocus={handleCardFocus}
-            onBlur={handleCardBlur}
-            cardError={cardError}
-            cardComplete={cardComplete}
-          />
-
-{/* Coupon Code Section - moved outside form to prevent Stripe Elements re-renders */}
-          
-          <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded">
-            🔐 <strong>Secure Payment:</strong> Your card information is encrypted and processed securely by Stripe. 
-            We will apply a $1.50 verification charge which is not an extra fee.
-          </div>
-
-          <div className="flex space-x-3">
-            <Button 
-              type="button"
-              variant="outline"
-              onClick={() => setCurrentStep(2)}
-              className="flex-1"
-              data-testid="button-back"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back
-            </Button>
-            <Button 
-              type="submit"
-              disabled={disabled}
-              className="flex-1 neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold disabled:opacity-50"
-              data-testid="button-submit"
-            >
-              {submitOnboardingMutation.isPending ? "Processing..." : "SUBMIT"}
-            </Button>
-          </div>
-        </form>
-      </Form>
-    );
-  };
-
-  // Step 3 Component - Payment Setup (wrapper with Elements provider)
-  const renderStep3 = () => {
-
-    const calculateDiscountedPrice = () => {
-      if (!pricingInfo || !appliedCoupon) return null;
-      
-      const apiPriceValue = pricingInfo?.pricing?.estimatedPrice;
-      if (!apiPriceValue) return null;
-      const originalPrice = parseFloat(apiPriceValue);
-      let discountAmount = 0;
-      
-      if (appliedCoupon.type === 'percent') {
-        discountAmount = originalPrice * (appliedCoupon.discount / 100);
-      } else {
-        discountAmount = appliedCoupon.discount;
-      }
-      
-      const finalPrice = Math.max(0, originalPrice - discountAmount);
-      
-      return {
-        originalPrice,
-        discountAmount,
-        finalPrice
-      };
-    };
-
-    const pricingCalculation = calculateDiscountedPrice();
-
-    return (
-      <Card className="neu-raised bg-white max-w-md mx-auto shadow-lg">
-          {pricingInfo && (
-            <div className="text-center mb-6">
-              <div className="bg-orange-600 text-white py-6 px-6 rounded-lg mb-6">
-                <h3 className="text-2xl font-bold mb-2">{quoteData?.serviceFrequency === 'one_time' ? 'Your One-Time Payment' : 'Your Monthly Service Plan'}</h3>
-                
-                {appliedCoupon && pricingCalculation ? (
-                  <>
-                    <div className="text-lg line-through opacity-75">${pricingCalculation.originalPrice.toFixed(2)}</div>
-                    <div className="text-4xl font-black">${pricingCalculation.finalPrice.toFixed(2)}</div>
-                    <div className="text-sm bg-green-500/20 text-green-100 px-3 py-1 rounded-full inline-block mt-2">
-                      You save ${pricingCalculation.discountAmount.toFixed(2)} with {appliedCoupon.code}!
-                    </div>
-                  </>
-                ) : (
-                  <div className="text-4xl font-black">{(() => {
-                    const apiPriceValue = pricingInfo?.pricing?.estimatedPrice;
-                    return apiPriceValue ? `$${apiPriceValue}` : 'Price TBD';
-                  })()}</div>
-                )}
-                
-                {quoteData?.serviceFrequency !== 'one_time' && <div className="text-lg">per month</div>}
-                <div className="text-xs mt-3 opacity-90">
-                  {quoteData?.serviceFrequency === 'one_time' ? 'One-time payment.' : 'Billed monthly.'} We fear no pile.
-                </div>
-              </div>
-            </div>
-          )}
-          
-          <CardHeader className="text-center">
-            <div className="bg-orange-600 text-white py-4 px-6 rounded-lg mb-4">
-              <CardTitle className="text-2xl font-bold">🔐 Secure Payment Setup</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="p-6">
-            {/* Coupon Code Section - separate from Stripe form to prevent re-renders */}
-            <div className="bg-orange-50/30 p-4 rounded-lg border border-orange-100 mb-6">
-              <div className="text-sm font-bold text-black mb-2">COUPON CODE (OPTIONAL)</div>
-              <div className="flex gap-2">
-                <Input 
-                  value={couponCode}
-                  onChange={(e) => {
-                    setCouponCode(e.target.value.toUpperCase());
-                    setCouponValidationMessage("");
-                    if (appliedCoupon) {
-                      setAppliedCoupon(null);
-                    }
-                  }}
-                  placeholder="Enter coupon code"
-                  className="bg-white border-orange-200 focus:border-orange-300"
-                  data-testid="input-couponCode"
-                />
-                <Button 
-                  type="button"
-                  onClick={validateCoupon}
-                  disabled={couponValidationLoading || !couponCode.trim()}
-                  className="bg-orange-600 hover:bg-orange-700 text-white px-4"
-                  data-testid="button-applyCoupon"
-                >
-                  {couponValidationLoading ? "..." : "APPLY"}
-                </Button>
-              </div>
-              {couponValidationMessage && (
-                <div className="text-sm mt-2 font-medium">
-                  {couponValidationMessage}
-                </div>
-              )}
-              {appliedCoupon && (
-                <div className="text-xs mt-1 text-green-700 font-bold">
-                  {appliedCoupon.type === 'percent' 
-                    ? `${appliedCoupon.discount}% discount will be applied to your first bill` 
-                    : `$${appliedCoupon.discount} discount will be applied to your first bill`
-                  }
-                </div>
-              )}
-            </div>
-            
-            <StripePaymentForm />
-          </CardContent>
-        </Card>
-    );
-  };
 
   // Success Page
   if (isSubmitted && onboardingResponse) {
@@ -1217,12 +749,7 @@ export default function Onboard() {
     );
   }
 
-  // Stable refs for Elements provider to prevent remounts
-  const stripePromiseRef = useRef(getStripe());
-  const elementsOptionsRef = useRef(elementsOptions);
-
   return (
-    <Elements stripe={stripePromiseRef.current} options={elementsOptionsRef.current}>
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
         <Navigation />
         
@@ -1233,7 +760,7 @@ export default function Onboard() {
               DOOK SCOOP 'EM
             </h1>
             
-            {/* Progress Indicator */}
+            {/* Progress Indicator - 2 Steps Only */}
             <div className="flex justify-center items-center space-x-4 mb-8">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 1 ? 'bg-orange-600 text-white' : 'bg-gray-300 text-gray-600'}`}>
                 1
@@ -1241,10 +768,6 @@ export default function Onboard() {
               <div className={`w-8 h-1 ${currentStep >= 2 ? 'bg-orange-600' : 'bg-gray-300'}`}></div>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 2 ? 'bg-orange-600 text-white' : 'bg-gray-300 text-gray-600'}`}>
                 2
-              </div>
-              <div className={`w-8 h-1 ${currentStep >= 3 ? 'bg-orange-600' : 'bg-gray-300'}`}></div>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${currentStep >= 3 ? 'bg-orange-600 text-white' : 'bg-gray-300 text-gray-600'}`}>
-                3
               </div>
             </div>
           </div>
@@ -1256,13 +779,9 @@ export default function Onboard() {
           <div className={currentStep === 2 ? 'block' : 'hidden'}>
             {renderStep2()}
           </div>
-          <div className={currentStep === 3 ? 'block' : 'hidden'}>
-            {renderStep3()}
-          </div>
         </main>
 
         <Footer />
       </div>
-    </Elements>
   );
 }
