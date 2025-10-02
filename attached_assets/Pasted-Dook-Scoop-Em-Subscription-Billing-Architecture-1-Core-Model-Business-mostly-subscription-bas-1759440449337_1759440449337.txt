@@ -1,0 +1,239 @@
+Dook Scoop ’Em Subscription + Billing Architecture
+1. Core Model
+
+Business = mostly subscription-based (recurring cleanings).
+
+Variability comes from:
+
+Service frequency (weekly, biweekly, twice-weekly).
+
+Number of dogs.
+
+(Optional) Yard size.
+
+Philosophy:
+All-inclusive pricing. Competitors nickel-and-dime (trash haul, deodorizer), but Dook Scoop ’Em includes it in base rates.
+
+2. Base Plans
+
+weekly
+
+biweekly
+
+twice_weekly
+
+(Optional) pause_hold — customer can pay to retain spot during vacation.
+
+3. Feature Modifiers
+
+dogs → integer (1, 2, 3…).
+
+extra_dog uplift = +$20/mo per additional dog.
+
+(Optional) oversize_yard uplift.
+
+4. Price Examples
+
+1 dog, weekly = $110/mo
+
+2 dogs, weekly = $130/mo
+
+1 dog, twice-weekly = $136/mo
+
+Base Price Table (covers 1 dog):
+
+Weekly = $110/mo
+
+Biweekly = $90/mo (example, adjustable)
+
+Twice-weekly = $136/mo
+
+Modifier:
+
+Extra Dog = +$20/mo per dog after the first.
+
+5. One-Off Charges
+
+Initial Cleanup:
+
+Standard = $25
+
+Heavy = $50
+
+One-Time Cleaning (non-subscriber):
+
+Flat price (set as needed).
+
+Plan Changes:
+
+Add/remove dog mid-cycle.
+
+Stripe handles prorations (or not, depending on preference).
+
+6. Catalog Sketch
+
+Products (Stripe):
+
+prod_pooper_scooping
+
+Recurring Prices:
+
+price_weekly_base_1dog = $110
+
+price_biweekly_base_1dog = $90
+
+price_twice_weekly_base_1dog = $136
+
+price_extra_dog = $20 (quantity = number of extra dogs)
+
+One-Time Prices:
+
+price_initial_cleanup_standard = $25
+
+price_initial_cleanup_heavy = $50
+
+price_one_time_cleaning = (set rate)
+
+7. Clerk Setup
+
+Plans:
+
+plan_weekly
+
+plan_biweekly
+
+plan_twice_weekly
+
+Features / Entitlements:
+
+dogs (int)
+
+oversize_yard (bool, optional)
+
+initial_cleanup_paid (bool)
+
+8. Flow Examples
+
+Signup (Weekly, 2 dogs):
+
+User selects plan: weekly.
+
+Dog count: 2.
+
+Stripe Subscription = base weekly + 1 × extra_dog uplift.
+
+Clerk Plan = weekly.
+
+Clerk Feature = dogs: 2.
+
+Plan Change (new dog mid-cycle):
+
+Update Clerk feature → dogs: 3.
+
+Stripe subscription item: extra_dog quantity updated to 2.
+
+Proration applied (or deferred).
+
+One-Time Cleanup (new subscriber):
+
+Add one-time invoice item (25 or 50).
+
+On payment success → Clerk feature = initial_cleanup_paid: true.
+
+9. CRM Data Model (simplified)
+
+customers
+
+id
+
+clerk_user_id
+
+stripe_customer_id
+
+name, email, phone
+
+address
+
+notes
+
+subscriptions
+
+id
+
+customer_id
+
+stripe_subscription_id
+
+plan (weekly, biweekly, twice-weekly, paused)
+
+dogs (int)
+
+oversize_yard (bool)
+
+status (active, past_due, paused, canceled)
+
+current_period_start / end
+
+visits
+
+id
+
+subscription_id
+
+scheduled_for (datetime)
+
+status (scheduled, completed, skipped)
+
+tech_id
+
+notes
+
+charges
+
+id
+
+customer_id
+
+stripe_invoice_id
+
+type (recurring, one_time, initial_cleanup)
+
+amount_cents
+
+status (succeeded, failed, refunded)
+
+webhook_events
+
+id
+
+source (stripe, clerk)
+
+type
+
+raw_payload (json)
+
+processed_at
+
+10. Customer Dashboard (UI)
+
+Plan summary (frequency, dog count, price).
+
+Modify plan (frequency dropdown, dog count stepper).
+
+Billing history (Stripe invoices, receipts).
+
+Schedule overview (next visit, skip/pause options).
+
+One-time actions: “Initial Deep Clean,” “One-Time Visit.”
+
+11. Operational Notes
+
+Stripe = system of record for billing.
+
+Clerk = system of record for entitlements (plans, dog count, yard size).
+
+Replit CRM = operational dashboard (techs, visits, notes, customer service).
+
+Webhooks keep everything in sync.
+
+Coupons / promos (like founding member discounts) live in Stripe.
