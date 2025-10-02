@@ -59,7 +59,14 @@ import Contact from "@/pages/contact";
 import Onboard from "@/pages/onboard";
 import Locations from "@/pages/locations-neu";
 import AdminLogin from "@/pages/admin/login-neu";
-import AdminDashboard from "@/pages/admin/dashboard";
+import AdminDashboardOld from "@/pages/admin/dashboard";
+
+// New Clerk-based auth and dashboards
+import SignInPage from "@/pages/auth/sign-in";
+import SignUpPage from "@/pages/auth/sign-up";
+import CustomerDashboard from "@/pages/dashboard/index";
+import AdminDashboard from "@/pages/admin/dashboard-new";
+import { ProtectedRoute } from "@/components/protected-route";
 
 import NotFound from "@/pages/not-found";
 
@@ -94,6 +101,24 @@ function Router() {
       {/* Main business website as home */}
       <Route path="/" component={Home} />
       
+      {/* Authentication routes */}
+      <Route path="/sign-in" component={SignInPage} />
+      <Route path="/sign-up" component={SignUpPage} />
+      
+      {/* Customer Dashboard - Protected */}
+      <Route path="/dashboard">
+        <ProtectedRoute>
+          <CustomerDashboard />
+        </ProtectedRoute>
+      </Route>
+      
+      {/* Admin Dashboard - Protected & Admin Only */}
+      <Route path="/admin">
+        <ProtectedRoute requireAdmin={true}>
+          <AdminDashboard />
+        </ProtectedRoute>
+      </Route>
+      
       {/* Waitlist area selector page */}
       <Route path="/waitlist" component={WaitlistMap} />
       
@@ -114,7 +139,7 @@ function Router() {
       <Route path="/home" component={Home} />
       <Route path="/locations" component={Locations} />
       <Route path="/admin/login" component={AdminLogin} />
-      <Route path="/admin/dashboard" component={AdminDashboard} />
+      <Route path="/admin/dashboard-old" component={AdminDashboardOld} />
 
       <Route component={NotFound} />
     </Switch>
