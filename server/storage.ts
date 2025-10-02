@@ -8,6 +8,10 @@ import {
   mediaAssets,
   quoteRequests,
   onboardingSubmissions,
+  customers,
+  subscriptions,
+  visits,
+  charges,
   type User, 
   type InsertUser, 
   type WaitlistSubmission, 
@@ -26,6 +30,14 @@ import {
   type InsertQuoteRequest,
   type OnboardingSubmission,
   type InsertOnboardingSubmission,
+  type Customer,
+  type InsertCustomer,
+  type Subscription,
+  type InsertSubscription,
+  type Visit,
+  type InsertVisit,
+  type Charge,
+  type InsertCharge,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
@@ -87,6 +99,32 @@ export interface IStorage {
   getOnboardingSubmission(id: string): Promise<OnboardingSubmission | undefined>;
   updateOnboardingStatus(id: string, status: string, sweepAndGoResponse?: string, sweepAndGoClientId?: string, errorMessage?: string): Promise<OnboardingSubmission | undefined>;
   deleteOnboardingSubmission(id: string): Promise<void>;
+  
+  // CRM Customer operations
+  createCustomer(customer: InsertCustomer): Promise<Customer>;
+  getCustomer(id: string): Promise<Customer | undefined>;
+  getCustomerByClerkId(clerkUserId: string): Promise<Customer | undefined>;
+  getCustomerByStripeId(stripeCustomerId: string): Promise<Customer | undefined>;
+  getAllCustomers(): Promise<Customer[]>;
+  updateCustomer(id: string, customer: Partial<InsertCustomer>): Promise<Customer | undefined>;
+  
+  // CRM Subscription operations
+  createSubscription(subscription: InsertSubscription): Promise<Subscription>;
+  getSubscription(id: string): Promise<Subscription | undefined>;
+  getSubscriptionByStripeId(stripeSubscriptionId: string): Promise<Subscription | undefined>;
+  getCustomerSubscriptions(customerId: string): Promise<Subscription[]>;
+  updateSubscription(id: string, subscription: Partial<InsertSubscription>): Promise<Subscription | undefined>;
+  
+  // CRM Visit operations
+  createVisit(visit: InsertVisit): Promise<Visit>;
+  getVisit(id: string): Promise<Visit | undefined>;
+  getCustomerVisits(customerId: string): Promise<Visit[]>;
+  getVisitsByDate(date: string): Promise<Visit[]>;
+  updateVisit(id: string, visit: Partial<InsertVisit>): Promise<Visit | undefined>;
+  
+  // CRM Charge operations
+  createCharge(charge: InsertCharge): Promise<Charge>;
+  getCustomerCharges(customerId: string): Promise<Charge[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -418,6 +456,119 @@ export class DatabaseStorage implements IStorage {
 
   async deleteOnboardingSubmission(id: string): Promise<void> {
     await db.delete(onboardingSubmissions).where(eq(onboardingSubmissions.id, id));
+  }
+
+  // CRM Customer operations
+  async createCustomer(insertCustomer: InsertCustomer): Promise<Customer> {
+    const [customer] = await db
+      .insert(customers)
+      .values(insertCustomer)
+      .returning();
+    return customer;
+  }
+
+  async getCustomer(id: string): Promise<Customer | undefined> {
+    const [customer] = await db.select().from(customers).where(eq(customers.id, id));
+    return customer;
+  }
+
+  async getCustomerByClerkId(clerkUserId: string): Promise<Customer | undefined> {
+    const [customer] = await db.select().from(customers).where(eq(customers.clerkUserId, clerkUserId));
+    return customer;
+  }
+
+  async getCustomerByStripeId(stripeCustomerId: string): Promise<Customer | undefined> {
+    const [customer] = await db.select().from(customers).where(eq(customers.stripeCustomerId, stripeCustomerId));
+    return customer;
+  }
+
+  async getAllCustomers(): Promise<Customer[]> {
+    return await db.select().from(customers).orderBy(desc(customers.createdAt));
+  }
+
+  async updateCustomer(id: string, updateData: Partial<InsertCustomer>): Promise<Customer | undefined> {
+    const [customer] = await db
+      .update(customers)
+      .set({ ...updateData, updatedAt: new Date().toISOString() })
+      .where(eq(customers.id, id))
+      .returning();
+    return customer;
+  }
+
+  // CRM Subscription operations
+  async createSubscription(insertSubscription: InsertSubscription): Promise<Subscription> {
+    const [subscription] = await db
+      .insert(subscriptions)
+      .values(insertSubscription)
+      .returning();
+    return subscription;
+  }
+
+  async getSubscription(id: string): Promise<Subscription | undefined> {
+    const [subscription] = await db.select().from(subscriptions).where(eq(subscriptions.id, id));
+    return subscription;
+  }
+
+  async getSubscriptionByStripeId(stripeSubscriptionId: string): Promise<Subscription | undefined> {
+    const [subscription] = await db.select().from(subscriptions).where(eq(subscriptions.stripeSubscriptionId, stripeSubscriptionId));
+    return subscription;
+  }
+
+  async getCustomerSubscriptions(customerId: string): Promise<Subscription[]> {
+    return await db.select().from(subscriptions).where(eq(subscriptions.customerId, customerId));
+  }
+
+  async updateSubscription(id: string, updateData: Partial<InsertSubscription>): Promise<Subscription | undefined> {
+    const [subscription] = await db
+      .update(subscriptions)
+      .set({ ...updateData, updatedAt: new Date().toISOString() })
+      .where(eq(subscriptions.id, id))
+      .returning();
+    return subscription;
+  }
+
+  // CRM Visit operations
+  async createVisit(insertVisit: InsertVisit): Promise<Visit> {
+    const [visit] = await db
+      .insert(visits)
+      .values(insertVisit)
+      .returning();
+    return visit;
+  }
+
+  async getVisit(id: string): Promise<Visit | undefined> {
+    const [visit] = await db.select().from(visits).where(eq(visits.id, id));
+    return visit;
+  }
+
+  async getCustomerVisits(customerId: string): Promise<Visit[]> {
+    return await db.select().from(visits).where(eq(visits.customerId, customerId)).orderBy(desc(visits.scheduledFor));
+  }
+
+  async getVisitsByDate(date: string): Promise<Visit[]> {
+    return await db.select().from(visits).where(eq(visits.scheduledFor, date));
+  }
+
+  async updateVisit(id: string, updateData: Partial<InsertVisit>): Promise<Visit | undefined> {
+    const [visit] = await db
+      .update(visits)
+      .set(updateData)
+      .where(eq(visits.id, id))
+      .returning();
+    return visit;
+  }
+
+  // CRM Charge operations
+  async createCharge(insertCharge: InsertCharge): Promise<Charge> {
+    const [charge] = await db
+      .insert(charges)
+      .values(insertCharge)
+      .returning();
+    return charge;
+  }
+
+  async getCustomerCharges(customerId: string): Promise<Charge[]> {
+    return await db.select().from(charges).where(eq(charges.customerId, customerId)).orderBy(desc(charges.createdAt));
   }
 
   private async initializeServiceLocations() {
