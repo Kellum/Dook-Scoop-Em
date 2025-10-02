@@ -320,3 +320,117 @@ export const insertOnboardingSubmissionSchema = createInsertSchema(onboardingSub
 
 export type InsertOnboardingSubmission = z.infer<typeof insertOnboardingSubmissionSchema>;
 export type OnboardingSubmission = typeof onboardingSubmissions.$inferSelect;
+
+// CRM Tables for Clerk + Stripe Integration
+export const customers = pgTable("customers", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  clerkUserId: text("clerk_user_id").notNull().unique(),
+  stripeCustomerId: text("stripe_customer_id").unique(),
+  email: text("email").notNull(),
+  firstName: text("first_name"),
+  lastName: text("last_name"),
+  phone: text("phone"),
+  address: text("address"),
+  city: text("city"),
+  state: text("state"),
+  zipCode: text("zip_code"),
+  gateCode: text("gate_code"),
+  dogNames: text("dog_names").array(),
+  notificationPreference: text("notification_preference").default("email"), // email, sms, both
+  notes: text("notes"),
+  role: text("role").default("customer"), // customer, admin
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const subscriptions = pgTable("subscriptions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  customerId: varchar("customer_id").notNull().references(() => customers.id, { onDelete: 'cascade' }),
+  stripeSubscriptionId: text("stripe_subscription_id").unique(),
+  plan: text("plan").notNull(), // weekly, biweekly, twice_weekly
+  dogCount: integer("dog_count").notNull().default(1),
+  status: text("status").notNull().default("active"), // active, past_due, paused, canceled
+  currentPeriodStart: text("current_period_start"),
+  currentPeriodEnd: text("current_period_end"),
+  cancelAtPeriodEnd: boolean("cancel_at_period_end").default(false),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const visits = pgTable("visits", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  subscriptionId: varchar("subscription_id").notNull().references(() => subscriptions.id, { onDelete: 'cascade' }),
+  customerId: varchar("customer_id").notNull().references(() => customers.id, { onDelete: 'cascade' }),
+  scheduledFor: text("scheduled_for").notNull(),
+  status: text("status").notNull().default("scheduled"), // scheduled, completed, skipped, canceled
+  techNotes: text("tech_notes"),
+  completedAt: text("completed_at"),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const charges = pgTable("charges", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  customerId: varchar("customer_id").notNull().references(() => customers.id, { onDelete: 'cascade' }),
+  stripeInvoiceId: text("stripe_invoice_id"),
+  type: text("type").notNull(), // recurring, one_time, initial_cleanup
+  amountCents: integer("amount_cents").notNull(),
+  status: text("status").notNull(), // succeeded, failed, refunded, pending
+  description: text("description"),
+  createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
+});
+
+// CRM Schema Validators
+export const insertCustomerSchema = createInsertSchema(customers).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  clerkUserId: z.string().min(1, "Clerk user ID is required"),
+  email: z.string().email("Please enter a valid email address"),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  phone: z.string().optional(),
+  address: z.string().optional(),
+  role: z.enum(["customer", "admin"]).default("customer"),
+});
+
+export const insertSubscriptionSchema = createInsertSchema(subscriptions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  customerId: z.string().min(1, "Customer ID is required"),
+  plan: z.enum(["weekly", "biweekly", "twice_weekly"], { required_error: "Plan is required" }),
+  dogCount: z.number().min(1, "Must have at least 1 dog").default(1),
+  status: z.enum(["active", "past_due", "paused", "canceled"]).default("active"),
+});
+
+export const insertVisitSchema = createInsertSchema(visits).omit({
+  id: true,
+  createdAt: true,
+}).extend({
+  subscriptionId: z.string().min(1, "Subscription ID is required"),
+  customerId: z.string().min(1, "Customer ID is required"),
+  scheduledFor: z.string().min(1, "Scheduled date is required"),
+  status: z.enum(["scheduled", "completed", "skipped", "canceled"]).default("scheduled"),
+});
+
+export const insertChargeSchema = createInsertSchema(charges).omit({
+  id: true,
+  createdAt: true,
+}).extend({
+  customerId: z.string().min(1, "Customer ID is required"),
+  type: z.enum(["recurring", "one_time", "initial_cleanup"]),
+  amountCents: z.number().min(0, "Amount must be positive"),
+  status: z.enum(["succeeded", "failed", "refunded", "pending"]),
+});
+
+// CRM Types
+export type InsertCustomer = z.infer<typeof insertCustomerSchema>;
+export type Customer = typeof customers.$inferSelect;
+export type InsertSubscription = z.infer<typeof insertSubscriptionSchema>;
+export type Subscription = typeof subscriptions.$inferSelect;
+export type InsertVisit = z.infer<typeof insertVisitSchema>;
+export type Visit = typeof visits.$inferSelect;
+export type InsertCharge = z.infer<typeof insertChargeSchema>;
+export type Charge = typeof charges.$inferSelect;
