@@ -13,7 +13,7 @@ import {
   insertQuoteRequestSchema,
   insertOnboardingSubmissionSchema
 } from "@shared/schema";
-import { hashPassword, verifyPassword, generateToken, requireAuth } from "./auth";
+import { hashPassword, verifyPassword, generateToken, requireAuth, requireAdmin } from "./auth";
 import { handleSweepAndGoWebhook, sweepAndGoAPI } from "./sweepandgo";
 import { stripe, STRIPE_PRICES } from "./stripe";
 import nodemailer from "nodemailer";
@@ -86,7 +86,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Admin-only endpoints
-  app.get("/api/admin/locations", requireAuth, async (req, res) => {
+  app.get("/api/admin/locations", requireAdmin, async (req, res) => {
     try {
       const locations = await storage.getAllServiceLocations();
       res.json({ locations });
@@ -96,7 +96,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/locations", requireAuth, async (req, res) => {
+  app.post("/api/admin/locations", requireAdmin, async (req, res) => {
     try {
       const validatedData = insertServiceLocationSchema.parse(req.body);
       const location = await storage.createServiceLocation(validatedData);
@@ -113,7 +113,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/admin/locations/:id", requireAuth, async (req, res) => {
+  app.patch("/api/admin/locations/:id", requireAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const location = await storage.updateServiceLocation(id, req.body);
+      if (!location) {
+        return res.status(404).json({ message: "Location not found" });
+      }
+      res.json({ location });
+    } catch (error) {
+      console.error("Error updating location:", error);
+      res.status(500).json({ message: "Failed to update location" });
+    }
+  });
+
+  app.delete("/api/admin/locations/:id", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       await storage.deleteServiceLocation(id);
@@ -124,7 +138,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/waitlist", requireAuth, async (req, res) => {
+  app.get("/api/admin/waitlist", requireAdmin, async (req, res) => {
     try {
       const submissions = await storage.getAllWaitlistSubmissions();
       res.json({ submissions });
@@ -134,7 +148,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/waitlist/archived", requireAuth, async (req, res) => {
+  app.get("/api/admin/waitlist/archived", requireAdmin, async (req, res) => {
     try {
       const submissions = await storage.getArchivedWaitlistSubmissions();
       res.json({ submissions });
@@ -145,7 +159,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Admin Quote Management Endpoints
-  app.get("/api/admin/quotes", requireAuth, async (req, res) => {
+  app.get("/api/admin/quotes", requireAdmin, async (req, res) => {
     try {
       const quotes = await storage.getAllQuoteRequests();
       res.json({ quotes });
@@ -155,7 +169,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch("/api/admin/quotes/:id/status", requireAuth, async (req, res) => {
+  app.patch("/api/admin/quotes/:id/status", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       const { status } = req.body;
@@ -175,7 +189,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch("/api/admin/quotes/:id/notes", requireAuth, async (req, res) => {
+  app.patch("/api/admin/quotes/:id/notes", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       const { notes } = req.body;
@@ -191,7 +205,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/admin/quotes/:id", requireAuth, async (req, res) => {
+  app.delete("/api/admin/quotes/:id", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       await storage.deleteQuoteRequest(id);
@@ -202,7 +216,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch("/api/admin/waitlist/:id/archive", requireAuth, async (req, res) => {
+  app.patch("/api/admin/waitlist/:id/archive", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       const submission = await storage.updateWaitlistSubmissionStatus(id, "archived");
@@ -216,7 +230,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/admin/waitlist/:id", requireAuth, async (req, res) => {
+  app.delete("/api/admin/waitlist/:id", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       await storage.deleteWaitlistSubmission(id);
@@ -231,7 +245,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/webhooks/sweepandgo", handleSweepAndGoWebhook);
 
   // Test Sweep&Go API connection (admin only)
-  app.get("/api/admin/sweepandgo/test", requireAuth, async (req, res) => {
+  app.get("/api/admin/sweepandgo/test", requireAdmin, async (req, res) => {
     try {
       // Test basic API connectivity
       const testEmail = "test@example.com";
@@ -256,7 +270,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get pricing from Sweep&Go API (admin only)
-  app.post("/api/admin/sweepandgo/pricing", requireAuth, async (req, res) => {
+  app.post("/api/admin/sweepandgo/pricing", requireAdmin, async (req, res) => {
     try {
       const { zipCode, numberOfDogs, frequency, lastCleaned } = req.body;
       
@@ -1109,7 +1123,7 @@ Submitted: ${new Date().toLocaleString()}
   // ===== CMS API ROUTES =====
   
   // Page Management Routes
-  app.get("/api/cms/pages", requireAuth, async (req, res) => {
+  app.get("/api/cms/pages", requireAdmin, async (req, res) => {
     try {
       const pages = await storage.getAllPages();
       res.json({ pages });
@@ -1119,7 +1133,7 @@ Submitted: ${new Date().toLocaleString()}
     }
   });
 
-  app.get("/api/cms/pages/:slug", requireAuth, async (req, res) => {
+  app.get("/api/cms/pages/:slug", requireAdmin, async (req, res) => {
     try {
       const { slug } = req.params;
       const page = await storage.getPage(slug);
@@ -1135,7 +1149,7 @@ Submitted: ${new Date().toLocaleString()}
     }
   });
 
-  app.post("/api/cms/pages", requireAuth, async (req, res) => {
+  app.post("/api/cms/pages", requireAdmin, async (req, res) => {
     try {
       const validatedData = insertPageSchema.parse(req.body);
       const page = await storage.createPage(validatedData);
@@ -1152,7 +1166,7 @@ Submitted: ${new Date().toLocaleString()}
     }
   });
 
-  app.patch("/api/cms/pages/:id", requireAuth, async (req, res) => {
+  app.patch("/api/cms/pages/:id", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       const validatedData = insertPageSchema.partial().parse(req.body);
@@ -1167,7 +1181,7 @@ Submitted: ${new Date().toLocaleString()}
     }
   });
 
-  app.delete("/api/cms/pages/:id", requireAuth, async (req, res) => {
+  app.delete("/api/cms/pages/:id", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       await storage.deletePage(id);
@@ -1179,7 +1193,7 @@ Submitted: ${new Date().toLocaleString()}
   });
 
   // Content Management Routes
-  app.post("/api/cms/content", requireAuth, async (req, res) => {
+  app.post("/api/cms/content", requireAdmin, async (req, res) => {
     try {
       const validatedData = insertPageContentSchema.parse(req.body);
       const content = await storage.updatePageContent(validatedData);
@@ -1196,7 +1210,7 @@ Submitted: ${new Date().toLocaleString()}
     }
   });
 
-  app.get("/api/cms/content/:pageId", requireAuth, async (req, res) => {
+  app.get("/api/cms/content/:pageId", requireAdmin, async (req, res) => {
     try {
       const { pageId } = req.params;
       const content = await storage.getPageContent(pageId);
@@ -1207,7 +1221,7 @@ Submitted: ${new Date().toLocaleString()}
     }
   });
 
-  app.delete("/api/cms/content/:pageId/:elementId", requireAuth, async (req, res) => {
+  app.delete("/api/cms/content/:pageId/:elementId", requireAdmin, async (req, res) => {
     try {
       const { pageId, elementId } = req.params;
       await storage.deletePageContent(pageId, elementId);
@@ -1219,7 +1233,7 @@ Submitted: ${new Date().toLocaleString()}
   });
 
   // SEO Management Routes
-  app.post("/api/cms/seo", requireAuth, async (req, res) => {
+  app.post("/api/cms/seo", requireAdmin, async (req, res) => {
     try {
       const validatedData = insertSeoSettingsSchema.parse(req.body);
       const settings = await storage.updatePageSeoSettings(validatedData);
@@ -1236,7 +1250,7 @@ Submitted: ${new Date().toLocaleString()}
     }
   });
 
-  app.get("/api/cms/seo/:pageId", requireAuth, async (req, res) => {
+  app.get("/api/cms/seo/:pageId", requireAdmin, async (req, res) => {
     try {
       const { pageId } = req.params;
       const settings = await storage.getPageSeoSettings(pageId);
@@ -1273,7 +1287,7 @@ Submitted: ${new Date().toLocaleString()}
   });
 
   // Update content block by element
-  app.put("/api/cms/content/element/:pageId/:elementId", requireAuth, async (req, res) => {
+  app.put("/api/cms/content/element/:pageId/:elementId", requireAdmin, async (req, res) => {
     try {
       const { pageId, elementId } = req.params;
       const { content } = req.body;
@@ -1293,7 +1307,7 @@ Submitted: ${new Date().toLocaleString()}
   });
 
   // Initialize sample CMS data
-  app.post("/api/cms/initialize", requireAuth, async (req, res) => {
+  app.post("/api/cms/initialize", requireAdmin, async (req, res) => {
     try {
       // Check if homepage already exists
       let homepage;
@@ -1370,7 +1384,7 @@ Submitted: ${new Date().toLocaleString()}
   });
 
   // Media Management Routes
-  app.get("/api/cms/media", requireAuth, async (req, res) => {
+  app.get("/api/cms/media", requireAdmin, async (req, res) => {
     try {
       const assets = await storage.getAllMediaAssets();
       res.json({ assets });
@@ -1380,7 +1394,7 @@ Submitted: ${new Date().toLocaleString()}
     }
   });
 
-  app.post("/api/cms/media", requireAuth, async (req, res) => {
+  app.post("/api/cms/media", requireAdmin, async (req, res) => {
     try {
       const validatedData = insertMediaAssetSchema.parse(req.body);
       const asset = await storage.createMediaAsset(validatedData);
@@ -1397,7 +1411,7 @@ Submitted: ${new Date().toLocaleString()}
     }
   });
 
-  app.delete("/api/cms/media/:id", requireAuth, async (req, res) => {
+  app.delete("/api/cms/media/:id", requireAdmin, async (req, res) => {
     try {
       const { id } = req.params;
       await storage.deleteMediaAsset(id);

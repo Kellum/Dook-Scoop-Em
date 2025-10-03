@@ -41,7 +41,7 @@ export default function AdminSignUpPage() {
     }
 
     setLoading(true);
-    const { error } = await signUp(email, password);
+    const { error } = await signUp(email, password, { role: "admin" });
     setLoading(false);
     
     if (error) {
@@ -53,9 +53,9 @@ export default function AdminSignUpPage() {
     } else {
       toast({
         title: "Success",
-        description: "Admin account created! Check your email for confirmation.",
+        description: "Admin account created! Please sign in.",
       });
-      setLocation("/admin");
+      setLocation("/sign-in");
     }
   };
 

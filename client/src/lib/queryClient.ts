@@ -1,4 +1,5 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { supabase } from "./supabase";
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -7,12 +8,17 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
+async function getAuthToken(): Promise<string | null> {
+  const { data: { session } } = await supabase.auth.getSession();
+  return session?.access_token || null;
+}
+
 export async function apiRequest(
   method: string,
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const token = localStorage.getItem("admin-token");
+  const token = await getAuthToken();
   const headers: Record<string, string> = {
     ...(data ? { "Content-Type": "application/json" } : {}),
     ...(token ? { "Authorization": `Bearer ${token}` } : {})
@@ -35,7 +41,7 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const token = localStorage.getItem("admin-token");
+    const token = await getAuthToken();
     const headers: Record<string, string> = {
       ...(token ? { "Authorization": `Bearer ${token}` } : {})
     };

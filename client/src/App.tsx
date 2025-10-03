@@ -70,6 +70,7 @@ import SignUpPage from "@/pages/auth/sign-up";
 import AdminSignUpPage from "@/pages/admin/signup";
 import CustomerDashboard from "@/pages/dashboard/index";
 import AdminDashboard from "@/pages/admin/dashboard-new";
+import ServiceAreasAdmin from "@/pages/admin/service-areas";
 import { ProtectedRoute } from "@/components/protected-route";
 
 import NotFound from "@/pages/not-found";
@@ -121,6 +122,12 @@ function Router() {
       <Route path="/admin">
         <ProtectedRoute requireAdmin={true}>
           <AdminDashboard />
+        </ProtectedRoute>
+      </Route>
+      
+      <Route path="/admin/service-areas">
+        <ProtectedRoute requireAdmin={true}>
+          <ServiceAreasAdmin />
         </ProtectedRoute>
       </Route>
       
