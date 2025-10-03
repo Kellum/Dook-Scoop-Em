@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Users, Calendar, DollarSign, Settings, LogOut, MapPin } from "lucide-react";
+import { Users, Calendar, DollarSign, Settings, LogOut, MapPin, Database } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 
@@ -59,7 +59,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
           <AdminCard
             icon={<Users className="h-6 w-6" />}
             title="Customers"
@@ -80,6 +80,13 @@ export default function AdminDashboard() {
             description="Manage approved zip codes"
             href="/admin/service-areas"
             testId="link-service-areas"
+          />
+          <AdminCard
+            icon={<Database className="h-6 w-6" />}
+            title="Stripe Sync"
+            description="Sync Stripe customers to CRM"
+            href="/admin/migrate-customers"
+            testId="link-stripe-sync"
           />
           <AdminCard
             icon={<Settings className="h-6 w-6" />}
