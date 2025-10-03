@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/contexts/auth-context";
+import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,7 +33,12 @@ export default function SignInPage() {
         variant: "destructive",
       });
     } else {
-      setLocation("/dashboard");
+      // Get the current user to check their role
+      const { data: { user } } = await supabase.auth.getUser();
+      const isAdmin = user?.user_metadata?.role === 'admin';
+      
+      // Route based on role
+      setLocation(isAdmin ? "/admin" : "/dashboard");
     }
   };
 
@@ -70,7 +76,12 @@ export default function SignInPage() {
         variant: "destructive",
       });
     } else {
-      setLocation("/dashboard");
+      // Get the current user to check their role
+      const { data: { user } } = await supabase.auth.getUser();
+      const isAdmin = user?.user_metadata?.role === 'admin';
+      
+      // Route based on role
+      setLocation(isAdmin ? "/admin" : "/dashboard");
     }
   };
 
