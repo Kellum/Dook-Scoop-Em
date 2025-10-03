@@ -1540,26 +1540,41 @@ Submitted: ${new Date().toLocaleString()}
   // Complete checkout after Stripe success
   app.post("/api/stripe/complete-checkout", async (req, res) => {
     try {
+      console.log('[Complete Checkout] Received request with body:', req.body);
       const { sessionId } = req.body;
       
       if (!sessionId) {
+        console.log('[Complete Checkout] ERROR: No session ID provided');
         return res.status(400).json({ error: "Session ID required" });
       }
 
+      console.log('[Complete Checkout] Retrieving session from Stripe:', sessionId);
       // Retrieve the session from Stripe
       const session = await stripe.checkout.sessions.retrieve(sessionId);
+      console.log('[Complete Checkout] Session retrieved:', {
+        id: session.id,
+        payment_status: session.payment_status,
+        customer: session.customer,
+        subscription: session.subscription,
+        metadata: session.metadata
+      });
       
       if (session.payment_status !== 'paid') {
+        console.log('[Complete Checkout] ERROR: Payment not completed, status:', session.payment_status);
         return res.status(400).json({ error: "Payment not completed" });
       }
 
       const { supabaseUserId, plan, dogCount, customerData } = session.metadata as any;
       const parsedCustomerData = customerData ? JSON.parse(customerData) : {};
 
+      console.log('[Complete Checkout] Metadata:', { supabaseUserId, plan, dogCount, parsedCustomerData });
+
       // Create or update customer in CRM
       let customer = await storage.getCustomerBySupabaseId(supabaseUserId);
+      console.log('[Complete Checkout] Existing customer:', customer ? 'found' : 'not found');
       
       if (!customer) {
+        console.log('[Complete Checkout] Creating new customer...');
         customer = await storage.createCustomer({
           supabaseUserId,
           stripeCustomerId: session.customer as string,
@@ -1580,8 +1595,10 @@ Submitted: ${new Date().toLocaleString()}
           role: 'customer',
           notificationPreference: 'email',
         });
+        console.log('[Complete Checkout] Customer created with ID:', customer.id);
 
         // Create subscription record
+        console.log('[Complete Checkout] Creating subscription...');
         await storage.createSubscription({
           customerId: customer.id,
           stripeSubscriptionId: session.subscription as string,
@@ -1589,12 +1606,14 @@ Submitted: ${new Date().toLocaleString()}
           status: 'active',
           dogCount: parseInt(dogCount),
         });
+        console.log('[Complete Checkout] Subscription created successfully');
       }
 
+      console.log('[Complete Checkout] Success! Returning customer:', customer.id);
       res.json({ success: true, customer });
     } catch (error) {
-      console.error("Error completing checkout:", error);
-      res.status(500).json({ error: "Failed to complete checkout" });
+      console.error("[Complete Checkout] ERROR:", error);
+      res.status(500).json({ error: "Failed to complete checkout", details: (error as Error).message });
     }
   });
 

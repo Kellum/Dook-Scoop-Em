@@ -21,15 +21,22 @@ export default function CustomerDashboard() {
     const params = new URLSearchParams(window.location.search);
     const sessionId = params.get('session_id');
     
+    console.log('[Dashboard] Checking for session_id:', sessionId);
+    
     if (sessionId) {
+      console.log('[Dashboard] Found session_id, calling complete-checkout...');
       setLoading(true);
       fetch('/api/stripe/complete-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId }),
       })
-        .then(res => res.json())
+        .then(res => {
+          console.log('[Dashboard] Complete-checkout response status:', res.status);
+          return res.json();
+        })
         .then(data => {
+          console.log('[Dashboard] Complete-checkout response data:', data);
           if (data.success) {
             toast({
               title: "Success!",
@@ -39,10 +46,21 @@ export default function CustomerDashboard() {
             window.history.replaceState({}, '', '/dashboard');
             // Refetch subscription data
             refetch();
+          } else {
+            toast({
+              title: "Error",
+              description: data.error || "Failed to complete checkout",
+              variant: "destructive",
+            });
           }
         })
         .catch(error => {
-          console.error('Error completing checkout:', error);
+          console.error('[Dashboard] Error completing checkout:', error);
+          toast({
+            title: "Error",
+            description: "Failed to complete checkout. Please contact support.",
+            variant: "destructive",
+          });
         })
         .finally(() => setLoading(false));
     }

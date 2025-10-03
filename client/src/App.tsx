@@ -69,6 +69,7 @@ import SignInPage from "@/pages/auth/sign-in";
 import SignUpPage from "@/pages/auth/sign-up";
 import AdminSignUpPage from "@/pages/admin/signup";
 import CustomerDashboard from "@/pages/dashboard/index";
+import DashboardSubscription from "@/pages/dashboard/subscription";
 import DashboardSchedule from "@/pages/dashboard/schedule";
 import DashboardBilling from "@/pages/dashboard/billing";
 import DashboardSettings from "@/pages/dashboard/settings";
@@ -118,6 +119,12 @@ function Router() {
       <Route path="/dashboard">
         <ProtectedRoute>
           <CustomerDashboard />
+        </ProtectedRoute>
+      </Route>
+      
+      <Route path="/dashboard/subscription">
+        <ProtectedRoute>
+          <DashboardSubscription />
         </ProtectedRoute>
       </Route>
       
