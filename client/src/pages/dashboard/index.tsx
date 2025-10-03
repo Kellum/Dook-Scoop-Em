@@ -1,10 +1,44 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Package, Calendar, CreditCard, Settings, LogOut } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function CustomerDashboard() {
   const { user, signOut } = useAuth();
+  const [location] = useLocation();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get('session_id');
+    
+    if (sessionId) {
+      setLoading(true);
+      fetch('/api/stripe/complete-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            toast({
+              title: "Success!",
+              description: "Your subscription is now active!",
+            });
+            // Remove session_id from URL
+            window.history.replaceState({}, '', '/dashboard');
+          }
+        })
+        .catch(error => {
+          console.error('Error completing checkout:', error);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [location, toast]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">

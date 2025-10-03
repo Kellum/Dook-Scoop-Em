@@ -1509,6 +1509,67 @@ Submitted: ${new Date().toLocaleString()}
     }
   });
 
+  // Complete checkout after Stripe success
+  app.post("/api/stripe/complete-checkout", async (req, res) => {
+    try {
+      const { sessionId } = req.body;
+      
+      if (!sessionId) {
+        return res.status(400).json({ error: "Session ID required" });
+      }
+
+      // Retrieve the session from Stripe
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      
+      if (session.payment_status !== 'paid') {
+        return res.status(400).json({ error: "Payment not completed" });
+      }
+
+      const { supabaseUserId, plan, dogCount, customerData } = session.metadata as any;
+      const parsedCustomerData = customerData ? JSON.parse(customerData) : {};
+
+      // Create or update customer in CRM
+      let customer = await storage.getCustomerBySupabaseId(supabaseUserId);
+      
+      if (!customer) {
+        customer = await storage.createCustomer({
+          supabaseUserId,
+          stripeCustomerId: session.customer as string,
+          email: parsedCustomerData.email || session.customer_details?.email,
+          firstName: parsedCustomerData.firstName,
+          lastName: parsedCustomerData.lastName,
+          phone: parsedCustomerData.phone,
+          address: parsedCustomerData.address,
+          city: parsedCustomerData.city,
+          state: parsedCustomerData.state,
+          zipCode: parsedCustomerData.zipCode,
+          gateCode: parsedCustomerData.gateCode,
+          gatedCommunity: parsedCustomerData.gatedCommunity,
+          gateLocation: parsedCustomerData.gateLocation,
+          dogNames: parsedCustomerData.dogNames,
+          numberOfDogs: parseInt(dogCount),
+          notes: parsedCustomerData.propertyNotes,
+          role: 'customer',
+          notificationPreference: 'email',
+        });
+
+        // Create subscription record
+        await storage.createSubscription({
+          customerId: customer.id,
+          stripeSubscriptionId: session.subscription as string,
+          plan,
+          status: 'active',
+          dogCount: parseInt(dogCount),
+        });
+      }
+
+      res.json({ success: true, customer });
+    } catch (error) {
+      console.error("Error completing checkout:", error);
+      res.status(500).json({ error: "Failed to complete checkout" });
+    }
+  });
+
   // Stripe Webhook - Handle successful payments
   app.post("/api/stripe/webhook", express.raw({ type: 'application/json' }), async (req, res) => {
     const sig = req.headers['stripe-signature'];
