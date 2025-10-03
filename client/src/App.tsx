@@ -62,9 +62,10 @@ import Locations from "@/pages/locations-neu";
 import AdminLogin from "@/pages/admin/login-neu";
 import AdminDashboardOld from "@/pages/admin/dashboard";
 
-// New Clerk-based auth and dashboards
+// Auth and dashboards
 import SignInPage from "@/pages/auth/sign-in";
 import SignUpPage from "@/pages/auth/sign-up";
+import AdminSignUpPage from "@/pages/admin/signup";
 import CustomerDashboard from "@/pages/dashboard/index";
 import AdminDashboard from "@/pages/admin/dashboard-new";
 import { ProtectedRoute } from "@/components/protected-route";
@@ -105,6 +106,7 @@ function Router() {
       {/* Authentication routes */}
       <Route path="/sign-in" component={SignInPage} />
       <Route path="/sign-up" component={SignUpPage} />
+      <Route path="/admin/signup" component={AdminSignUpPage} />
       
       {/* Customer Dashboard - Protected */}
       <Route path="/dashboard">
