@@ -21,15 +21,14 @@ export default function MigrateCustomers() {
     setResults(null);
 
     try {
-      const response = await apiRequest("/api/admin/migrate-stripe-customers", {
-        method: "POST",
-      });
+      const response = await apiRequest("POST", "/api/admin/migrate-stripe-customers");
+      const data = await response.json();
 
-      setResults(response.results);
+      setResults(data.results);
       
       toast({
         title: "Migration Complete!",
-        description: `Processed ${response.results.processed} subscriptions. Created ${response.results.created} customers.`,
+        description: `Processed ${data.results.processed} subscriptions. Created ${data.results.created} customers.`,
       });
     } catch (error) {
       toast({
