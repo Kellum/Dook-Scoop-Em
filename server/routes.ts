@@ -718,6 +718,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Validate zip code in service area
+  app.post("/api/validate-zip", async (req, res) => {
+    try {
+      const { zipCode } = req.body;
+      
+      if (!zipCode) {
+        return res.status(400).json({ error: "Zip code is required" });
+      }
+
+      const isInServiceArea = await storage.isZipCodeInServiceArea(zipCode);
+      res.json({ 
+        isValid: isInServiceArea,
+        message: isInServiceArea 
+          ? "Great! We service your area." 
+          : "Sorry, we don't currently service this zip code."
+      });
+    } catch (error) {
+      console.error("Error validating zip code:", error);
+      res.status(500).json({ error: "Failed to validate zip code" });
+    }
+  });
+
   // Get waitlist notifications endpoint
   app.get("/api/notifications", async (req, res) => {
     try {

@@ -59,6 +59,7 @@ import AboutUs from "@/pages/about-us";
 import Contact from "@/pages/contact";
 import Onboard from "@/pages/onboard";
 import OnboardNew from "@/pages/onboard-new";
+import OnboardSurvey from "@/pages/onboard-survey";
 import Locations from "@/pages/locations-neu";
 import AdminLogin from "@/pages/admin/login-neu";
 import AdminDashboardOld from "@/pages/admin/dashboard";
@@ -137,8 +138,9 @@ function Router() {
       <Route path="/blog" component={Blog} />
       <Route path="/about-us" component={AboutUs} />
       <Route path="/contact" component={Contact} />
-      <Route path="/onboard" component={OnboardNew} />
-      <Route path="/onboard-old" component={Onboard} />
+      <Route path="/onboard" component={OnboardSurvey} />
+      <Route path="/onboard-old" component={OnboardNew} />
+      <Route path="/onboard-original" component={Onboard} />
       
       {/* Legacy/admin pages */}
       <Route path="/home" component={Home} />

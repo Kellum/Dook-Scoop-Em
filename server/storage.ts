@@ -57,7 +57,10 @@ export interface IStorage {
   
   // Service location operations
   getAllServiceLocations(): Promise<ServiceLocation[]>;
+  getActiveServiceLocations(): Promise<ServiceLocation[]>;
+  isZipCodeInServiceArea(zipCode: string): Promise<boolean>;
   createServiceLocation(location: InsertServiceLocation): Promise<ServiceLocation>;
+  updateServiceLocation(id: string, location: Partial<InsertServiceLocation>): Promise<ServiceLocation | undefined>;
   deleteServiceLocation(id: string): Promise<void>;
   
   // CMS Page operations
@@ -197,6 +200,26 @@ export class DatabaseStorage implements IStorage {
       .values(insertLocation)
       .returning();
     return location;
+  }
+
+  async updateServiceLocation(id: string, updateData: Partial<InsertServiceLocation>): Promise<ServiceLocation | undefined> {
+    const [location] = await db
+      .update(serviceLocations)
+      .set(updateData)
+      .where(eq(serviceLocations.id, id))
+      .returning();
+    return location;
+  }
+
+  async getActiveServiceLocations(): Promise<ServiceLocation[]> {
+    return await db.select().from(serviceLocations).where(eq(serviceLocations.isActive, "true"));
+  }
+
+  async isZipCodeInServiceArea(zipCode: string): Promise<boolean> {
+    const activeLocations = await this.getActiveServiceLocations();
+    return activeLocations.some(location => 
+      location.zipCodes.includes(zipCode)
+    );
   }
 
   // CMS Page operations
