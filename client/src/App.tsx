@@ -76,6 +76,9 @@ import DashboardSettings from "@/pages/dashboard/settings";
 import AdminDashboard from "@/pages/admin/dashboard-new";
 import ServiceAreasAdmin from "@/pages/admin/service-areas";
 import MigrateCustomers from "@/pages/admin/migrate-customers";
+import AdminCustomers from "@/pages/admin/customers";
+import AdminSchedule from "@/pages/admin/schedule";
+import AdminSettings from "@/pages/admin/settings";
 import { ProtectedRoute } from "@/components/protected-route";
 
 import NotFound from "@/pages/not-found";
@@ -163,6 +166,24 @@ function Router() {
       <Route path="/admin/migrate-customers">
         <ProtectedRoute requireAdmin={true}>
           <MigrateCustomers />
+        </ProtectedRoute>
+      </Route>
+      
+      <Route path="/admin/customers">
+        <ProtectedRoute requireAdmin={true}>
+          <AdminCustomers />
+        </ProtectedRoute>
+      </Route>
+      
+      <Route path="/admin/schedule">
+        <ProtectedRoute requireAdmin={true}>
+          <AdminSchedule />
+        </ProtectedRoute>
+      </Route>
+      
+      <Route path="/admin/settings">
+        <ProtectedRoute requireAdmin={true}>
+          <AdminSettings />
         </ProtectedRoute>
       </Route>
       
