@@ -115,18 +115,39 @@ Brand identity: Professional pet waste removal service that's approachable and f
 - **Humor Integration**: Maintains "We fear no pile" personality across all content
 - **Mobile-First**: Responsive design with enhanced mobile interactions
 
-## Future Integration Points
+## Custom CRM System (Replaces Sweep & Go $99/month)
 
-### Sweep & Go API Integration
-- **Customer Onboarding**: Convert waitlist submissions to Sweep & Go client records
-- **Service Scheduling**: Direct integration with Sweep & Go routing and scheduling system
-- **Payment Processing**: Integrate Sweep & Go's billing and payment workflows
-- **Service Management**: Real-time service updates and customer communication
-- **Route Optimization**: Leverage Sweep & Go's territory and route planning tools
+### Current Implementation (January 2025)
+- **Authentication**: Supabase Auth with email/password (migrated from Clerk)
+- **Payment Processing**: Stripe subscription billing
+- **Customer Onboarding Flow**:
+  1. Customer fills quote form (contact info, service details, property access)
+  2. System calculates pricing based on plan + dog count
+  3. Customer creates Supabase account
+  4. Immediate redirect to Stripe Checkout for subscription payment
+  5. Stripe webhook creates customer record in CRM database
+  6. Customer redirected to dashboard after successful payment
 
-### Planned Features
-- **Online Signup**: Replace waitlist with direct service signup using Sweep & Go API
-- **Customer Portal**: Account management and service history via Sweep & Go integration
-- **Payment Gateway**: Secure payment processing through existing Sweep & Go infrastructure
-- **Service Tracking**: Real-time updates and notifications for service visits
-- **Automated Billing**: Subscription management and automated invoicing
+### Admin Access
+- **Separate Admin Signup**: `/admin/signup` with admin code required
+- **Admin Dashboard**: Completely separate from customer dashboard at `/admin`
+- **Customer Dashboard**: Located at `/dashboard` (customer-only access)
+
+### Pricing Structure (Stripe)
+- **Weekly Service**: $110/month (base plan)
+- **Bi-weekly Service**: $90/month (base plan)
+- **Twice Weekly Service**: $136/month (base plan)
+- **Extra Dogs**: +$20/month per additional dog
+- **Initial Cleanup**: $25-50 one-time charge (configurable)
+
+### Database Architecture
+- **Customers Table**: Stores all customer information including Supabase user ID, Stripe customer ID, property details
+- **Subscriptions Table**: Links customers to Stripe subscriptions, tracks plan and status
+- **Visits Table**: Scheduled and completed service visits
+- **Charges Table**: Payment history and transactions
+
+### Future Enhancements
+- SMS/phone authentication (postponed for now, focusing on email auth)
+- Customer portal features (service history, schedule management)
+- Admin tools (route planning, technician assignment)
+- Automated visit scheduling based on subscription frequency

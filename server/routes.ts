@@ -1,4 +1,5 @@
 import type { Express } from "express";
+import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { 
@@ -14,6 +15,7 @@ import {
 } from "@shared/schema";
 import { hashPassword, verifyPassword, generateToken, requireAuth } from "./auth";
 import { handleSweepAndGoWebhook, sweepAndGoAPI } from "./sweepandgo";
+import { stripe, STRIPE_PRICES } from "./stripe";
 import nodemailer from "nodemailer";
 import { writeFile, readFile, existsSync } from "fs";
 import { promisify } from "util";
