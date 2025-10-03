@@ -16,12 +16,18 @@ import {
 import { hashPassword, verifyPassword, generateToken, requireAuth, requireAdmin } from "./auth";
 import { handleSweepAndGoWebhook, sweepAndGoAPI } from "./sweepandgo";
 import { stripe, STRIPE_PRICES } from "./stripe";
+import { createClient } from '@supabase/supabase-js';
 import nodemailer from "nodemailer";
 import { writeFile, readFile, existsSync } from "fs";
 import { promisify } from "util";
 
 const writeFileAsync = promisify(writeFile);
 const readFileAsync = promisify(readFile);
+
+// Supabase Admin Client for user management
+const supabaseUrl = process.env.SUPABASE_URL!;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Configure MailerSend SMTP
@@ -1614,6 +1620,160 @@ Submitted: ${new Date().toLocaleString()}
     } catch (error) {
       console.error("[Complete Checkout] ERROR:", error);
       res.status(500).json({ error: "Failed to complete checkout", details: (error as Error).message });
+    }
+  });
+
+  // ADMIN: Migrate existing Stripe customers to CRM database
+  app.post("/api/admin/migrate-stripe-customers", requireAdmin, async (req, res) => {
+    try {
+      console.log('[Migration] Starting Stripe customer migration...');
+      
+      const results = {
+        processed: 0,
+        created: 0,
+        updated: 0,
+        skipped: 0,
+        errors: [] as any[],
+      };
+
+      // Fetch all Supabase users for email matching
+      const supabaseUsers = new Map();
+      const { data: { users }, error: usersError } = await supabase.auth.admin.listUsers();
+      
+      if (usersError) {
+        throw new Error(`Failed to fetch Supabase users: ${usersError.message}`);
+      }
+
+      users.forEach(user => {
+        if (user.email) {
+          supabaseUsers.set(user.email.toLowerCase(), user);
+        }
+      });
+
+      console.log(`[Migration] Found ${supabaseUsers.size} Supabase users`);
+
+      // Fetch all Stripe subscriptions
+      let hasMore = true;
+      let startingAfter: string | undefined;
+
+      while (hasMore) {
+        const subscriptions = await stripe.subscriptions.list({
+          limit: 100,
+          starting_after: startingAfter,
+          status: 'active',
+          expand: ['data.customer'],
+        });
+
+        for (const subscription of subscriptions.data) {
+          results.processed++;
+          
+          try {
+            const stripeCustomer = subscription.customer as any;
+            const email = stripeCustomer.email?.toLowerCase();
+
+            if (!email) {
+              results.errors.push({
+                subscriptionId: subscription.id,
+                error: 'No email found for Stripe customer',
+              });
+              continue;
+            }
+
+            // Match to Supabase user
+            const supabaseUser = supabaseUsers.get(email);
+
+            if (!supabaseUser) {
+              results.errors.push({
+                subscriptionId: subscription.id,
+                email,
+                error: 'No matching Supabase user found',
+              });
+              continue;
+            }
+
+            // Check if customer already exists
+            let customer = await storage.getCustomerByStripeId(stripeCustomer.id);
+
+            if (!customer) {
+              customer = await storage.getCustomerBySupabaseId(supabaseUser.id);
+            }
+
+            if (!customer) {
+              // Create new customer
+              customer = await storage.createCustomer({
+                supabaseUserId: supabaseUser.id,
+                stripeCustomerId: stripeCustomer.id,
+                email: email,
+                firstName: stripeCustomer.name?.split(' ')[0] || supabaseUser.user_metadata?.firstName || '',
+                lastName: stripeCustomer.name?.split(' ').slice(1).join(' ') || supabaseUser.user_metadata?.lastName || '',
+                phone: stripeCustomer.phone || supabaseUser.user_metadata?.phone || '',
+                address: stripeCustomer.address?.line1 || supabaseUser.user_metadata?.address || '',
+                city: stripeCustomer.address?.city || supabaseUser.user_metadata?.city || '',
+                state: stripeCustomer.address?.state || supabaseUser.user_metadata?.state || '',
+                zipCode: stripeCustomer.address?.postal_code || supabaseUser.user_metadata?.zipCode || '',
+                numberOfDogs: parseInt(subscription.metadata?.dogCount || '1'),
+                role: 'customer',
+                notificationPreference: 'email',
+              });
+
+              console.log(`[Migration] Created customer ${customer.id} for ${email}`);
+              results.created++;
+            } else {
+              console.log(`[Migration] Customer ${customer.id} already exists for ${email}`);
+              results.skipped++;
+            }
+
+            // Check if subscription record exists
+            const existingSubscription = await storage.getSubscriptionByCustomerId(customer.id);
+
+            if (!existingSubscription) {
+              // Determine plan from price ID
+              let plan = 'weekly';
+              const priceId = subscription.items.data[0]?.price.id;
+              
+              if (priceId === process.env.STRIPE_PRICE_BIWEEKLY) plan = 'biweekly';
+              else if (priceId === process.env.STRIPE_PRICE_TWICE_WEEKLY) plan = 'twice_weekly';
+
+              await storage.createSubscription({
+                customerId: customer.id,
+                stripeSubscriptionId: subscription.id,
+                plan,
+                status: subscription.status as 'active' | 'past_due' | 'paused' | 'canceled',
+                dogCount: parseInt(subscription.metadata?.dogCount || '1'),
+              });
+
+              console.log(`[Migration] Created subscription for customer ${customer.id}`);
+            } else {
+              console.log(`[Migration] Subscription already exists for customer ${customer.id}`);
+            }
+
+          } catch (error) {
+            results.errors.push({
+              subscriptionId: subscription.id,
+              error: (error as Error).message,
+            });
+          }
+        }
+
+        hasMore = subscriptions.has_more;
+        if (hasMore && subscriptions.data.length > 0) {
+          startingAfter = subscriptions.data[subscriptions.data.length - 1].id;
+        }
+      }
+
+      console.log('[Migration] Complete:', results);
+      res.json({
+        success: true,
+        message: 'Migration completed',
+        results,
+      });
+
+    } catch (error) {
+      console.error('[Migration] Fatal error:', error);
+      res.status(500).json({ 
+        error: 'Migration failed', 
+        details: (error as Error).message 
+      });
     }
   });
 

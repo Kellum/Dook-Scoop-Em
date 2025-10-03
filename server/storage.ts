@@ -114,6 +114,7 @@ export interface IStorage {
   // CRM Subscription operations
   createSubscription(subscription: InsertSubscription): Promise<Subscription>;
   getSubscription(id: string): Promise<Subscription | undefined>;
+  getSubscriptionByCustomerId(customerId: string): Promise<Subscription | undefined>;
   getSubscriptionByStripeId(stripeSubscriptionId: string): Promise<Subscription | undefined>;
   getCustomerSubscriptions(customerId: string): Promise<Subscription[]>;
   updateSubscription(id: string, subscription: Partial<InsertSubscription>): Promise<Subscription | undefined>;
@@ -529,6 +530,11 @@ export class DatabaseStorage implements IStorage {
 
   async getSubscription(id: string): Promise<Subscription | undefined> {
     const [subscription] = await db.select().from(subscriptions).where(eq(subscriptions.id, id));
+    return subscription;
+  }
+
+  async getSubscriptionByCustomerId(customerId: string): Promise<Subscription | undefined> {
+    const [subscription] = await db.select().from(subscriptions).where(eq(subscriptions.customerId, customerId));
     return subscription;
   }
 
