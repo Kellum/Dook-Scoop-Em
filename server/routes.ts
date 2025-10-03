@@ -1509,6 +1509,34 @@ Submitted: ${new Date().toLocaleString()}
     }
   });
 
+  // Get customer subscription data
+  app.get("/api/customer/subscription", requireAuth, async (req, res) => {
+    try {
+      const supabaseUser = (req as any).supabaseUser;
+      
+      if (!supabaseUser) {
+        return res.status(401).json({ error: "Not authenticated" });
+      }
+
+      const customer = await storage.getCustomerBySupabaseId(supabaseUser.id);
+      
+      if (!customer) {
+        return res.json({ hasSubscription: false });
+      }
+
+      const subscription = await storage.getSubscriptionByCustomerId(customer.id);
+      
+      res.json({
+        hasSubscription: !!subscription,
+        customer,
+        subscription,
+      });
+    } catch (error) {
+      console.error("Error fetching subscription:", error);
+      res.status(500).json({ error: "Failed to fetch subscription" });
+    }
+  });
+
   // Complete checkout after Stripe success
   app.post("/api/stripe/complete-checkout", async (req, res) => {
     try {

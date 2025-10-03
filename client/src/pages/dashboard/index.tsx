@@ -4,12 +4,18 @@ import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useQuery } from "@tanstack/react-query";
 
 export default function CustomerDashboard() {
   const { user, signOut } = useAuth();
   const [location] = useLocation();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+
+  const { data: subscriptionData, refetch } = useQuery({
+    queryKey: ['/api/customer/subscription'],
+    enabled: !!user,
+  });
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -31,6 +37,8 @@ export default function CustomerDashboard() {
             });
             // Remove session_id from URL
             window.history.replaceState({}, '', '/dashboard');
+            // Refetch subscription data
+            refetch();
           }
         })
         .catch(error => {
@@ -38,7 +46,7 @@ export default function CustomerDashboard() {
         })
         .finally(() => setLoading(false));
     }
-  }, [location, toast]);
+  }, [location, toast, refetch]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -98,19 +106,41 @@ export default function CustomerDashboard() {
 
         {/* Welcome / Status */}
         <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm" data-testid="welcome-message">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-            Getting Started
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            Welcome to your Dook Scoop 'Em dashboard! Here you can manage your subscription,
-            view your service schedule, and update your account preferences.
-          </p>
-          {!user?.user_metadata?.hasSubscription && (
-            <Link href="/pricing">
-              <a className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-lg transition-colors" data-testid="button-get-started">
-                Get Started - Choose Your Plan
-              </a>
-            </Link>
+          {subscriptionData?.hasSubscription ? (
+            <>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                Your Active Subscription
+              </h2>
+              <div className="space-y-2">
+                <p className="text-gray-600 dark:text-gray-400">
+                  <span className="font-semibold">Plan:</span> {subscriptionData.subscription?.plan?.replace('_', ' ').toUpperCase()}
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  <span className="font-semibold">Number of Dogs:</span> {subscriptionData.customer?.numberOfDogs || subscriptionData.subscription?.dogCount}
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  <span className="font-semibold">Status:</span> <span className="text-green-600 font-semibold">{subscriptionData.subscription?.status?.toUpperCase()}</span>
+                </p>
+                <p className="text-gray-600 dark:text-gray-400">
+                  <span className="font-semibold">Service Address:</span> {subscriptionData.customer?.address}, {subscriptionData.customer?.city}, {subscriptionData.customer?.state} {subscriptionData.customer?.zipCode}
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                Getting Started
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
+                Welcome to your Dook Scoop 'Em dashboard! Here you can manage your subscription,
+                view your service schedule, and update your account preferences.
+              </p>
+              <Link href="/onboard">
+                <a className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-lg transition-colors" data-testid="button-get-started">
+                  Get Started - Choose Your Plan
+                </a>
+              </Link>
+            </>
           )}
         </div>
       </main>
