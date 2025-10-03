@@ -1445,14 +1445,19 @@ Submitted: ${new Date().toLocaleString()}
         });
       }
 
+      // Construct base URL with HTTPS scheme for Stripe
+      const baseUrl = process.env.REPLIT_DEV_DOMAIN 
+        ? `https://${process.env.REPLIT_DEV_DOMAIN}` 
+        : 'http://localhost:5000';
+
       // Create Stripe Checkout Session
       const session = await stripe.checkout.sessions.create({
         customer: stripeCustomerId,
         mode: "subscription",
         payment_method_types: ["card"],
         line_items: lineItems,
-        success_url: `${process.env.REPLIT_DEV_DOMAIN || 'http://localhost:5000'}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${process.env.REPLIT_DEV_DOMAIN || 'http://localhost:5000'}/onboard`,
+        success_url: `${baseUrl}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${baseUrl}/onboard`,
         metadata: {
           supabaseUserId,
           plan,
