@@ -10,10 +10,7 @@ if (!CLERK_PUBLISHABLE_KEY) {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <ClerkProvider 
-    publishableKey={CLERK_PUBLISHABLE_KEY}
-    clerkJSVariant="headless"
-  >
+  <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
     <App />
   </ClerkProvider>
 );
