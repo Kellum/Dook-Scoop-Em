@@ -5,6 +5,12 @@ import "./index.css";
 
 const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
+console.log("Clerk Key Check:", {
+  exists: !!CLERK_PUBLISHABLE_KEY,
+  prefix: CLERK_PUBLISHABLE_KEY?.substring(0, 10),
+  length: CLERK_PUBLISHABLE_KEY?.length
+});
+
 if (!CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing Clerk Publishable Key");
 }
