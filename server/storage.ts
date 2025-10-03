@@ -103,7 +103,7 @@ export interface IStorage {
   // CRM Customer operations
   createCustomer(customer: InsertCustomer): Promise<Customer>;
   getCustomer(id: string): Promise<Customer | undefined>;
-  getCustomerByClerkId(clerkUserId: string): Promise<Customer | undefined>;
+  getCustomerBySupabaseId(supabaseUserId: string): Promise<Customer | undefined>;
   getCustomerByStripeId(stripeCustomerId: string): Promise<Customer | undefined>;
   getAllCustomers(): Promise<Customer[]>;
   updateCustomer(id: string, customer: Partial<InsertCustomer>): Promise<Customer | undefined>;
@@ -472,8 +472,8 @@ export class DatabaseStorage implements IStorage {
     return customer;
   }
 
-  async getCustomerByClerkId(clerkUserId: string): Promise<Customer | undefined> {
-    const [customer] = await db.select().from(customers).where(eq(customers.clerkUserId, clerkUserId));
+  async getCustomerBySupabaseId(supabaseUserId: string): Promise<Customer | undefined> {
+    const [customer] = await db.select().from(customers).where(eq(customers.supabaseUserId, supabaseUserId));
     return customer;
   }
 

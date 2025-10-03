@@ -321,10 +321,10 @@ export const insertOnboardingSubmissionSchema = createInsertSchema(onboardingSub
 export type InsertOnboardingSubmission = z.infer<typeof insertOnboardingSubmissionSchema>;
 export type OnboardingSubmission = typeof onboardingSubmissions.$inferSelect;
 
-// CRM Tables for Clerk + Stripe Integration
+// CRM Tables for Supabase + Stripe Integration
 export const customers = pgTable("customers", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  clerkUserId: text("clerk_user_id").notNull().unique(),
+  supabaseUserId: text("clerk_user_id").notNull().unique(), // Repurposed for Supabase user ID
   stripeCustomerId: text("stripe_customer_id").unique(),
   email: text("email").notNull(),
   firstName: text("first_name"),
@@ -334,9 +334,19 @@ export const customers = pgTable("customers", {
   city: text("city"),
   state: text("state"),
   zipCode: text("zip_code"),
+  
+  // Property access details
   gateCode: text("gate_code"),
+  gatedCommunity: text("gated_community"),
+  gateLocation: text("gate_location"), // left, right, alley, no_gate, other
+  
+  // Dog information
+  numberOfDogs: integer("number_of_dogs").default(1),
   dogNames: text("dog_names").array(),
+  
+  // Notifications
   notificationPreference: text("notification_preference").default("email"), // email, sms, both
+  
   notes: text("notes"),
   role: text("role").default("customer"), // customer, admin
   createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
@@ -385,12 +395,21 @@ export const insertCustomerSchema = createInsertSchema(customers).omit({
   createdAt: true,
   updatedAt: true,
 }).extend({
-  clerkUserId: z.string().min(1, "Clerk user ID is required"),
+  supabaseUserId: z.string().min(1, "Supabase user ID is required"),
   email: z.string().email("Please enter a valid email address"),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
   phone: z.string().optional(),
   address: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  zipCode: z.string().optional(),
+  gateCode: z.string().optional(),
+  gatedCommunity: z.string().optional(),
+  gateLocation: z.string().optional(),
+  numberOfDogs: z.number().min(1).default(1),
+  dogNames: z.array(z.string()).optional(),
+  notificationPreference: z.enum(["email", "sms", "both"]).default("email"),
   role: z.enum(["customer", "admin"]).default("customer"),
 });
 

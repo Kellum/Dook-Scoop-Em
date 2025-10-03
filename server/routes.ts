@@ -1384,6 +1384,161 @@ Submitted: ${new Date().toLocaleString()}
     }
   });
 
+  // Stripe Checkout Routes
+  app.post("/api/stripe/create-checkout-session", async (req, res) => {
+    try {
+      const { 
+        supabaseUserId,
+        email, 
+        plan, 
+        dogCount = 1,
+        customerData 
+      } = req.body;
+
+      if (!supabaseUserId || !email || !plan) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      // Map plan to Stripe price ID
+      const priceIdMap: { [key: string]: string } = {
+        weekly: STRIPE_PRICES.WEEKLY,
+        biweekly: STRIPE_PRICES.BIWEEKLY,
+        twice_weekly: STRIPE_PRICES.TWICE_WEEKLY,
+      };
+
+      const priceId = priceIdMap[plan];
+      if (!priceId) {
+        return res.status(400).json({ error: "Invalid plan selected" });
+      }
+
+      // Create or retrieve Stripe customer
+      let stripeCustomerId;
+      const existingCustomer = await storage.getCustomerBySupabaseId(supabaseUserId);
+      
+      if (existingCustomer?.stripeCustomerId) {
+        stripeCustomerId = existingCustomer.stripeCustomerId;
+      } else {
+        const stripeCustomer = await stripe.customers.create({
+          email,
+          metadata: {
+            supabaseUserId,
+          },
+        });
+        stripeCustomerId = stripeCustomer.id;
+      }
+
+      // Create line items for checkout
+      const lineItems = [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ];
+
+      // Add extra dog charges if needed
+      if (dogCount > 1) {
+        lineItems.push({
+          price: STRIPE_PRICES.EXTRA_DOG,
+          quantity: dogCount - 1,
+        });
+      }
+
+      // Create Stripe Checkout Session
+      const session = await stripe.checkout.sessions.create({
+        customer: stripeCustomerId,
+        mode: "subscription",
+        payment_method_types: ["card"],
+        line_items: lineItems,
+        success_url: `${process.env.REPLIT_DEV_DOMAIN || 'http://localhost:5000'}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.REPLIT_DEV_DOMAIN || 'http://localhost:5000'}/onboard`,
+        metadata: {
+          supabaseUserId,
+          plan,
+          dogCount: dogCount.toString(),
+          customerData: JSON.stringify(customerData),
+        },
+      });
+
+      res.json({ sessionUrl: session.url, sessionId: session.id });
+    } catch (error) {
+      console.error("Error creating checkout session:", error);
+      res.status(500).json({ error: "Failed to create checkout session" });
+    }
+  });
+
+  // Stripe Webhook - Handle successful payments
+  app.post("/api/stripe/webhook", express.raw({ type: 'application/json' }), async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+    if (!sig || !webhookSecret) {
+      return res.status(400).send('Webhook signature or secret missing');
+    }
+
+    let event;
+
+    try {
+      event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+    } catch (err) {
+      console.error('Webhook signature verification failed:', err);
+      return res.status(400).send(`Webhook Error: ${(err as Error).message}`);
+    }
+
+    // Handle different event types
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object as any;
+      
+      const { supabaseUserId, plan, dogCount, customerData } = session.metadata;
+      const parsedCustomerData = customerData ? JSON.parse(customerData) : {};
+
+      // Create or update customer in CRM
+      let customer = await storage.getCustomerBySupabaseId(supabaseUserId);
+      
+      if (!customer) {
+        customer = await storage.createCustomer({
+          supabaseUserId,
+          stripeCustomerId: session.customer,
+          email: parsedCustomerData.email || session.customer_details?.email,
+          firstName: parsedCustomerData.firstName,
+          lastName: parsedCustomerData.lastName,
+          phone: parsedCustomerData.phone,
+          address: parsedCustomerData.address,
+          city: parsedCustomerData.city,
+          state: parsedCustomerData.state,
+          zipCode: parsedCustomerData.zipCode,
+          gateCode: parsedCustomerData.gateCode,
+          gatedCommunity: parsedCustomerData.gatedCommunity,
+          gateLocation: parsedCustomerData.gateLocation,
+          numberOfDogs: parseInt(dogCount) || 1,
+          dogNames: parsedCustomerData.dogNames,
+          notificationPreference: parsedCustomerData.notificationPreference || 'email',
+          role: 'customer',
+        });
+      } else if (!customer.stripeCustomerId) {
+        await storage.updateCustomer(customer.id, {
+          stripeCustomerId: session.customer,
+        });
+      }
+
+      // Create subscription record
+      const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
+      
+      await storage.createSubscription({
+        customerId: customer.id,
+        stripeSubscriptionId: subscription.id,
+        plan,
+        dogCount: parseInt(dogCount) || 1,
+        status: 'active',
+        currentPeriodStart: new Date(subscription.current_period_start * 1000).toISOString(),
+        currentPeriodEnd: new Date(subscription.current_period_end * 1000).toISOString(),
+      });
+
+      console.log('Customer and subscription created successfully');
+    }
+
+    res.json({ received: true });
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
