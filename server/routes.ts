@@ -92,6 +92,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Admin-only endpoints
+  app.get("/api/admin/stats", requireAdmin, async (req, res) => {
+    try {
+      const customers = await storage.getAllCustomers();
+      const activeSubscriptions = customers.filter(c => {
+        // A customer is considered active if they have a record (migration creates subscription records)
+        return c.id;
+      });
+      
+      res.json({
+        totalCustomers: customers.length,
+        activeSubscriptions: activeSubscriptions.length,
+        todaysVisits: 0, // TODO: implement when visits are tracked
+        monthlyRevenue: 0, // TODO: calculate from subscriptions
+      });
+    } catch (error) {
+      console.error("Error fetching admin stats:", error);
+      res.status(500).json({ error: "Failed to fetch stats" });
+    }
+  });
+
   app.get("/api/admin/locations", requireAdmin, async (req, res) => {
     try {
       const locations = await storage.getAllServiceLocations();

@@ -1,10 +1,22 @@
 import { Link } from "wouter";
 import { Users, Calendar, DollarSign, Settings, LogOut, MapPin, Database } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
+
+interface AdminStats {
+  totalCustomers: number;
+  activeSubscriptions: number;
+  todaysVisits: number;
+  monthlyRevenue: number;
+}
 
 export default function AdminDashboard() {
   const { user, signOut } = useAuth();
+  
+  const { data: stats, isLoading } = useQuery<AdminStats>({
+    queryKey: ["/api/admin/stats"],
+  });
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -34,25 +46,25 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <StatCard
             title="Total Customers"
-            value="0"
+            value={isLoading ? "..." : String(stats?.totalCustomers ?? 0)}
             icon={<Users className="h-6 w-6" />}
             testId="stat-total-customers"
           />
           <StatCard
             title="Today's Visits"
-            value="0"
+            value={isLoading ? "..." : String(stats?.todaysVisits ?? 0)}
             icon={<Calendar className="h-6 w-6" />}
             testId="stat-todays-visits"
           />
           <StatCard
             title="Monthly Revenue"
-            value="$0"
+            value={isLoading ? "..." : `$${stats?.monthlyRevenue ?? 0}`}
             icon={<DollarSign className="h-6 w-6" />}
             testId="stat-monthly-revenue"
           />
           <StatCard
             title="Active Subscriptions"
-            value="0"
+            value={isLoading ? "..." : String(stats?.activeSubscriptions ?? 0)}
             icon={<Users className="h-6 w-6" />}
             testId="stat-active-subs"
           />
