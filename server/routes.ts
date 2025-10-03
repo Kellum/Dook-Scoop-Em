@@ -114,6 +114,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/admin/customers", requireAdmin, async (req, res) => {
+    try {
+      const allCustomers = await storage.getAllCustomers();
+      
+      // Filter to only show customers (not admins)
+      const customers = allCustomers.filter(c => c.role === 'customer');
+      
+      // Get subscription data for each customer
+      const customersWithSubscriptions = await Promise.all(
+        customers.map(async (customer) => {
+          const subscription = await storage.getSubscriptionByCustomerId(customer.id);
+          return {
+            ...customer,
+            subscription: subscription || null,
+          };
+        })
+      );
+      
+      res.json({ customers: customersWithSubscriptions });
+    } catch (error) {
+      console.error("Error fetching customers:", error);
+      res.status(500).json({ error: "Failed to fetch customers" });
+    }
+  });
+
   app.get("/api/admin/locations", requireAdmin, async (req, res) => {
     try {
       const locations = await storage.getAllServiceLocations();
