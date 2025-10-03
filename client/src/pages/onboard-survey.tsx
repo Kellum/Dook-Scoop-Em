@@ -154,12 +154,12 @@ export default function OnboardSurvey() {
     setLoading(true);
     try {
       // Step 1: Create Supabase account
-      const authData = await signUp(data.email, data.password);
+      const { data: authData, error: authError } = await signUp(data.email, data.password);
 
-      if (!authData?.user) {
+      if (authError || !authData?.user) {
         toast({
           title: "Error",
-          description: "Failed to create account",
+          description: authError?.message || "Failed to create account",
           variant: "destructive",
         });
         return;
