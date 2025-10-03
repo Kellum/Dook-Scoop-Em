@@ -1,6 +1,6 @@
-import { useAuth, useUser } from "@clerk/clerk-react";
 import { useEffect } from "react";
 import { useLocation } from "wouter";
+import { useAuth } from "@/contexts/auth-context";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -8,27 +8,25 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children, requireAdmin = false }: ProtectedRouteProps) {
-  const { isLoaded, isSignedIn } = useAuth();
-  const { user } = useUser();
+  const { user, loading } = useAuth();
   const [, setLocation] = useLocation();
 
   useEffect(() => {
-    if (isLoaded && !isSignedIn) {
+    if (!loading && !user) {
       setLocation("/sign-in");
     }
-  }, [isLoaded, isSignedIn, setLocation]);
+  }, [loading, user, setLocation]);
 
   useEffect(() => {
-    if (isLoaded && isSignedIn && requireAdmin) {
-      // Check if user has admin role in public metadata
-      const isAdmin = user?.publicMetadata?.role === "admin";
+    if (!loading && user && requireAdmin) {
+      const isAdmin = user.user_metadata?.role === "admin";
       if (!isAdmin) {
         setLocation("/dashboard");
       }
     }
-  }, [isLoaded, isSignedIn, requireAdmin, user, setLocation]);
+  }, [loading, user, requireAdmin, setLocation]);
 
-  if (!isLoaded) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -39,11 +37,11 @@ export function ProtectedRoute({ children, requireAdmin = false }: ProtectedRout
     );
   }
 
-  if (!isSignedIn) {
+  if (!user) {
     return null;
   }
 
-  if (requireAdmin && user?.publicMetadata?.role !== "admin") {
+  if (requireAdmin && user.user_metadata?.role !== "admin") {
     return null;
   }
 

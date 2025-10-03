@@ -1,9 +1,10 @@
-import { UserButton, useUser } from "@clerk/clerk-react";
 import { Link } from "wouter";
-import { Users, Calendar, DollarSign, Settings } from "lucide-react";
+import { Users, Calendar, DollarSign, Settings, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/auth-context";
+import { Button } from "@/components/ui/button";
 
 export default function AdminDashboard() {
-  const { user } = useUser();
+  const { user, signOut } = useAuth();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -19,7 +20,10 @@ export default function AdminDashboard() {
                 Dook Scoop 'Em CRM
               </p>
             </div>
-            <UserButton afterSignOutUrl="/" />
+            <Button variant="ghost" onClick={() => signOut()} data-testid="button-signout">
+              <LogOut className="h-4 w-4 mr-2" />
+              Sign Out
+            </Button>
           </div>
         </div>
       </header>

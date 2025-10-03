@@ -1,9 +1,10 @@
-import { UserButton, useUser } from "@clerk/clerk-react";
 import { Link } from "wouter";
-import { Package, Calendar, CreditCard, Settings } from "lucide-react";
+import { Package, Calendar, CreditCard, Settings, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/auth-context";
+import { Button } from "@/components/ui/button";
 
 export default function CustomerDashboard() {
-  const { user } = useUser();
+  const { user, signOut } = useAuth();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -16,10 +17,13 @@ export default function CustomerDashboard() {
                 Dook Scoop 'Em
               </h1>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Welcome back, {user?.firstName || user?.emailAddresses[0]?.emailAddress}!
+                Welcome back, {user?.user_metadata?.name || user?.email}!
               </p>
             </div>
-            <UserButton afterSignOutUrl="/" />
+            <Button variant="ghost" onClick={() => signOut()} data-testid="button-signout">
+              <LogOut className="h-4 w-4 mr-2" />
+              Sign Out
+            </Button>
           </div>
         </div>
       </header>
@@ -67,7 +71,7 @@ export default function CustomerDashboard() {
             Welcome to your Dook Scoop 'Em dashboard! Here you can manage your subscription,
             view your service schedule, and update your account preferences.
           </p>
-          {!user?.publicMetadata?.hasSubscription && (
+          {!user?.user_metadata?.hasSubscription && (
             <Link href="/pricing">
               <a className="inline-block bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-lg transition-colors" data-testid="button-get-started">
                 Get Started - Choose Your Plan
