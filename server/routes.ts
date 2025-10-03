@@ -1879,19 +1879,28 @@ Submitted: ${new Date().toLocaleString()}
       }
 
       // Create subscription record
-      const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
-      
-      await storage.createSubscription({
-        customerId: customer.id,
-        stripeSubscriptionId: subscription.id,
-        plan,
-        dogCount: parseInt(dogCount) || 1,
-        status: 'active',
-        currentPeriodStart: new Date(subscription.current_period_start * 1000).toISOString(),
-        currentPeriodEnd: new Date(subscription.current_period_end * 1000).toISOString(),
-      });
+      try {
+        const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
+        
+        await storage.createSubscription({
+          customerId: customer.id,
+          stripeSubscriptionId: subscription.id,
+          plan,
+          dogCount: parseInt(dogCount) || 1,
+          status: 'active',
+          currentPeriodStart: subscription.current_period_start 
+            ? new Date(subscription.current_period_start * 1000).toISOString() 
+            : new Date().toISOString(),
+          currentPeriodEnd: subscription.current_period_end 
+            ? new Date(subscription.current_period_end * 1000).toISOString() 
+            : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        });
 
-      console.log('Customer and subscription created successfully');
+        console.log('Customer and subscription created successfully');
+      } catch (subError) {
+        console.error('Error creating subscription:', subError);
+        throw subError;
+      }
     }
 
     res.json({ received: true });

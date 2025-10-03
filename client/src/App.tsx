@@ -202,6 +202,7 @@ function Router() {
       <Route path="/about-us" component={AboutUs} />
       <Route path="/contact" component={Contact} />
       <Route path="/onboard" component={OnboardSurvey} />
+      <Route path="/onboard-survey" component={OnboardSurvey} />
       <Route path="/onboard-old" component={OnboardNew} />
       <Route path="/onboard-original" component={Onboard} />
       
