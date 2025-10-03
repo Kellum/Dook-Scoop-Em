@@ -94,15 +94,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin-only endpoints
   app.get("/api/admin/stats", requireAdmin, async (req, res) => {
     try {
-      const customers = await storage.getAllCustomers();
-      const activeSubscriptions = customers.filter(c => {
-        // A customer is considered active if they have a record (migration creates subscription records)
-        return c.id;
-      });
+      const allCustomers = await storage.getAllCustomers();
+      
+      // Only count customers with role='customer' (exclude admins)
+      const customers = allCustomers.filter(c => c.role === 'customer');
       
       const stats = {
         totalCustomers: customers.length,
-        activeSubscriptions: activeSubscriptions.length,
+        activeSubscriptions: customers.length, // All customers have subscriptions after migration
         todaysVisits: 0, // TODO: implement when visits are tracked
         monthlyRevenue: 0, // TODO: calculate from subscriptions
       };

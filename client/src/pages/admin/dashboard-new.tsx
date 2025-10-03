@@ -14,11 +14,9 @@ interface AdminStats {
 export default function AdminDashboard() {
   const { user, signOut } = useAuth();
   
-  const { data: stats, isLoading, error } = useQuery<AdminStats>({
+  const { data: stats, isLoading } = useQuery<AdminStats>({
     queryKey: ["/api/admin/stats"],
   });
-  
-  console.log('[Dashboard] Stats:', stats, 'Loading:', isLoading, 'Error:', error);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
