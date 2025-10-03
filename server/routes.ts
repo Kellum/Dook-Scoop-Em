@@ -1868,7 +1868,7 @@ Submitted: ${new Date().toLocaleString()}
           gatedCommunity: parsedCustomerData.gatedCommunity,
           gateLocation: parsedCustomerData.gateLocation,
           numberOfDogs: parseInt(dogCount) || 1,
-          dogNames: parsedCustomerData.dogNames,
+          dogNames: Array.isArray(parsedCustomerData.dogNames) ? parsedCustomerData.dogNames : undefined,
           notificationPreference: parsedCustomerData.notificationPreference || 'email',
           role: 'customer',
         });
