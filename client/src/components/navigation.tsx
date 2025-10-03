@@ -47,7 +47,12 @@ export default function Navigation() {
               </Link>
             ))}
             
-            {/* CTA Button */}
+            {/* CTA Buttons */}
+            <Link href="/sign-in">
+              <Button variant="outline" className="font-bold border-2 border-orange-600 text-orange-600 hover:bg-orange-50 px-6 py-2">
+                Client Login
+              </Button>
+            </Link>
             <Link href="/onboard">
               <Button className="neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-2">
                 Get Quote
@@ -84,7 +89,16 @@ export default function Navigation() {
               </Link>
             ))}
             
-            <div className="pt-4 border-t border-gray-200">
+            <div className="pt-4 border-t border-gray-200 space-y-3">
+              <Link href="/sign-in">
+                <Button 
+                  variant="outline"
+                  className="w-full font-bold border-2 border-orange-600 text-orange-600 hover:bg-orange-50 px-6 py-3"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Client Login
+                </Button>
+              </Link>
               <Link href="/onboard">
                 <Button 
                   className="w-full neu-button bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-3"

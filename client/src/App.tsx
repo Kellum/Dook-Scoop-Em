@@ -69,6 +69,9 @@ import SignInPage from "@/pages/auth/sign-in";
 import SignUpPage from "@/pages/auth/sign-up";
 import AdminSignUpPage from "@/pages/admin/signup";
 import CustomerDashboard from "@/pages/dashboard/index";
+import DashboardSchedule from "@/pages/dashboard/schedule";
+import DashboardBilling from "@/pages/dashboard/billing";
+import DashboardSettings from "@/pages/dashboard/settings";
 import AdminDashboard from "@/pages/admin/dashboard-new";
 import ServiceAreasAdmin from "@/pages/admin/service-areas";
 import { ProtectedRoute } from "@/components/protected-route";
@@ -115,6 +118,24 @@ function Router() {
       <Route path="/dashboard">
         <ProtectedRoute>
           <CustomerDashboard />
+        </ProtectedRoute>
+      </Route>
+      
+      <Route path="/dashboard/schedule">
+        <ProtectedRoute>
+          <DashboardSchedule />
+        </ProtectedRoute>
+      </Route>
+      
+      <Route path="/dashboard/billing">
+        <ProtectedRoute>
+          <DashboardBilling />
+        </ProtectedRoute>
+      </Route>
+      
+      <Route path="/dashboard/settings">
+        <ProtectedRoute>
+          <DashboardSettings />
         </ProtectedRoute>
       </Route>
       
