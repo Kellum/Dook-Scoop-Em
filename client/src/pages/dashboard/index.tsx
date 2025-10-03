@@ -21,48 +21,44 @@ export default function CustomerDashboard() {
     const params = new URLSearchParams(window.location.search);
     const sessionId = params.get('session_id');
     
-    console.log('[Dashboard] Checking for session_id:', sessionId);
-    
     if (sessionId) {
-      console.log('[Dashboard] Found session_id, calling complete-checkout...');
+      // Just came back from Stripe checkout - webhook will create the record
+      window.history.replaceState({}, '', '/dashboard');
+      
+      toast({
+        title: "Payment Successful!",
+        description: "Your subscription is being activated...",
+      });
+      
+      // Poll for subscription data (webhook creates it within a few seconds)
       setLoading(true);
-      fetch('/api/stripe/complete-checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId }),
-      })
-        .then(res => {
-          console.log('[Dashboard] Complete-checkout response status:', res.status);
-          return res.json();
-        })
-        .then(data => {
-          console.log('[Dashboard] Complete-checkout response data:', data);
-          if (data.success) {
+      const pollInterval = setInterval(() => {
+        refetch().then((result) => {
+          if (result.data?.hasSubscription) {
+            clearInterval(pollInterval);
+            setLoading(false);
             toast({
               title: "Success!",
               description: "Your subscription is now active!",
             });
-            // Remove session_id from URL
-            window.history.replaceState({}, '', '/dashboard');
-            // Refetch subscription data
-            refetch();
-          } else {
-            toast({
-              title: "Error",
-              description: data.error || "Failed to complete checkout",
-              variant: "destructive",
-            });
           }
-        })
-        .catch(error => {
-          console.error('[Dashboard] Error completing checkout:', error);
-          toast({
-            title: "Error",
-            description: "Failed to complete checkout. Please contact support.",
-            variant: "destructive",
-          });
-        })
-        .finally(() => setLoading(false));
+        });
+      }, 2000); // Check every 2 seconds
+      
+      // Stop polling after 30 seconds
+      const timeout = setTimeout(() => {
+        clearInterval(pollInterval);
+        setLoading(false);
+        toast({
+          title: "Taking longer than expected",
+          description: "Please refresh the page in a moment.",
+        });
+      }, 30000);
+      
+      return () => {
+        clearInterval(pollInterval);
+        clearTimeout(timeout);
+      };
     }
   }, [location, toast, refetch]);
 
