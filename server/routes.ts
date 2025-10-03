@@ -100,12 +100,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return c.id;
       });
       
-      res.json({
+      const stats = {
         totalCustomers: customers.length,
         activeSubscriptions: activeSubscriptions.length,
         todaysVisits: 0, // TODO: implement when visits are tracked
         monthlyRevenue: 0, // TODO: calculate from subscriptions
-      });
+      };
+      
+      console.log('[Admin Stats]', stats);
+      res.json(stats);
     } catch (error) {
       console.error("Error fetching admin stats:", error);
       res.status(500).json({ error: "Failed to fetch stats" });
