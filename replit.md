@@ -2,15 +2,24 @@
 
 Dook Scoop 'Em is a professional pet waste removal service featuring a premium Apple-style neumorphic web interface with subtle retro gaming accents. The brand combines sleek modern design with playful pixel art elements, creating a unique identity that balances professionalism with approachable personality. The slogan "We fear no pile" captures both confidence and humor.
 
-## Recent Changes (January 2025)
+## Recent Changes (October 2025)
 
+### Supabase Authentication & Security (Latest)
+- **Migrated to Supabase Auth**: Replaced legacy authentication with Supabase JWT tokens
+- **Role-Based Access Control**: Implemented `requireAdmin` middleware with metadata role verification
+- **Admin Service Areas**: Built admin interface to manage approved zip codes for customer signups
+- **Multi-Step Onboarding Survey**: Created 4-step survey flow (Zip → Dogs → Frequency → Personal Info)
+- **Zip Code Validation**: Customers can only sign up in admin-approved service areas
+- **Fixed API Request Calls**: Corrected apiRequest signature usage across all mutations
+- **Security Hardening**: Removed insecure legacy JWT fallback, enforced role checking on all admin routes
+
+### Website Structure (January 2025)
 - **Full Website Structure Built**: Expanded from single waitlist page to complete business website
 - **Waitlist as Homepage**: Kept current waitlist functionality as main landing page while building full site
 - **Complete Page Architecture**: Added Residential, Commercial, How We Scoop, Products We Use, Blog, About Us, and Contact pages
 - **Professional Navigation**: Built responsive navigation component with mobile-first design
 - **Global Footer**: Added footer with social media links (Facebook/Instagram), contact info, and business details
 - **Consistent Design System**: All pages maintain Apple-style neumorphic design with humor and professional tone
-- **Sweep & Go Integration Ready**: Prepared integration points for future checkout and signup system
 - **Mobile Optimized**: Full responsive design across all new pages with clickable mobile interfaces
 
 # User Preferences
@@ -56,9 +65,14 @@ Brand identity: Professional pet waste removal service that's approachable and f
 - **Validation**: Zod schemas ensure data integrity across all tables
 
 ## Authentication & Security
-- **Session Management**: Uses connect-pg-simple for PostgreSQL-backed sessions
+- **Auth Provider**: Supabase Auth with JWT token verification
+- **Role-Based Access Control**: Admin routes protected with `requireAdmin` middleware that verifies `user_metadata.role === "admin"`
+- **Admin Authentication**: Admin signup requires secret code (DOOKSCOOPEM2025) and sets admin role in user metadata
+- **Customer Authentication**: Standard Supabase email/password authentication
+- **API Security**: All API requests include Supabase JWT token in Authorization header
+- **Server Verification**: Server validates Supabase tokens using `supabase.auth.getUser(token)`
 - **Form Validation**: Client-side validation with React Hook Form and server-side validation with Zod
-- **Environment Variables**: Secure configuration for database connections and email credentials
+- **Environment Variables**: Secure configuration for database, Supabase, and email credentials
 
 ## Development & Deployment
 - **Development Server**: Vite dev server with HMR for frontend, tsx for backend development
