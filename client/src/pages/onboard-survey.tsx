@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/auth-context";
-import { ArrowRight, ArrowLeft, MapPin, Dog, Calendar, CheckCircle2 } from "lucide-react";
+import { ArrowRight, ArrowLeft, MapPin, Dog, Calendar, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
 
 // Step 1: Zip Code
 const zipSchema = z.object({
@@ -49,9 +49,45 @@ type PlanData = z.infer<typeof planSchema>;
 type PersonalInfoData = z.infer<typeof personalInfoSchema>;
 
 const planDetails = {
-  weekly: { label: "Once a Week", price: 110, frequency: "weekly" },
-  biweekly: { label: "Every Other Week", price: 90, frequency: "bi-weekly" },
-  twice_weekly: { label: "Twice a Week", price: 136, frequency: "twice weekly" },
+  weekly: { 
+    label: "Once a Week", 
+    price: 110, 
+    frequency: "weekly",
+    description: "Perfect for most families",
+    includes: [
+      "Comprehensive yard inspection",
+      "Thorough waste removal",
+      "Sanitization & deodorizing spray",
+      "Waste haul-away",
+      "Service completion notification"
+    ]
+  },
+  biweekly: { 
+    label: "Every Other Week", 
+    price: 90, 
+    frequency: "bi-weekly",
+    description: "Great value for smaller yards",
+    includes: [
+      "Comprehensive yard inspection",
+      "Thorough waste removal",
+      "Sanitization & deodorizing spray",
+      "Waste haul-away",
+      "Service completion notification"
+    ]
+  },
+  twice_weekly: { 
+    label: "Twice a Week", 
+    price: 136, 
+    frequency: "twice weekly",
+    description: "For busy pups or big yards",
+    includes: [
+      "Comprehensive yard inspection (2x per week)",
+      "Thorough waste removal (2x per week)",
+      "Sanitization & deodorizing spray",
+      "Waste haul-away",
+      "Service completion notification"
+    ]
+  },
 };
 
 export default function OnboardSurvey() {
@@ -60,6 +96,7 @@ export default function OnboardSurvey() {
   const [dogData, setDogData] = useState<DogData | null>(null);
   const [planData, setPlanData] = useState<PlanData | null>(null);
   const [loading, setLoading] = useState(false);
+  const [expandedPlan, setExpandedPlan] = useState<string | null>(null);
   const { toast } = useToast();
   const { signUp } = useAuth();
 
@@ -75,6 +112,9 @@ export default function OnboardSurvey() {
 
   const planForm = useForm<PlanData>({
     resolver: zodResolver(planSchema),
+    defaultValues: {
+      plan: undefined
+    }
   });
 
   const personalForm = useForm<PersonalInfoData>({
@@ -365,7 +405,7 @@ export default function OnboardSurvey() {
               </div>
             </CardHeader>
             <CardContent>
-              <form onSubmit={planForm.handleSubmit(handlePlanSubmit)} className="space-y-6">
+              <form onSubmit={planForm.handleSubmit(handlePlanSubmit)} className="space-y-3">
                 <RadioGroup
                   onValueChange={(value) => planForm.setValue("plan", value as any)}
                   className="space-y-3"
@@ -373,16 +413,46 @@ export default function OnboardSurvey() {
                   {Object.entries(planDetails).map(([key, details]) => (
                     <div
                       key={key}
-                      className="flex items-center space-x-3 border-2 border-gray-200 rounded-lg p-4 hover:border-orange-600 cursor-pointer"
+                      className="border-2 border-gray-200 rounded-lg hover:border-orange-600 transition-colors"
                       data-testid={`option-plan-${key}`}
                     >
-                      <RadioGroupItem value={key} id={key} />
-                      <Label htmlFor={key} className="flex-1 cursor-pointer">
-                        <div className="flex justify-between items-center">
-                          <span className="font-bold text-lg">{details.label}</span>
-                          <span className="font-black text-orange-600">${details.price}/mo</span>
+                      <div className="flex items-center space-x-3 p-4 cursor-pointer">
+                        <RadioGroupItem value={key} id={key} />
+                        <Label htmlFor={key} className="flex-1 cursor-pointer">
+                          <div className="flex justify-between items-center">
+                            <div>
+                              <span className="font-bold text-lg block">{details.label}</span>
+                              <span className="text-sm text-gray-500">{details.description}</span>
+                            </div>
+                            <span className="font-black text-orange-600">${details.price}/mo</span>
+                          </div>
+                        </Label>
+                        <button
+                          type="button"
+                          onClick={() => setExpandedPlan(expandedPlan === key ? null : key)}
+                          className="ml-2 p-2 hover:bg-gray-100 rounded"
+                        >
+                          {expandedPlan === key ? (
+                            <ChevronUp className="w-5 h-5 text-gray-600" />
+                          ) : (
+                            <ChevronDown className="w-5 h-5 text-gray-600" />
+                          )}
+                        </button>
+                      </div>
+                      
+                      {expandedPlan === key && (
+                        <div className="px-4 pb-4 border-t border-gray-100">
+                          <p className="font-bold text-sm text-gray-700 mb-2 mt-3">What's Included:</p>
+                          <ul className="space-y-2">
+                            {details.includes.map((item, idx) => (
+                              <li key={idx} className="flex items-start">
+                                <CheckCircle2 className="w-4 h-4 text-green-600 mr-2 mt-0.5 flex-shrink-0" />
+                                <span className="text-sm text-gray-700">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                      </Label>
+                      )}
                     </div>
                   ))}
                 </RadioGroup>
@@ -435,9 +505,15 @@ export default function OnboardSurvey() {
                     <span>{planData && planDetails[planData.plan].label}</span>
                     <span>${planData && planDetails[planData.plan].price}</span>
                   </div>
+                  {dogData && (
+                    <div className="flex justify-between">
+                      <span>{dogData.numberOfDogs} Dog{dogData.numberOfDogs > 1 ? 's' : ''} (Base)</span>
+                      <span>${planData && planDetails[planData.plan].price}</span>
+                    </div>
+                  )}
                   {dogData && dogData.numberOfDogs > 1 && (
                     <div className="flex justify-between">
-                      <span>{dogData.numberOfDogs - 1} Extra Dog{dogData.numberOfDogs > 2 ? 's' : ''}</span>
+                      <span>{dogData.numberOfDogs - 1} Extra Dog{dogData.numberOfDogs > 2 ? 's' : ''} (+$20 each)</span>
                       <span>${(dogData.numberOfDogs - 1) * 20}</span>
                     </div>
                   )}
