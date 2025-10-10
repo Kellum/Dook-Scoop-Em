@@ -14,7 +14,6 @@ import {
   insertOnboardingSubmissionSchema
 } from "@shared/schema";
 import { hashPassword, verifyPassword, generateToken, requireAuth, requireAdmin } from "./auth";
-import { handleSweepAndGoWebhook, sweepAndGoAPI } from "./sweepandgo";
 import { stripe, STRIPE_PRICES } from "./stripe";
 import { createClient } from '@supabase/supabase-js';
 import nodemailer from "nodemailer";
@@ -41,53 +40,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Admin Authentication Endpoints
-  app.post("/api/admin/login", async (req, res) => {
+  // Supabase Admin User Creation
+  app.post("/api/admin/create-supabase-admin", async (req, res) => {
     try {
-      const { username, password } = req.body;
-      
-      if (!username || !password) {
-        return res.status(400).json({ message: "Username and password required" });
+      const { email, password, firstName, lastName } = req.body;
+
+      if (!email || !password) {
+        return res.status(400).json({ message: "Email and password are required" });
       }
 
-      const user = await storage.getUserByUsername(username);
-      if (!user) {
-        return res.status(401).json({ message: "Invalid credentials" });
-      }
-
-      const isValidPassword = await verifyPassword(password, user.password);
-      if (!isValidPassword) {
-        return res.status(401).json({ message: "Invalid credentials" });
-      }
-
-      const token = generateToken({ userId: user.id, username: user.username });
-      res.json({ token, user: { id: user.id, username: user.username } });
-    } catch (error) {
-      console.error("Login error:", error);
-      res.status(500).json({ message: "Internal server error" });
-    }
-  });
-
-  app.post("/api/admin/create-admin", async (req, res) => {
-    try {
-      const validatedData = insertUserSchema.parse(req.body);
-      const hashedPassword = await hashPassword(validatedData.password);
-      
-      const user = await storage.createUser({
-        username: validatedData.username,
-        password: hashedPassword
+      // Create admin user in Supabase with admin role
+      const { data, error } = await supabase.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true,
+        user_metadata: {
+          firstName: firstName || "Admin",
+          lastName: lastName || "User",
+          role: "admin"
+        }
       });
 
-      res.json({ 
-        message: "Admin user created successfully", 
-        user: { id: user.id, username: user.username } 
+      if (error) {
+        console.error("Failed to create Supabase admin:", error);
+        return res.status(400).json({ message: error.message });
+      }
+
+      res.json({
+        message: "Supabase admin user created successfully",
+        user: {
+          id: data.user.id,
+          email: data.user.email,
+          role: "admin"
+        }
       });
     } catch (error) {
-      console.error("Create admin error:", error);
-      if (error instanceof Error && error.message.includes('unique')) {
-        return res.status(400).json({ message: "Username already exists" });
-      }
-      res.status(500).json({ message: "Failed to create admin user" });
+      console.error("Create Supabase admin error:", error);
+      res.status(500).json({ message: "Failed to create Supabase admin user" });
     }
   });
 
@@ -294,56 +283,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Sweep&Go webhook endpoint
-  app.post("/api/webhooks/sweepandgo", handleSweepAndGoWebhook);
-
-  // Test Sweep&Go API connection (admin only)
-  app.get("/api/admin/sweepandgo/test", requireAdmin, async (req, res) => {
-    try {
-      // Test basic API connectivity
-      const testEmail = "test@example.com";
-      const emailExists = await sweepAndGoAPI.checkClientEmailExists(testEmail);
-      
-      res.json({ 
-        success: true,
-        message: "Sweep&Go API connection successful",
-        test_result: {
-          email_check: emailExists,
-          api_configured: sweepAndGoAPI.isConfigured()
-        }
-      });
-    } catch (error) {
-      console.error("Sweep&Go API test failed:", error);
-      res.status(500).json({ 
-        success: false,
-        message: "Sweep&Go API connection failed",
-        error: error instanceof Error ? error.message : "Unknown error"
-      });
-    }
-  });
-
-  // Get pricing from Sweep&Go API (admin only)
-  app.post("/api/admin/sweepandgo/pricing", requireAdmin, async (req, res) => {
-    try {
-      const { zipCode, numberOfDogs, frequency, lastCleaned } = req.body;
-      
-      const pricing = await sweepAndGoAPI.getPricing({
-        zipCode,
-        numberOfDogs: parseInt(numberOfDogs),
-        frequency: frequency || "weekly",
-        lastCleanedTimeframe: lastCleaned || "one_week"
-      });
-
-      res.json({ success: true, pricing });
-    } catch (error) {
-      console.error("Pricing lookup failed:", error);
-      res.status(500).json({ 
-        success: false,
-        error: error instanceof Error ? error.message : "Pricing lookup failed"
-      });
-    }
-  });
-
   // Public endpoints
   // Simple contact form endpoint
   app.post("/api/contact", async (req, res) => {
@@ -524,252 +463,260 @@ export async function registerRoutes(app: Express): Promise<Server> {
     console.log("=== END COUPON VALIDATION ===");
   });
 
-  // Quote request endpoint - integrates with Sweep&Go
+  // Quote request endpoint - saves to CRM for admin follow-up
   app.post("/api/quote", async (req, res) => {
     try {
       console.log("=== QUOTE REQUEST RECEIVED ===");
       console.log("Request body:", JSON.stringify(req.body, null, 2));
-      
+
       // Validate request body
       const validatedData = insertQuoteRequestSchema.parse(req.body);
       console.log("Validated data:", validatedData);
-      
-      // Check if email already exists in Sweep&Go
-      const emailExists = await sweepAndGoAPI.checkClientEmailExists(validatedData.email);
-      console.log(`Email ${validatedData.email} exists in Sweep&Go:`, emailExists);
-      
-      // Get pricing from Sweep&Go
-      const sweepAndGoPricing = await sweepAndGoAPI.getPricing({
-        zipCode: validatedData.zipCode,
-        numberOfDogs: validatedData.numberOfDogs,
-        frequency: validatedData.serviceFrequency,
-        lastCleanedTimeframe: validatedData.lastCleanedTimeframe || "one_month"
-      });
-      
-      console.log("Sweep&Go pricing response:", sweepAndGoPricing);
-      
-      // Extract estimated price from Sweep&Go response if available
-      let estimatedPrice = null;
-      if (sweepAndGoPricing && !sweepAndGoPricing.error) {
-        // Log full response structure to debug pricing
-        console.log("=== PRICING DEBUG ===");
-        console.log("Full pricing response structure:", JSON.stringify(sweepAndGoPricing, null, 2));
-        console.log("===================");
-        
-        // Try multiple sources for pricing data
-        if (sweepAndGoPricing.price) {
-          estimatedPrice = typeof sweepAndGoPricing.price === 'object' 
-            ? sweepAndGoPricing.price.value 
-            : sweepAndGoPricing.price.toString();
-          console.log("Found price in .price field:", estimatedPrice);
-        }
-        // Check for price in show_price_options or other nested fields
-        else if (sweepAndGoPricing.show_price_options?.price) {
-          estimatedPrice = sweepAndGoPricing.show_price_options.price;
-          console.log("Found price in show_price_options.price:", estimatedPrice);
-        }
-        // Check for any other price-related fields
-        else if (sweepAndGoPricing.pricing?.price) {
-          estimatedPrice = sweepAndGoPricing.pricing.price;
-          console.log("Found price in pricing.price:", estimatedPrice);
-        }
-        // Look for per-cleanup pricing
-        else if (sweepAndGoPricing.per_cleanup_price) {
-          estimatedPrice = sweepAndGoPricing.per_cleanup_price;
-          console.log("Found price in per_cleanup_price:", estimatedPrice);
-        }
-        // Check for one-time pricing in custom_price.short_description (e.g., "$50")
-        else if (sweepAndGoPricing.custom_price?.short_description) {
-          const customPriceStr = sweepAndGoPricing.custom_price.short_description;
-          // Extract numeric value from strings like "$50" or "50"
-          const priceMatch = customPriceStr.match(/\$?(\d+(?:\.\d{2})?)/);
-          if (priceMatch) {
-            estimatedPrice = priceMatch[1];
-            console.log("Found price in custom_price.short_description:", estimatedPrice);
-          }
-        }
-      }
-      
-      // Store quote request in database
+
+      // Store quote request in database for admin to follow up
       const quoteData = {
         ...validatedData,
-        sweepAndGoEmailExists: emailExists,
-        sweepAndGoPricing: JSON.stringify(sweepAndGoPricing),
-        estimatedPrice: estimatedPrice
+        sweepAndGoEmailExists: false, // No longer checking Sweep&Go
+        sweepAndGoPricing: null,
+        estimatedPrice: null // Admin will provide pricing
       };
-      
+
       const quoteRequest = await storage.createQuoteRequest(quoteData);
-      
+
       console.log("Quote request created:", quoteRequest.id);
-      
-      // Prepare response with pricing information
+
+      // Prepare response
       const responseData = {
         success: true,
         quoteId: quoteRequest.id,
         message: "Quote request received successfully",
-        emailExistsInSystem: emailExists,
-        pricing: sweepAndGoPricing && !sweepAndGoPricing.error ? {
-          estimatedPrice: estimatedPrice,
-          frequency: validatedData.serviceFrequency,
-          details: sweepAndGoPricing
-        } : null,
-        nextSteps: emailExists 
-          ? "We found your information in our system. We'll contact you within 24 hours to confirm pricing and schedule."
-          : "We'll contact you within 24 hours with a custom quote and to schedule your service."
+        nextSteps: "We'll contact you within 24 hours with a custom quote and to schedule your service."
       };
-      
+
       console.log("Quote response:", responseData);
-      
+
       // Track quote submission for analytics
       console.log("=== QUOTE ANALYTICS ===");
       console.log("Event: quote_request");
-      console.log("Email exists:", emailExists);
-      console.log("Pricing available:", !!estimatedPrice);
       console.log("Service frequency:", validatedData.serviceFrequency);
       console.log("Number of dogs:", validatedData.numberOfDogs);
       console.log("Zip code:", validatedData.zipCode);
       console.log("========================");
-      
+
       res.json(responseData);
-      
+
     } catch (error) {
       console.error("Quote request error:", error);
       if (error instanceof Error && error.name === 'ZodError') {
-        return res.status(400).json({ 
+        return res.status(400).json({
           success: false,
-          message: "Please check your form data", 
-          errors: (error as any).errors 
+          message: "Please check your form data",
+          errors: (error as any).errors
         });
       }
-      res.status(500).json({ 
+      res.status(500).json({
         success: false,
-        message: "Failed to process quote request. Please try again later." 
+        message: "Failed to process quote request. Please try again later."
       });
     }
   });
   
-  // Customer onboarding endpoint - complete signup with payment through Sweep&Go
+  // Customer onboarding endpoint - saves to CRM for admin follow-up
   app.post("/api/onboard", async (req, res) => {
     try {
       console.log("=== CUSTOMER ONBOARDING REQUEST ===");
       console.log("Request body:", JSON.stringify(req.body, null, 2));
-      
+
       // Validate request body
       const validatedData = insertOnboardingSubmissionSchema.parse(req.body);
       console.log("Validated onboarding data:", validatedData);
-      
-      // Create initial onboarding record
+
+      // Generate a temporary password for the customer
+      const temporaryPassword = `Dook${Math.random().toString(36).slice(-8)}!`;
+
+      // Create Supabase auth user
+      let supabaseUserId: string | null = null;
+      try {
+        const { data, error } = await supabase.auth.admin.createUser({
+          email: validatedData.email,
+          password: temporaryPassword,
+          email_confirm: true, // Auto-confirm email
+          user_metadata: {
+            firstName: validatedData.firstName,
+            lastName: validatedData.lastName,
+            phone: validatedData.cellPhone || validatedData.homePhone,
+            role: 'customer'
+          }
+        });
+
+        if (error) {
+          console.error("Failed to create Supabase user:", error);
+          throw new Error(`Auth user creation failed: ${error.message}`);
+        }
+
+        supabaseUserId = data.user.id;
+        console.log("Supabase user created:", supabaseUserId);
+      } catch (authError) {
+        console.error("Supabase auth error:", authError);
+        // Continue with onboarding even if auth fails - admin can create account later
+      }
+
+      // Create onboarding record in database
       const onboardingRecord = await storage.createOnboardingSubmission({
         ...validatedData,
-        status: "pending"
+        status: "completed"
       });
-      
+
       console.log("Onboarding record created:", onboardingRecord.id);
-      
-      // Use Sweep&Go onboarding API with credit card info from form
-      // Note: In a real implementation, you'd integrate with Stripe Elements to get the card token
-      // For now, we'll simulate the process
-      const sweepAndGoResponse = await sweepAndGoAPI.onboardCustomer({
-        firstName: validatedData.firstName,
-        lastName: validatedData.lastName,
-        email: validatedData.email,
-        homeAddress: validatedData.homeAddress,
-        city: validatedData.city,
-        state: validatedData.state,
-        zipCode: validatedData.zipCode,
-        homePhone: validatedData.homePhone,
-        cellPhone: validatedData.cellPhone,
-        numberOfDogs: validatedData.numberOfDogs,
-        serviceFrequency: validatedData.serviceFrequency,
-        lastCleanedTimeframe: validatedData.lastCleanedTimeframe,
-        initialCleanupRequired: validatedData.initialCleanupRequired,
-        
-        // New Sweep&Go specific fields
-        cleanupNotificationType: validatedData.cleanupNotificationType,
-        cleanupNotificationChannel: validatedData.cleanupNotificationChannel,
-        gatedCommunity: validatedData.gatedCommunity,
-        gateLocation: validatedData.gateLocation,
-        dogNames: validatedData.dogNames,
-        
-        // Legacy fields for compatibility
-        notificationType: validatedData.notificationType,
-        notificationChannel: validatedData.notificationChannel,
-        howHeardAboutUs: validatedData.howHeardAboutUs,
-        additionalComments: validatedData.additionalComments,
-        nameOnCard: validatedData.nameOnCard,
-        // Use secure Stripe token instead of raw card data
-        creditCardToken: validatedData.creditCardToken, // Secure Stripe token
-        postal: validatedData.zipCode, // Using zip code as postal
-        // Note: cvv and expiry are securely embedded in the Stripe token
-      });
-      
-      console.log("Sweep&Go onboarding response:", sweepAndGoResponse);
-      
-      // Update onboarding record with Sweep&Go response
-      let finalStatus = "completed";
-      let errorMessage = undefined;
-      let clientId = undefined;
-      
-      if (sweepAndGoResponse.error) {
-        finalStatus = "failed";
-        errorMessage = sweepAndGoResponse.error;
-        console.error("Sweep&Go onboarding failed:", sweepAndGoResponse.error);
-      } else {
-        clientId = sweepAndGoResponse.client_id || sweepAndGoResponse.id;
-        console.log("Sweep&Go onboarding successful, client ID:", clientId);
+
+      // Send welcome email with login credentials
+      try {
+        const welcomeEmail = {
+          from: {
+            email: "noreply@dookscoopem.com",
+            name: "Dook Scoop 'Em"
+          },
+          to: [
+            {
+              email: validatedData.email,
+              name: `${validatedData.firstName} ${validatedData.lastName}`
+            }
+          ],
+          subject: "🎉 Welcome to Dook Scoop 'Em!",
+          html: `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; background: #f8f9fa; padding: 20px;">
+              <div style="background: linear-gradient(135deg, #ff7b00, #ff9500); padding: 30px; text-align: center; border-radius: 20px 20px 0 0;">
+                <h1 style="color: white; font-size: 32px; font-weight: 900; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                  🎉 WELCOME TO THE PACK!
+                </h1>
+              </div>
+
+              <div style="background: white; padding: 40px 30px; border-radius: 0 0 20px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                <p style="font-size: 18px; line-height: 1.6; color: #333; margin-bottom: 25px;">
+                  <strong>Hey ${validatedData.firstName}!</strong> 👋
+                </p>
+
+                <p style="font-size: 16px; line-height: 1.6; color: #555; margin-bottom: 25px;">
+                  Thanks for signing up with Dook Scoop 'Em! We've created your customer account and our team will be reaching out shortly to finalize your service details.
+                </p>
+
+                <div style="background: #e8f4fd; padding: 25px; border-radius: 15px; margin: 25px 0; border-left: 5px solid #2563eb;">
+                  <h3 style="color: #1d4ed8; font-size: 20px; font-weight: 800; margin: 0 0 15px 0;">
+                    🔐 Your Customer Portal Login
+                  </h3>
+                  <p style="margin: 10px 0; color: #374151;"><strong>Email:</strong> ${validatedData.email}</p>
+                  <p style="margin: 10px 0; color: #374151;"><strong>Temporary Password:</strong> <code style="background: white; padding: 5px 10px; border-radius: 5px; font-family: monospace;">${temporaryPassword}</code></p>
+                  <p style="margin: 15px 0 0 0; color: #374151; font-size: 14px;"><em>Please change your password after logging in.</em></p>
+                </div>
+
+                <div style="text-align: center; margin: 30px 0;">
+                  <a href="${process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : 'http://localhost:5001'}/auth/sign-in" style="display: inline-block; background: #ff7b00; color: white; text-decoration: none; padding: 15px 40px; border-radius: 10px; font-weight: bold; font-size: 16px;">
+                    Login to Your Dashboard
+                  </a>
+                </div>
+
+                <div style="background: #f9f9f9; padding: 25px; border-radius: 15px; margin: 25px 0;">
+                  <h3 style="color: #374151; font-size: 18px; font-weight: 800; margin: 0 0 15px 0;">
+                    📋 Your Service Details:
+                  </h3>
+                  <table style="width: 100%; color: #555;">
+                    <tr><td style="padding: 5px 0; font-weight: 600;">Service Address:</td><td style="padding: 5px 0;">${validatedData.homeAddress}, ${validatedData.city}, ${validatedData.state} ${validatedData.zipCode}</td></tr>
+                    <tr><td style="padding: 5px 0; font-weight: 600;">Number of Dogs:</td><td style="padding: 5px 0;">${validatedData.numberOfDogs}</td></tr>
+                    <tr><td style="padding: 5px 0; font-weight: 600;">Service Frequency:</td><td style="padding: 5px 0;">${validatedData.serviceFrequency}</td></tr>
+                    <tr><td style="padding: 5px 0; font-weight: 600;">Phone:</td><td style="padding: 5px 0;">${validatedData.cellPhone}</td></tr>
+                  </table>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px solid #e5e5e5;">
+                  <p style="color: #888; font-size: 14px; margin: 0;">
+                    Questions? Just reply to this email — we're here to help!<br>
+                    <strong>Dook Scoop 'Em</strong> | Professional Pet Waste Removal
+                  </p>
+                </div>
+              </div>
+            </div>
+          `,
+          text: `
+Welcome to Dook Scoop 'Em!
+
+Hey ${validatedData.firstName}!
+
+Thanks for signing up! We've created your customer account and our team will be reaching out shortly to finalize your service details.
+
+YOUR CUSTOMER PORTAL LOGIN:
+Email: ${validatedData.email}
+Temporary Password: ${temporaryPassword}
+
+Please change your password after logging in.
+
+Login at: ${process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : 'http://localhost:5001'}/auth/sign-in
+
+YOUR SERVICE DETAILS:
+Service Address: ${validatedData.homeAddress}, ${validatedData.city}, ${validatedData.state} ${validatedData.zipCode}
+Number of Dogs: ${validatedData.numberOfDogs}
+Service Frequency: ${validatedData.serviceFrequency}
+Phone: ${validatedData.cellPhone}
+
+Questions? Just reply to this email — we're here to help!
+Dook Scoop 'Em | Professional Pet Waste Removal
+          `
+        };
+
+        if (process.env.MAILERSEND_API_KEY) {
+          const emailResponse = await fetch('https://api.mailersend.com/v1/email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${process.env.MAILERSEND_API_KEY}`
+            },
+            body: JSON.stringify(welcomeEmail)
+          });
+
+          if (emailResponse.ok) {
+            console.log("Welcome email sent successfully");
+          } else {
+            console.error("Failed to send welcome email:", await emailResponse.text());
+          }
+        }
+      } catch (emailError) {
+        console.error("Error sending welcome email:", emailError);
+        // Continue - don't fail onboarding if email fails
       }
-      
-      // Update the onboarding record with final status
-      const updatedRecord = await storage.updateOnboardingStatus(
-        onboardingRecord.id,
-        finalStatus,
-        JSON.stringify(sweepAndGoResponse),
-        clientId,
-        errorMessage
-      );
-      
-      console.log("Final onboarding status:", finalStatus);
-      
+
       // Prepare response
       const responseData = {
-        success: finalStatus === "completed",
+        success: true,
         onboardingId: onboardingRecord.id,
-        message: finalStatus === "completed" 
-          ? "Welcome to Dook Scoop 'Em! Your service has been set up successfully."
-          : "There was an issue setting up your service. We'll contact you to resolve this.",
-        sweepAndGoClientId: clientId,
-        nextSteps: finalStatus === "completed"
-          ? "2 things:\n1.) We will send you an email with your dashboard login details so that you can manage your account with us.\n\n2.) Someone from our team will reach out to you to confirm the details of our service to you :)"
-          : "2 things:\n1.) We will send you an email with your dashboard login details so that you can manage your account with us.\n\n2.) Someone from our team will reach out to you to confirm the details of our service to you :)",
-        error: errorMessage
+        message: "Welcome to Dook Scoop 'Em! Your information has been received.",
+        nextSteps: "Check your email for your dashboard login credentials. Our team will contact you within 24 hours to finalize your service details and schedule."
       };
-      
+
       console.log("Onboarding response:", responseData);
-      
+
       // Track onboarding for analytics
       console.log("=== ONBOARDING ANALYTICS ===");
       console.log("Event: customer_onboarding");
-      console.log("Status:", finalStatus);
+      console.log("Status: completed");
       console.log("Service frequency:", validatedData.serviceFrequency);
       console.log("Number of dogs:", validatedData.numberOfDogs);
       console.log("Zip code:", validatedData.zipCode);
-      console.log("Sweep&Go integration:", !sweepAndGoResponse.error);
+      console.log("Supabase user created:", !!supabaseUserId);
       console.log("=============================");
-      
+
       res.json(responseData);
-      
+
     } catch (error) {
       console.error("Onboarding error:", error);
       if (error instanceof Error && error.name === 'ZodError') {
-        return res.status(400).json({ 
+        return res.status(400).json({
           success: false,
-          message: "Please check your form data", 
-          errors: (error as any).errors 
+          message: "Please check your form data",
+          errors: (error as any).errors
         });
       }
-      res.status(500).json({ 
+      res.status(500).json({
         success: false,
-        message: "Failed to process onboarding. Please try again later." 
+        message: "Failed to process onboarding. Please try again later."
       });
     }
   });
@@ -828,12 +775,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       // Validate request body
       const validatedData = insertWaitlistSubmissionSchema.parse(req.body);
-      
-      // Check if email already exists in Sweep&Go before storing
-      const emailExists = await sweepAndGoAPI.checkClientEmailExists(validatedData.email);
-      if (emailExists) {
-        console.log(`Email ${validatedData.email} already exists in Sweep&Go`);
-      }
 
       // Store submission
       const submission = await storage.createWaitlistSubmission(validatedData);
@@ -1535,9 +1476,9 @@ Submitted: ${new Date().toLocaleString()}
       }
 
       // Construct base URL with HTTPS scheme for Stripe
-      const baseUrl = process.env.REPLIT_DEV_DOMAIN 
-        ? `https://${process.env.REPLIT_DEV_DOMAIN}` 
-        : 'http://localhost:5000';
+      const baseUrl = process.env.RAILWAY_PUBLIC_DOMAIN
+        ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+        : 'http://localhost:5001';
 
       // Create Stripe Checkout Session
       const session = await stripe.checkout.sessions.create({

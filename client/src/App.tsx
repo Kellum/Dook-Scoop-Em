@@ -61,13 +61,10 @@ import Onboard from "@/pages/onboard";
 import OnboardNew from "@/pages/onboard-new";
 import OnboardSurvey from "@/pages/onboard-survey";
 import Locations from "@/pages/locations-neu";
-import AdminLogin from "@/pages/admin/login-neu";
-import AdminDashboardOld from "@/pages/admin/dashboard";
 
 // Auth and dashboards
 import SignInPage from "@/pages/auth/sign-in";
 import SignUpPage from "@/pages/auth/sign-up";
-import AdminSignUpPage from "@/pages/admin/signup";
 import CustomerDashboard from "@/pages/dashboard/index";
 import DashboardSubscription from "@/pages/dashboard/subscription";
 import DashboardSchedule from "@/pages/dashboard/schedule";
@@ -117,7 +114,6 @@ function Router() {
       {/* Authentication routes */}
       <Route path="/sign-in" component={SignInPage} />
       <Route path="/sign-up" component={SignUpPage} />
-      <Route path="/admin/signup" component={AdminSignUpPage} />
       
       {/* Customer Dashboard - Protected */}
       <Route path="/dashboard">
@@ -206,11 +202,9 @@ function Router() {
       <Route path="/onboard-old" component={OnboardNew} />
       <Route path="/onboard-original" component={Onboard} />
       
-      {/* Legacy/admin pages */}
+      {/* Legacy pages */}
       <Route path="/home" component={Home} />
       <Route path="/locations" component={Locations} />
-      <Route path="/admin/login" component={AdminLogin} />
-      <Route path="/admin/dashboard-old" component={AdminDashboardOld} />
 
       <Route component={NotFound} />
     </Switch>
