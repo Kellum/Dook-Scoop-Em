@@ -4,6 +4,16 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
+
+// Redirect www to non-www for SEO canonicalization
+app.use((req, res, next) => {
+  const host = req.headers.host;
+  if (host?.startsWith('www.')) {
+    return res.redirect(301, `https://${host.replace('www.', '')}${req.url}`);
+  }
+  next();
+});
+
 // Skip JSON parsing for Stripe webhook to preserve raw body for signature verification
 app.use((req, res, next) => {
   if (req.path === '/api/stripe/webhook') {
