@@ -144,6 +144,277 @@
 
 ---
 
+## Phase 6: Subscription Management Implementation (Priority: HIGH)
+
+### Overview
+Customers need a way to manage their subscriptions (cancel, update payment, change plan). Two approaches available:
+
+### Option A: Stripe Customer Portal (RECOMMENDED ✅)
+
+**What it provides:**
+- Cancel subscription
+- Update payment method
+- View billing history
+- Download invoices
+- Change subscription plan (if configured)
+- Update quantity (number of dogs)
+
+**Implementation Steps:**
+1. [ ] Create portal session endpoint in `server/routes.ts`:
+   ```typescript
+   app.post("/api/customer/portal-session", requireAuth, async (req, res) => {
+     const customer = await storage.getCustomerBySupabaseId(req.user.id);
+     const session = await stripe.billingPortal.sessions.create({
+       customer: customer.stripeCustomerId,
+       return_url: `${baseUrl}/dashboard`,
+     });
+     res.json({ url: session.url });
+   });
+   ```
+
+2. [ ] Add "Manage Subscription" button in customer dashboard
+3. [ ] Configure Customer Portal in Stripe Dashboard:
+   - Go to: Settings → Customer Portal
+   - Enable features: Cancel, update payment, change plan
+   - Set branding (logo, colors)
+   - Configure cancellation flow (immediate vs end of period)
+
+**Pros:**
+- ✅ Quick implementation (15 minutes)
+- ✅ PCI compliant (Stripe handles payment details)
+- ✅ Professional UI (Stripe-designed)
+- ✅ Handles all edge cases
+- ✅ No ongoing maintenance
+
+**Cons:**
+- ❌ Leaves your site (Stripe branding)
+- ❌ Less customization
+
+### Option B: Custom Dashboard Management
+
+**What you can build:**
+- Custom cancel subscription UI
+- Custom plan change UI
+- Pause/resume functionality
+- Custom logic and validations
+
+**Implementation:**
+- Requires multiple endpoints: cancel, pause, change plan, update quantity
+- Requires Stripe Elements for payment method updates (PCI compliance)
+- Requires webhook handling for all state changes
+- More code to maintain
+
+**When to use:**
+- You need highly customized UX
+- You want to stay on-brand throughout
+- You have specific business logic requirements
+
+### Recommended Hybrid Approach
+
+**Use Stripe Portal for:**
+- Cancel subscription
+- Update payment method
+- View billing history
+
+**Build custom UI for:**
+- Viewing current subscription details (already done)
+- Viewing service schedule
+- Updating service details (gate code, dog names, property notes)
+- Upgrading/downgrading plans (can be custom if desired)
+
+**Customer Email Notifications:**
+
+Stripe automatically sends:
+- ✅ Payment succeeded
+- ✅ Payment failed
+- ✅ Upcoming invoice (3 days before renewal)
+- ✅ Receipt for each charge
+
+Stripe does NOT automatically send:
+- ❌ Subscription canceled notification (you should send this)
+- ❌ Link to manage subscription (add to welcome email)
+
+**Configuration needed:**
+- Dashboard → Settings → Emails → Customer emails
+- Enable desired notifications
+- Customize branding (logo, colors, from address)
+
+---
+
+## Phase 7: Customer Dashboard Enhancement (Priority: HIGH)
+
+### Current State Analysis
+
+**Currently displayed (4 fields):**
+- Plan type
+- Number of dogs
+- Subscription status
+- Service address (combined)
+
+**Available but not shown (9+ fields):**
+- First name
+- Last name
+- Email (shown in header, not details)
+- Phone number
+- Gate code
+- Gate location
+- Gated community (yes/no)
+- Dog names (optional)
+- Property notes (optional)
+
+### Data Sync Architecture
+
+**Understanding the data flow:**
+
+1. **Database (source of truth for service details):**
+   - Stores ALL customer information
+   - firstName, lastName, phone, address, gateCode, dogNames, propertyNotes, etc.
+   - Updated via custom endpoints you build
+
+2. **Stripe (source of truth for billing):**
+   - Stores: email, name, stripeCustomerId, subscriptionId
+   - Stores metadata: phone (optional), any custom fields
+   - Updated via Stripe API or Customer Portal
+
+3. **Supabase Auth (source of truth for login):**
+   - Stores: email, password, user_metadata
+   - Updated via Supabase API
+
+**Update strategy by field type:**
+
+| Field | Update Location | Sync Required |
+|-------|----------------|---------------|
+| firstName, lastName | Database → Stripe metadata | Yes (helpful for support) |
+| Email | Supabase Auth → Stripe → Database | Yes (critical for billing) |
+| Phone | Database → Stripe metadata | Yes (helpful for support) |
+| Address, city, state, zip | Database only | No |
+| Gate code, gate location, gated community | Database only | No |
+| Dog names, property notes | Database only | No |
+| Plan, numberOfDogs | Stripe only | Use Customer Portal |
+| Payment method | Stripe only | Use Customer Portal |
+
+### Implementation Plan
+
+#### Step 1: Display All Customer Information
+- [ ] Update `client/src/pages/dashboard/index.tsx`
+- [ ] Create organized sections:
+  - **Personal Information:** firstName, lastName, email, phone
+  - **Service Address:** address, city, state, zipCode
+  - **Access Information:** gatedCommunity, gateCode, gateLocation
+  - **Pet Information:** numberOfDogs, dogNames
+  - **Additional Notes:** propertyNotes
+- [ ] Show "Not provided" for optional fields that are empty
+- [ ] Add "Add" button for empty optional fields
+
+#### Step 2: Create Profile Edit Functionality
+- [ ] Add "Edit Profile" button to dashboard
+- [ ] Create edit modal or inline editing form
+- [ ] Define editable vs read-only fields:
+
+**Editable fields:**
+- ✏️ firstName, lastName
+- ✏️ phone
+- ✏️ address, city, state, zipCode
+- ✏️ gateCode, gateLocation, gatedCommunity
+- ✏️ dogNames, propertyNotes
+
+**Read-only fields (require special handling):**
+- 🔒 email (requires Supabase auth email change + verification)
+- 🔒 numberOfDogs (affects pricing, use Stripe Portal)
+- 🔒 plan (affects pricing, use Stripe Portal)
+- 🔒 subscription status (controlled by Stripe)
+
+#### Step 3: Create Update Endpoint
+- [ ] Add `PATCH /api/customer/profile` endpoint in `server/routes.ts`:
+  ```typescript
+  app.patch("/api/customer/profile", requireAuth, async (req, res) => {
+    const customerId = req.user.customerId;
+    const allowedFields = [
+      'firstName', 'lastName', 'phone', 'address', 'city', 'state',
+      'zipCode', 'gateCode', 'gateLocation', 'gatedCommunity',
+      'dogNames', 'propertyNotes'
+    ];
+
+    // Validate and update database
+    const updatedCustomer = await storage.updateCustomer(customerId, req.body);
+
+    // Sync name and phone to Stripe metadata
+    if (req.body.firstName || req.body.lastName || req.body.phone) {
+      await stripe.customers.update(updatedCustomer.stripeCustomerId, {
+        name: `${updatedCustomer.firstName} ${updatedCustomer.lastName}`,
+        metadata: { phone: updatedCustomer.phone }
+      });
+    }
+
+    res.json({ customer: updatedCustomer });
+  });
+  ```
+
+#### Step 4: Email Update Flow (Special Case)
+- [ ] Create separate endpoint for email changes: `PATCH /api/customer/email`
+- [ ] Requires:
+  1. Update Supabase auth email (triggers verification email)
+  2. Update Stripe customer email
+  3. Update database customer record
+- [ ] User must verify new email before it becomes active
+
+#### Step 5: Add Missing Fields After Signup
+- [ ] Allow customers to add dogNames if they skipped it
+- [ ] Allow customers to add propertyNotes later
+- [ ] Show "Add dog names" / "Add notes" buttons when fields are empty
+
+### UI/UX Considerations
+
+**Layout suggestion:**
+```
+┌─────────────────────────────────────────┐
+│ Your Subscription                       │
+│ Plan: WEEKLY | Status: ACTIVE          │
+│ [Manage Subscription] (Stripe Portal)   │
+└─────────────────────────────────────────┘
+
+┌─────────────────────────────────────────┐
+│ Personal Information         [Edit]     │
+│ Name: Ryan Kellum                       │
+│ Email: ryan@example.com                 │
+│ Phone: (555) 123-4567                   │
+└─────────────────────────────────────────┘
+
+┌─────────────────────────────────────────┐
+│ Service Address              [Edit]     │
+│ 123 Main St                             │
+│ Jacksonville, FL 32218                  │
+│ Gated: Yes                              │
+│ Gate Code: #1234                        │
+│ Gate Location: Front entrance           │
+└─────────────────────────────────────────┘
+
+┌─────────────────────────────────────────┐
+│ Pet Information              [Edit]     │
+│ Number of Dogs: 2                       │
+│ Dog Names: Max, Bella                   │
+└─────────────────────────────────────────┘
+
+┌─────────────────────────────────────────┐
+│ Additional Notes             [Edit]     │
+│ Backyard on left side, watch for...    │
+└─────────────────────────────────────────┘
+```
+
+**Validation rules:**
+- Phone: Format validation (10 digits)
+- Email: Format validation + uniqueness check
+- Address: Required fields (street, city, state, zip)
+- Gate code: Only if gatedCommunity is true
+- Dog names: Optional text field
+
+**Success feedback:**
+- Show toast notification: "Profile updated successfully"
+- Update UI immediately (optimistic update)
+- Handle errors gracefully with specific messages
+
+---
+
 ## Quick Command Reference
 
 ```bash
