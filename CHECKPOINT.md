@@ -153,6 +153,230 @@ This file tracks our progress and serves as a quick reference for picking up whe
 
 ---
 
+## Checkpoint #3 - 2025-10-10 07:00 PM EST
+**Status:** Sweep&Go Removed, Auth Unified, Production Webhooks Working
+
+### What We Completed:
+- ✅ Removed Sweep&Go integration completely
+  - Deleted `server/sweepandgo.ts` (434 lines)
+  - Deleted `client/src/pages/admin/sweepandgo-test.tsx`
+  - Removed Sweep&Go imports and endpoints from `server/routes.ts`
+  - Removed Sweep&Go tab from admin dashboard
+  - Updated `.env.example` to remove Sweep&Go variables
+- ✅ Unified authentication to Supabase only
+  - Deleted old admin login files (`admin/login.tsx`, `admin/login-neu.tsx`, `admin/dashboard.tsx`)
+  - Removed old `/api/admin/login` and `/api/admin/create-admin` endpoints
+  - Created new `/api/admin/create-supabase-admin` endpoint
+  - Created Supabase admin user: `ryan@dookscoop.com` / `Admin1234`
+  - Single `/sign-in` page now routes based on `user_metadata.role`
+- ✅ Updated `/api/onboard` endpoint
+  - Now creates Supabase auth user with temporary password
+  - Sends welcome email with login credentials via MailerSend
+  - Stores customer in database for CRM
+  - Removed Sweep&Go client creation
+- ✅ Set up local webhook testing
+  - Installed and configured Stripe CLI
+  - Started webhook listener: `stripe listen --forward-to localhost:5001/api/stripe/webhook`
+  - Updated `.env` with webhook secret: `whsec_78f27072b5bb47a6187e581da0963c119bd6f393b3d8989cf1d99a67b3e6661f`
+  - Verified local onboarding → checkout → webhook → customer dashboard flow
+- ✅ Set up production webhooks on Railway
+  - Pointed existing Stripe webhook to Railway URL
+  - Fixed missing `STRIPE_PUBLISHABLE_KEY` in Railway
+  - Fixed truncated `VITE_SUPABASE_ANON_KEY` in Railway (full JWT required)
+  - Fixed truncated `SUPABASE_SERVICE_ROLE_KEY` in Railway (full JWT required)
+  - Verified production onboarding → payment → webhook → dashboard flow working
+- ✅ Created comprehensive `goLive.md` documentation
+  - Step-by-step guide for switching from Stripe test to live mode
+  - Instructions for creating 6 live products/prices
+  - Instructions for creating live webhook
+  - Railway environment variable updates needed
+  - Testing procedures and rollback plan
+- ✅ Removed Replit references from `client/index.html`
+- ✅ Fixed redirect route from `/admin/dashboard` to `/admin`
+
+### Current State:
+**Production site fully operational with unified Supabase auth!**
+- Railway URL: `https://dook-scoop-em-production.up.railway.app`
+- Local dev: `http://localhost:5001` (with Stripe CLI webhook forwarding)
+- Auth: Single Supabase system for both customers and admins
+- Webhooks: Working in both local (Stripe CLI) and production (Railway)
+- Onboarding flow: Creates Supabase user + sends email + Stripe checkout → webhook syncs subscription
+
+### Next Steps (To-Do):
+1. [ ] Enhance customer dashboard to show ALL onboarding information
+   - Currently shows: Plan, Number of Dogs, Status, Service Address
+   - Should show: firstName, lastName, email, phone, gateCode, gateLocation, gatedCommunity, dogNames, propertyNotes
+   - Make fields editable (except email, plan, numberOfDogs)
+   - Allow adding optional fields after signup
+
+2. [ ] Implement subscription management
+   - Add "Manage Subscription" button in customer dashboard
+   - Create `/api/customer/portal-session` endpoint
+   - Integrate Stripe Customer Portal for cancel/update payment/change plan
+   - Configure portal settings in Stripe Dashboard
+
+3. [ ] Test production with real customer signup
+   - Use test mode for now
+   - Verify full flow: onboard → pay → email → login → dashboard
+
+4. [ ] Switch to Stripe live mode when ready
+   - Follow steps in `goLive.md`
+   - Create 6 live products/prices
+   - Get live API keys
+   - Create live webhook
+   - Update Railway environment variables
+
+5. [ ] Connect custom domain from Porkbun
+
+### Key Files Modified:
+- `server/routes.ts` - Removed Sweep&Go, updated /api/onboard, added Supabase admin endpoint
+- `client/src/App.tsx` - Removed old admin routes
+- `client/index.html` - Removed Replit references
+- `.env` - Added Stripe CLI webhook secret
+- `.env.example` - Removed Sweep&Go variables
+- `goLive.md` - Created comprehensive go-live guide
+
+### Key Configuration:
+**Admin Credentials (Supabase):**
+- Email: `ryan@dookscoop.com`
+- Password: `Admin1234`
+- Role: Set in `user_metadata.role = 'admin'`
+
+**Stripe Webhook Secrets:**
+- Local: `whsec_78f27072b5bb47a6187e581da0963c119bd6f393b3d8989cf1d99a67b3e6661f`
+- Production: `whsec_6oOCID1yR8DjPbVnSsRxBylbarDO4oX9`
+
+**Railway Environment Variables (Critical):**
+- `STRIPE_PUBLISHABLE_KEY` - Must be set (was missing)
+- `VITE_SUPABASE_ANON_KEY` - Must be full JWT (was truncated)
+- `SUPABASE_SERVICE_ROLE_KEY` - Must be full JWT (was truncated)
+
+### Known Issues:
+- None - all systems operational
+
+### Notes:
+- Sweep&Go completely removed - using only internal CRM
+- Single authentication system (Supabase) for both customers and admins
+- Role-based routing: customers → `/dashboard`, admins → `/admin`
+- Onboarding creates Supabase auth user + sends welcome email with temp password
+- Stripe webhooks sync subscription data to database
+- Customer dashboard currently shows limited data (4 fields) - enhancement planned
+- Stripe test mode active - ready to switch to live when needed
+- JWT truncation in Railway is a known issue - always verify full keys
+
+---
+
+## Checkpoint #4 - 2026-01-05 02:30 PM EST
+**Status:** Marketing & Testing Documentation Complete
+
+### What We Completed:
+- ✅ Created comprehensive marketing brief (`MARKETING_BRIEF.md`)
+  - Complete brand overview, mission, and values
+  - All services and pricing information
+  - Target audience analysis and customer pain points
+  - Ready-to-use copy for signs, door hangers, business cards, flyers
+  - Brand voice examples and messaging guidelines
+  - Competitive advantages and USP breakdown
+  - Service area details and contact information
+  - Marketing campaign ideas and partnership strategies
+  - Design guidelines and visual brand notes
+  - 14KB document covering all marketing needs
+- ✅ Created comprehensive testing documentation suite
+  - `TESTING_PLAN.md` (45KB, 1,686 lines) - Main comprehensive testing guide
+  - `TESTING_SUMMARY.md` (12KB, 412 lines) - Quick reference for developers
+  - `FEATURE_MATRIX.md` (13KB, 366 lines) - Feature-by-feature testing matrix
+  - `TESTING_INDEX.md` (10KB) - Navigation and getting started guide
+- ✅ Documented all features and functionality requiring testing:
+  - 36+ routes (public, customer dashboard, admin dashboard)
+  - 40+ API endpoints (authentication, payments, admin operations)
+  - 35+ core features (onboarding, payments, subscriptions, etc.)
+  - 5 third-party integrations (Supabase, Stripe, MailerSend, Analytics)
+  - 6 critical user flows documented with step-by-step testing procedures
+  - 13 database tables and operations
+  - Security, performance, and accessibility testing guidelines
+  - 300+ total test scenarios identified
+
+### Current State:
+**Ready for comprehensive testing and marketing material creation.**
+- Marketing brief ready to share with designers/printers for creating physical materials
+- Complete testing documentation covering all application features
+- All routes, endpoints, and user flows mapped and documented
+- Testing priorities identified (120+ high-priority tests)
+- Clear testing procedures for manual and automated testing
+- Database operations and integrations fully documented
+
+### Next Steps (To-Do):
+1. [ ] Review marketing brief and begin creating marketing materials
+   - Signs for neighborhoods
+   - Door hangers for targeted distribution
+   - Business cards for vet clinics, pet stores, groomers
+   - Flyers for dog parks and community boards
+   - Vehicle magnets/decals for mobile advertising
+
+2. [ ] Begin systematic testing using testing documentation
+   - Start with critical user flows (onboarding, payment, dashboard access)
+   - Test all public pages and forms
+   - Test customer dashboard functionality
+   - Test admin dashboard and CRM features
+   - Verify all integrations (Stripe, Supabase, MailerSend, Analytics)
+   - Test security and role-based access control
+
+3. [ ] Document any bugs or issues found during testing
+   - Use testing documentation to track test results
+   - Prioritize fixes by severity
+   - Re-test after fixes applied
+
+4. [ ] Complete remaining high-priority features from plan.md
+   - Customer dashboard enhancement (show all onboarding information)
+   - Subscription management via Stripe Customer Portal
+   - Profile editing functionality
+   - Email update flow
+
+5. [ ] Prepare for production launch
+   - Switch Stripe from test to live mode (follow `goLive.md`)
+   - Verify all environment variables for production
+   - Final end-to-end testing
+   - Connect custom domain from Porkbun
+
+### Key Files Created:
+- `MARKETING_BRIEF.md` - Complete marketing guide for creating promotional materials
+- `TESTING_PLAN.md` - Comprehensive testing documentation (main reference)
+- `TESTING_SUMMARY.md` - Quick reference testing guide
+- `FEATURE_MATRIX.md` - Feature-by-feature testing checklists
+- `TESTING_INDEX.md` - Navigation guide for testing docs
+
+### Key Information:
+**Marketing Assets Ready:**
+- Brand tagline: "We Fear No Pile"
+- Mission: Clean yards, happy pets, and more time for you
+- Service areas: Northeast Florida (Jacksonville and surrounding cities)
+- Pricing: Weekly from $27.50, Bi-weekly from $17/visit, One-time $50
+- Contact: (904) 312-2422 | ryan@dookscoop.com | dookscoopem.com
+- Competitive advantage: All-inclusive pricing saves customers $18-77/month
+- Target audience: Busy dog owners in Jacksonville who value reliability
+
+**Testing Coverage:**
+- Public routes: 24 pages (home, services, contact, onboarding, etc.)
+- Customer dashboard: 5 routes (dashboard, subscription, schedule, billing, settings)
+- Admin dashboard: 7 routes (customers, quotes, waitlist, service areas, etc.)
+- API endpoints: 40+ documented with expected inputs/outputs
+- User types: Public visitor, authenticated customer, authenticated admin
+- Testing areas: Unit, integration, E2E, manual, performance, security, accessibility
+
+### Known Issues:
+- None identified - documentation phase only, testing not yet started
+
+### Notes:
+- Marketing brief designed for use with Claude Web or human designers
+- All brand messaging, pricing, and services documented in one place
+- Testing documentation provides systematic approach to verify all features
+- Documents organized by use case (quick reference, comprehensive guide, feature matrix)
+- Ready to begin both marketing material creation and systematic testing
+- Testing should be completed before connecting custom domain
+- High-priority testing focuses on critical user flows (sign up → pay → access dashboard)
+
+---
+
 ## How to Use This File
 
 When starting a new Claude Code session:
