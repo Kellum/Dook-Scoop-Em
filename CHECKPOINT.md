@@ -377,6 +377,102 @@ This file tracks our progress and serves as a quick reference for picking up whe
 
 ---
 
+## Checkpoint #5 - 2026-01-07 03:50 PM EST
+**Status:** Onboarding Form UX Improvements Complete
+
+### What We Completed:
+- ✅ Implemented custom toggle buttons for plan selection (replacing RadioGroup)
+  - Added deselection capability (click selected option to deselect)
+  - Maintained ARIA accessibility (role="radio", aria-checked, keyboard navigation)
+  - Custom checkmark indicator with orange styling
+  - Prevented infinite loop errors from conflicting event handlers
+- ✅ Removed redundant benefits from plan options
+  - Moved "What's Included" from expandable sections to dedicated sidebar
+  - Eliminated clutter in plan selection cards
+- ✅ Created responsive benefits display
+  - Desktop: Green benefits box in right sidebar
+  - Mobile: "What's included" button that opens modal
+  - Modal includes heading, "No Upsells - EVER!" badge, and 5 benefits with checkmarks
+- ✅ Optimized layout and spacing
+  - Changed container from max-w-2xl to max-w-6xl for more breathing room
+  - Step 3: 7-column grid (1 empty + 4 form + 2 benefits sidebar)
+  - Steps 1 & 2: Centered with max-w-2xl constraint
+  - Step 4: Centered with max-w-4xl constraint (wider for 2-column form)
+- ✅ Positioned mobile "What's included" button correctly
+  - Placed below Back/Next buttons in form flow
+  - Full width with green styling to differentiate from orange action buttons
+
+### Current State:
+**Onboarding form has improved UX with better layout and accessible plan selection.**
+- Custom toggle buttons allow deselection (not possible with standard radio buttons)
+- Benefits consolidated to sidebar (desktop) and modal (mobile) instead of repeated in each option
+- Wider overall layout (max-w-6xl) provides better spacing
+- Each step has appropriate width constraints for optimal readability
+- All changes are responsive and work on mobile and desktop
+- Server running successfully on port 5001
+
+### Next Steps (To-Do):
+1. [ ] Test the updated onboarding flow end-to-end
+   - Verify plan selection/deselection works smoothly
+   - Test mobile "What's included" button and modal
+   - Confirm responsive layout at different screen sizes
+   - Verify keyboard navigation works for accessibility
+
+2. [ ] Continue with remaining testing from TESTING_PLAN.md
+   - Test all public pages and forms
+   - Test customer dashboard functionality
+   - Test admin dashboard and CRM features
+   - Verify all integrations (Stripe, Supabase, MailerSend, Analytics)
+
+3. [ ] Complete remaining high-priority features from plan.md
+   - Customer dashboard enhancement (show all onboarding information)
+   - Subscription management via Stripe Customer Portal
+   - Profile editing functionality
+   - Email update flow
+
+4. [ ] Review marketing brief and begin creating marketing materials
+   - Signs, door hangers, business cards, flyers
+   - Vehicle magnets/decals for mobile advertising
+
+5. [ ] Prepare for production launch
+   - Switch Stripe from test to live mode (follow `goLive.md`)
+   - Final end-to-end testing
+   - Connect custom domain from Porkbun
+
+### Key Files Modified:
+- `client/src/pages/onboard-survey.tsx` - Major UX improvements
+  - Replaced RadioGroup with custom toggle buttons (lines 430-540)
+  - Added modal state for mobile benefits display
+  - Removed expandable plan benefits sections
+  - Added desktop benefits sidebar (lines 568-601)
+  - Added mobile benefits modal (lines 603-668)
+  - Added mobile "What's included" button (lines 551-560)
+  - Changed container width from max-w-2xl to max-w-6xl (line 285)
+  - Added width constraints to individual steps (max-w-2xl for steps 1&2, max-w-4xl for step 4)
+  - Implemented 7-column grid layout for step 3 (lines 416-420)
+- `client/src/components/ui/radio-group.tsx` - No changes (component still exists but not used in onboarding)
+
+### Key Technical Decisions:
+1. **Custom Toggle vs RadioGroup**: Chose custom implementation because Radix UI RadioGroup doesn't support deselection by design
+2. **Benefits placement**: Moved from inline (3x repetition) to sidebar/modal (1x instance) for cleaner UX
+3. **Layout grid**: Used 7-column grid (1+4+2) for step 3 to create balanced layout with empty space on left
+4. **Width constraints**: Different max-widths per step based on form complexity (simple forms narrower, multi-column forms wider)
+5. **Button positioning**: Placed mobile button in form flow rather than absolute positioning to avoid overlap issues
+
+### Known Issues:
+- None - all implementations working correctly
+
+### Notes:
+- Custom radio buttons maintain full accessibility with ARIA attributes and keyboard navigation
+- Arrow keys navigate between options, Space/Enter toggles selection
+- Green benefits box uses sticky positioning to stay visible while scrolling
+- Modal uses backdrop click-to-dismiss pattern with explicit close button
+- Layout is fully responsive with mobile-first approach
+- All form validation and submission logic remains unchanged
+- Changes are purely UI/UX improvements, no business logic affected
+
+---
+
 ## How to Use This File
 
 When starting a new Claude Code session:

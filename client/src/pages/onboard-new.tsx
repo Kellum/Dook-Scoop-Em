@@ -35,9 +35,9 @@ const quoteSchema = z.object({
 type QuoteFormData = z.infer<typeof quoteSchema>;
 
 const PLANS = {
-  weekly: { name: "Once a Week", price: 110, pricePerVisit: 27.50 },
-  biweekly: { name: "Every Two Weeks", price: 90, pricePerVisit: 22.50 },
-  twice_weekly: { name: "Twice a Week", price: 136, pricePerVisit: 17 },
+  weekly: { name: "Once a Week", price: 95, pricePerVisit: 23.75 },
+  biweekly: { name: "Every Two Weeks", price: 75, pricePerVisit: 18.75 },
+  twice_weekly: { name: "Twice a Week", price: 116, pricePerVisit: 14.50 },
 };
 
 export default function OnboardNew() {
@@ -259,9 +259,9 @@ export default function OnboardNew() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="weekly">Once a Week - $110/month</SelectItem>
-                          <SelectItem value="biweekly">Every Two Weeks - $90/month</SelectItem>
-                          <SelectItem value="twice_weekly">Twice a Week - $136/month</SelectItem>
+                          <SelectItem value="weekly">Once a Week - $95/month</SelectItem>
+                          <SelectItem value="biweekly">Every Two Weeks - $75/month</SelectItem>
+                          <SelectItem value="twice_weekly">Twice a Week - $116/month</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

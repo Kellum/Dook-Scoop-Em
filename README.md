@@ -196,6 +196,34 @@ This is a private business application. Contact the owner for contribution guide
 
 MIT License - See LICENSE file for details
 
+## Marketing Resources
+
+### QR Code Generators
+
+For creating QR codes for marketing materials, flyers, and customer-facing content:
+
+**Recommended (Canva Pro Available)**
+- **Canva Pro** - Integrated design tool for creating branded QR codes within marketing materials
+  - Best for: Print materials, social media graphics, event materials
+  - Limitations: Static QR codes only, no analytics
+  - Access: Already included in Canva Pro subscription
+
+**Free Alternatives**
+- **QRCode Monkey** (qrcode-monkey.com) - High-resolution, custom design options
+- **ME-QR** - Free dynamic QR codes with analytics
+- **Adobe Express** - Non-expiring QR codes, good for quick design integration
+
+**Business/Marketing Focused**
+- **QRCodeChimp** (qrcodechimp.com) - Custom shapes, logo integration, brand theming
+- **QR Tiger** - Unlimited static/dynamic codes, no scan limits
+- **Uniqode** - Advanced analytics, GDPR-compliant tracking, API integration
+- **Pageloot** - Retargeting capabilities for Facebook/Google Ads
+
+**Use Cases:**
+- Print flyers and yard signs → Use Canva Pro for integrated design
+- Trackable marketing campaigns → Use QRCodeChimp or QR Tiger for analytics
+- Dynamic URLs (editable after printing) → Use ME-QR or QR Tiger
+
 ## Support
 
 For issues or questions:

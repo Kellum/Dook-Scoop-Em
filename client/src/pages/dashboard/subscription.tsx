@@ -14,9 +14,9 @@ export default function Subscription() {
   });
 
   const planDetails = {
-    weekly: { name: "Weekly", price: "$110/month", frequency: "Once per week" },
-    biweekly: { name: "Bi-weekly", price: "$90/month", frequency: "Every two weeks" },
-    twice_weekly: { name: "Twice Weekly", price: "$136/month", frequency: "Twice per week" }
+    weekly: { name: "Weekly", price: "$95/month", frequency: "Once per week" },
+    biweekly: { name: "Bi-weekly", price: "$75/month", frequency: "Every two weeks" },
+    twice_weekly: { name: "Twice Weekly", price: "$116/month", frequency: "Twice per week" }
   };
 
   const plan = subscriptionData?.subscription?.plan || '';
