@@ -473,6 +473,135 @@ This file tracks our progress and serves as a quick reference for picking up whe
 
 ---
 
+## Checkpoint #6 - 2026-01-08 07:15 PM EST
+**Status:** Stripe Live Mode Documentation Complete - Ready for Activation
+
+### What We Completed:
+- ✅ Created comprehensive Stripe live mode setup guide (`STRIPE_LIVE_MODE_SETUP.md`)
+  - Step-by-step instructions for switching from test to live mode
+  - How to get live API keys from Stripe Dashboard
+  - How to get live price IDs for all 6 products
+  - How to create live webhook with proper endpoint URL
+  - Instructions for updating local `.env` file
+  - Instructions for updating Railway environment variables
+  - Testing procedures and verification steps
+  - Troubleshooting guide for common issues
+  - Important note: Test cards DO NOT work in live mode
+- ✅ Created post-launch audit checklist (`POST_LAUNCH_AUDIT.md`)
+  - Critical infrastructure checks (Stripe webhooks, database, auth)
+  - User experience testing (onboarding, dashboard, emails)
+  - Admin & CRM functionality verification
+  - Performance & monitoring setup
+  - SEO & marketing verification
+  - Legal & compliance review
+  - Mobile & cross-browser testing
+  - Backup & recovery planning
+  - 120+ checklist items covering all aspects of production readiness
+  - ⚠️ Documented missing webhook handlers as URGENT priority
+- ✅ Created next session prompt (`NEXT_SESSION_PROMPT.md`)
+  - Clear documentation of current status
+  - List of what's been completed
+  - Checklist of what still needs to be done
+  - Quick start guide for next session
+  - Reference links to Stripe and Railway dashboards
+- ✅ Set up live webhook in Stripe Dashboard
+  - Name: "Production"
+  - Endpoint: `https://dookscoopem.com/api/stripe/webhook`
+  - Events: 5 selected (checkout.session.completed, customer.subscription.updated, customer.subscription.deleted, invoice.payment_succeeded, invoice.payment_failed)
+  - Description: Documents that only checkout.session.completed is currently implemented
+  - Webhook secret ready to copy
+- ✅ Identified missing webhook event handlers
+  - Currently implemented: Only `checkout.session.completed` (server/routes.ts:1787)
+  - Missing handlers: customer.subscription.updated, customer.subscription.deleted, invoice.payment_succeeded, invoice.payment_failed
+  - Documented in POST_LAUNCH_AUDIT.md as urgent priority
+- ✅ Clarified Stripe configuration details
+  - Price IDs (not Product IDs) are what's needed for environment variables
+  - Publishable key is same for both STRIPE_PUBLISHABLE_KEY and VITE_STRIPE_PUBLISHABLE_KEY
+  - Custom domain (dookscoopem.com) should be used for webhook, not Railway URL
+  - RAILWAY_PUBLIC_DOMAIN should be set to custom domain for proper redirects
+
+### Current State:
+**Documentation complete, but environment variables NOT yet updated to live mode.**
+- Still using test mode Stripe keys (`sk_test_...`, `pk_test_...`)
+- Live webhook created in Stripe Dashboard but not yet receiving events
+- All 6 products created in Stripe live mode with price IDs ready
+- Comprehensive guides ready for switching to live mode
+- Post-launch audit checklist ready for systematic verification
+
+### Next Steps (To-Do):
+1. [ ] **Update local environment variables in `.env`**
+   - Replace `STRIPE_SECRET_KEY` with live key (sk_live_...)
+   - Replace `STRIPE_PUBLISHABLE_KEY` with live key (pk_live_...)
+   - Replace `VITE_STRIPE_PUBLISHABLE_KEY` with live key (pk_live_...)
+   - Replace `STRIPE_WEBHOOK_SECRET` with live webhook secret (whsec_...)
+   - Update all 6 price IDs to live price IDs (WEEKLY, BIWEEKLY, TWICE_WEEKLY, EXTRA_DOG, INITIAL_STANDARD, INITIAL_HEAVY)
+   - Restart local dev server
+
+2. [ ] **Update Railway environment variables**
+   - Same Stripe keys as above
+   - Add/update `RAILWAY_PUBLIC_DOMAIN=dookscoopem.com`
+   - Wait for Railway to redeploy
+
+3. [ ] **Test live mode checkout**
+   - Verify Stripe checkout page shows "Live mode" (not "Test mode")
+   - Complete a real transaction (will charge real money)
+   - Verify webhook receives events in Stripe Dashboard logs
+   - Check database for customer and subscription creation
+
+4. [ ] **⚠️ URGENT: Implement missing webhook handlers**
+   - Add handler for `customer.subscription.updated` (plan changes)
+   - Add handler for `customer.subscription.deleted` (cancellations)
+   - Add handler for `invoice.payment_succeeded` (recurring payments)
+   - Add handler for `invoice.payment_failed` (failed payments, customer notification)
+   - Location: server/routes.ts:1787 (after existing checkout.session.completed handler)
+
+5. [ ] **Complete post-launch audit**
+   - Follow checklist in `POST_LAUNCH_AUDIT.md`
+   - Test all critical user flows
+   - Verify all integrations working
+   - Check security and authentication
+   - Test mobile responsiveness
+
+### Key Files Created:
+- `STRIPE_LIVE_MODE_SETUP.md` - Complete guide for switching to Stripe live mode
+- `POST_LAUNCH_AUDIT.md` - Comprehensive post-launch audit checklist
+- `NEXT_SESSION_PROMPT.md` - Session handoff document for continuity
+
+### Key Information:
+**Stripe Live Mode Requirements:**
+- Live Secret Key (sk_live_...) - from Stripe Dashboard → API Keys
+- Live Publishable Key (pk_live_...) - from Stripe Dashboard → API Keys
+- Live Webhook Secret (whsec_...) - from Stripe Dashboard → Webhooks → Production
+- 6 Live Price IDs - from Stripe Dashboard → Products (click each product to get price ID)
+
+**Webhook Configuration:**
+- Endpoint: `https://dookscoopem.com/api/stripe/webhook`
+- Events: checkout.session.completed, customer.subscription.updated, customer.subscription.deleted, invoice.payment_succeeded, invoice.payment_failed
+- Currently only checkout.session.completed has a handler implemented
+- Webhooks can be edited anytime to add/remove events
+
+**Critical Notes:**
+- Test cards (4242 4242 4242 4242) CANNOT be used in live mode
+- Live mode charges real money to real payment methods
+- RAILWAY_PUBLIC_DOMAIN must be set to dookscoopem.com (not Railway URL)
+- Webhook URL should use custom domain (dookscoopem.com), not Railway URL
+
+### Known Issues:
+- ⚠️ Missing webhook handlers for 4 out of 5 configured events (documented as urgent in POST_LAUNCH_AUDIT.md)
+- Environment variables still set to test mode (intentional - waiting for next session)
+
+### Notes:
+- All documentation completed in this session, no code changes made
+- Live webhook created in Stripe but won't work until environment variables updated
+- Price IDs (price_...) are required, not Product IDs (prod_...)
+- Publishable key can be safely exposed to frontend (used in VITE_ variable)
+- Secret key must NEVER be exposed to frontend
+- Comprehensive audit checklist covers infrastructure, UX, admin features, performance, SEO, legal, mobile, and backups
+- Next session should focus on updating environment variables and testing live mode
+- After live mode confirmed working, implement missing webhook handlers as urgent priority
+
+---
+
 ## How to Use This File
 
 When starting a new Claude Code session:
