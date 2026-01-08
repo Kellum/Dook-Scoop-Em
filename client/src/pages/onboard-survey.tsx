@@ -282,6 +282,16 @@ export default function OnboardSurvey() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
+
+      {/* FIRSTVISIT Promotion Banner */}
+      <div className="max-w-4xl mx-auto px-4 pt-6">
+        <div className="bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg border-2 border-green-400 shadow-md">
+          <div className="flex items-center justify-center space-x-2">
+            <p className="text-sm font-semibold">Special Offer: Get your first visit FREE! Use code <span className="font-black text-yellow-300">FIRSTVISIT</span> at checkout (25% off your first month)</p>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-6xl mx-auto px-4 py-12">
         {/* Progress Indicator */}
         <div className="mb-8">

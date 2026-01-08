@@ -11,6 +11,7 @@ export default function CustomerDashboard() {
   const [location] = useLocation();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [syncing, setSyncing] = useState(false);
 
   const { data: subscriptionData, refetch } = useQuery({
     queryKey: ['/api/customer/subscription'],
@@ -20,23 +21,27 @@ export default function CustomerDashboard() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const sessionId = params.get('session_id');
-    
+
     if (sessionId) {
       // Just came back from Stripe checkout - webhook will create the record
       window.history.replaceState({}, '', '/dashboard');
-      
+
       toast({
         title: "Payment Successful!",
         description: "Your subscription is being activated...",
       });
-      
+
       // Poll for subscription data (webhook creates it within a few seconds)
       setLoading(true);
+      let pollCount = 0;
+
       const pollInterval = setInterval(() => {
+        pollCount++;
         refetch().then((result) => {
           if (result.data?.hasSubscription) {
             clearInterval(pollInterval);
             setLoading(false);
+            setSyncing(false);
             toast({
               title: "Success!",
               description: "Your subscription is now active!",
@@ -44,19 +49,46 @@ export default function CustomerDashboard() {
           }
         });
       }, 2000); // Check every 2 seconds
-      
+
+      // After 10 seconds (5 polls), try fallback endpoint
+      const fallbackTimeout = setTimeout(async () => {
+        setSyncing(true);
+        toast({
+          title: "Syncing your account...",
+          description: "This may take a moment for promotional discounts.",
+        });
+
+        try {
+          const response = await fetch('/api/stripe/complete-checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ sessionId }),
+          });
+
+          if (response.ok) {
+            // Subscription created, refetch will pick it up
+            refetch();
+          }
+        } catch (error) {
+          console.error('Fallback endpoint error:', error);
+        }
+      }, 10000);
+
       // Stop polling after 30 seconds
       const timeout = setTimeout(() => {
         clearInterval(pollInterval);
         setLoading(false);
+        setSyncing(false);
         toast({
           title: "Taking longer than expected",
           description: "Please refresh the page in a moment.",
         });
       }, 30000);
-      
+
       return () => {
         clearInterval(pollInterval);
+        clearTimeout(fallbackTimeout);
         clearTimeout(timeout);
       };
     }
@@ -83,6 +115,25 @@ export default function CustomerDashboard() {
           </div>
         </div>
       </header>
+
+      {/* Syncing Banner */}
+      {(loading || syncing) && !subscriptionData?.hasSubscription && (
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center justify-center space-x-3">
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+              <div className="text-center">
+                <p className="text-lg font-bold">
+                  {syncing ? "We see you have a discount! Awesome!" : "Setting up your account..."}
+                </p>
+                <p className="text-sm">
+                  Please wait while we sync your subscription. This will only take a moment.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -173,8 +224,8 @@ interface DashboardCardProps {
 function DashboardCard({ icon, title, description, href, testId }: DashboardCardProps) {
   return (
     <Link href={href}>
-      <a 
-        className="block bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700"
+      <div
+        className="block bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700 cursor-pointer"
         data-testid={testId}
       >
         <div className="flex items-center mb-3">
@@ -182,7 +233,7 @@ function DashboardCard({ icon, title, description, href, testId }: DashboardCard
         </div>
         <h3 className="font-bold text-gray-900 dark:text-white mb-1">{title}</h3>
         <p className="text-sm text-gray-600 dark:text-gray-400">{description}</p>
-      </a>
+      </div>
     </Link>
   );
 }

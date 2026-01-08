@@ -234,6 +234,18 @@ export default function Onboard() {
           <div className="bg-orange-600 text-white py-4 px-6 rounded-lg mb-4">
             <CardTitle className="text-2xl font-bold">Get Your Free Estimate</CardTitle>
           </div>
+
+          {/* FIRSTVISIT Promotion Banner */}
+          <div className="bg-gradient-to-r from-green-500 to-green-600 text-white py-4 px-6 rounded-lg mb-4 border-4 border-green-300 shadow-lg">
+            <div className="flex items-center justify-center space-x-2 mb-2">
+              <span className="text-2xl">🎉</span>
+              <h4 className="text-xl font-bold">Special Offer!</h4>
+              <span className="text-2xl">🎉</span>
+            </div>
+            <p className="text-lg font-semibold mb-1">Get your FIRST visit FREE!</p>
+            <p className="text-sm opacity-90">Use code <span className="font-black text-yellow-300">FIRSTVISIT</span> at checkout</p>
+            <p className="text-xs mt-1 opacity-75">(That's 25% off your first month!)</p>
+          </div>
         </CardHeader>
         <CardContent className="p-6">
           <Form {...quoteForm}>
@@ -397,6 +409,18 @@ export default function Onboard() {
       <Card className="neu-raised bg-white max-w-md mx-auto shadow-lg">
         {pricingInfo && (
           <div className="text-center mb-6">
+            {/* FIRSTVISIT Promotion Banner */}
+            <div className="bg-gradient-to-r from-green-500 to-green-600 text-white py-4 px-6 rounded-lg mb-4 border-4 border-green-300 shadow-lg">
+              <div className="flex items-center justify-center space-x-2 mb-2">
+                <span className="text-2xl">🎉</span>
+                <h4 className="text-xl font-bold">Special Offer!</h4>
+                <span className="text-2xl">🎉</span>
+              </div>
+              <p className="text-lg font-semibold mb-1">Get your FIRST visit FREE!</p>
+              <p className="text-sm opacity-90">Use code <span className="font-black text-yellow-300">FIRSTVISIT</span> at checkout</p>
+              <p className="text-xs mt-1 opacity-75">(That's 25% off your first month!)</p>
+            </div>
+
             <div className="bg-orange-600 text-white py-6 px-6 rounded-lg mb-6">
               <h3 className="text-2xl font-bold mb-2">{quoteData?.serviceFrequency === 'one_time' ? 'Your One-Time Cleanup Price' : 'Your Price Per Visit'}</h3>
               <div className="text-4xl font-black">{(() => {

@@ -1485,7 +1485,9 @@ Submitted: ${new Date().toLocaleString()}
         customer: stripeCustomerId,
         mode: "subscription",
         payment_method_types: ["card"],
+        payment_method_collection: "always", // Collect payment method even for $0 subscriptions (100% coupons)
         line_items: lineItems,
+        allow_promotion_codes: true,
         success_url: `${baseUrl}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${baseUrl}/onboard`,
         metadata: {
@@ -1552,8 +1554,10 @@ Submitted: ${new Date().toLocaleString()}
         subscription: session.subscription,
         metadata: session.metadata
       });
-      
-      if (session.payment_status !== 'paid') {
+
+      // Accept both paid and no_payment_required statuses (for 100% discount coupons)
+      const validPaymentStatuses = ['paid', 'no_payment_required'];
+      if (!validPaymentStatuses.includes(session.payment_status)) {
         console.log('[Complete Checkout] ERROR: Payment not completed, status:', session.payment_status);
         return res.status(400).json({ error: "Payment not completed" });
       }
@@ -1569,6 +1573,18 @@ Submitted: ${new Date().toLocaleString()}
       
       if (!customer) {
         console.log('[Complete Checkout] Creating new customer...');
+
+        // Convert dogNames to array if it's a string
+        let dogNamesArray: string[] = [];
+        if (parsedCustomerData.dogNames) {
+          if (Array.isArray(parsedCustomerData.dogNames)) {
+            dogNamesArray = parsedCustomerData.dogNames;
+          } else if (typeof parsedCustomerData.dogNames === 'string') {
+            // Split by comma if multiple, otherwise single item array
+            dogNamesArray = parsedCustomerData.dogNames.split(',').map(name => name.trim()).filter(name => name);
+          }
+        }
+
         customer = await storage.createCustomer({
           supabaseUserId,
           stripeCustomerId: session.customer as string,
@@ -1583,7 +1599,7 @@ Submitted: ${new Date().toLocaleString()}
           gateCode: parsedCustomerData.gateCode,
           gatedCommunity: parsedCustomerData.gatedCommunity,
           gateLocation: parsedCustomerData.gateLocation,
-          dogNames: parsedCustomerData.dogNames,
+          dogNames: dogNamesArray,
           numberOfDogs: parseInt(dogCount),
           notes: parsedCustomerData.propertyNotes,
           role: 'customer',
@@ -1786,7 +1802,14 @@ Submitted: ${new Date().toLocaleString()}
     // Handle different event types
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as any;
-      
+
+      // Verify payment status before processing
+      const validPaymentStatuses = ['paid', 'no_payment_required'];
+      if (!validPaymentStatuses.includes(session.payment_status)) {
+        console.log('[Webhook] Ignoring checkout session with payment_status:', session.payment_status);
+        return res.json({ received: true });
+      }
+
       const { supabaseUserId, plan, dogCount, customerData } = session.metadata;
       const parsedCustomerData = customerData ? JSON.parse(customerData) : {};
 
