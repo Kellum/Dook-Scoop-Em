@@ -1842,25 +1842,128 @@ Submitted: ${new Date().toLocaleString()}
         });
       }
 
-      // Create subscription record
+      // Create subscription record (check for duplicates first to handle webhook retries)
       try {
         const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
-        
-        await storage.createSubscription({
-          customerId: customer.id,
-          stripeSubscriptionId: subscription.id,
-          plan,
-          dogCount: parseInt(dogCount) || 1,
-          status: 'active',
-          currentPeriodStart: subscription.current_period_start 
-            ? new Date(subscription.current_period_start * 1000).toISOString() 
-            : new Date().toISOString(),
-          currentPeriodEnd: subscription.current_period_end 
-            ? new Date(subscription.current_period_end * 1000).toISOString() 
-            : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-        });
 
-        console.log('Customer and subscription created successfully');
+        // Check if subscription already exists (webhook retries)
+        const existingSubscription = await storage.getSubscriptionByStripeId(subscription.id);
+
+        if (!existingSubscription) {
+          await storage.createSubscription({
+            customerId: customer.id,
+            stripeSubscriptionId: subscription.id,
+            plan,
+            dogCount: parseInt(dogCount) || 1,
+            status: 'active',
+            currentPeriodStart: subscription.current_period_start
+              ? new Date(subscription.current_period_start * 1000).toISOString()
+              : new Date().toISOString(),
+            currentPeriodEnd: subscription.current_period_end
+              ? new Date(subscription.current_period_end * 1000).toISOString()
+              : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+          });
+          console.log('[Webhook] Customer and subscription created successfully');
+        } else {
+          console.log('[Webhook] Subscription already exists, skipping creation (webhook retry)');
+        }
+
+        // Send welcome email to customer (only if we just created the subscription)
+        if (!existingSubscription) {
+          try {
+          const baseUrl = process.env.RAILWAY_PUBLIC_DOMAIN
+            ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}`
+            : 'http://localhost:5001';
+
+          const welcomeEmail = {
+            from: {
+              email: "noreply@dookscoopem.com",
+              name: "Dook Scoop 'Em"
+            },
+            to: [
+              {
+                email: customer.email,
+                name: `${customer.firstName} ${customer.lastName}`
+              }
+            ],
+            reply_to: [
+              {
+                email: "info@dookscoop.com",
+                name: "Dook Scoop 'Em Support"
+              }
+            ],
+            subject: "Welcome to Dook Scoop 'Em - Your Subscription is Active!",
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <h1 style="color: #ea580c;">Welcome to Dook Scoop 'Em!</h1>
+
+                <p>Hi ${customer.firstName},</p>
+
+                <p>Thank you for signing up! Your subscription is now active and we're excited to keep your yard clean.</p>
+
+                <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                  <h2 style="color: #1f2937; margin-top: 0;">Your Subscription Details</h2>
+                  <p><strong>Plan:</strong> ${plan.replace('_', ' ').toUpperCase()}</p>
+                  <p><strong>Number of Dogs:</strong> ${dogCount}</p>
+                  <p><strong>Service Address:</strong> ${customer.address}, ${customer.city}, ${customer.state} ${customer.zipCode}</p>
+                </div>
+
+                <h2 style="color: #1f2937;">What's Next?</h2>
+                <ul>
+                  <li>We'll schedule your first service visit within the next few days</li>
+                  <li>You'll receive notifications before each service visit</li>
+                  <li>Check your dashboard to view your upcoming schedule</li>
+                </ul>
+
+                <div style="margin: 30px 0;">
+                  <a href="${baseUrl}/dashboard" style="background-color: #ea580c; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">View Your Dashboard</a>
+                </div>
+
+                <h2 style="color: #1f2937;">Managing Your Subscription</h2>
+                <p>You can manage your subscription anytime from your dashboard:</p>
+                <ul>
+                  <li>View upcoming service visits</li>
+                  <li>Update payment information</li>
+                  <li>Modify or cancel your plan</li>
+                  <li>Contact support</li>
+                </ul>
+
+                <p>If you have any questions, just reply to this email or visit your dashboard.</p>
+
+                <p>Thanks again for choosing Dook Scoop 'Em!</p>
+
+                <p style="color: #6b7280; font-size: 14px; margin-top: 30px;">
+                  The Dook Scoop 'Em Team<br>
+                  <a href="${baseUrl}" style="color: #ea580c;">dookscoopem.com</a>
+                </p>
+              </div>
+            `
+          };
+
+          if (process.env.MAILERSEND_API_KEY) {
+            const emailResponse = await fetch('https://api.mailersend.com/v1/email', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.MAILERSEND_API_KEY}`
+              },
+              body: JSON.stringify(welcomeEmail)
+            });
+
+            if (emailResponse.ok) {
+              console.log('[Webhook] Welcome email sent successfully to', customer.email);
+            } else {
+              const errorText = await emailResponse.text();
+              console.error('[Webhook] Failed to send welcome email:', errorText);
+            }
+          } else {
+            console.log('[Webhook] MailerSend API key not configured, skipping welcome email');
+          }
+          } catch (emailError) {
+            console.error('[Webhook] Error sending welcome email:', emailError);
+            // Don't throw - email failure shouldn't fail the webhook
+          }
+        }
       } catch (subError) {
         console.error('Error creating subscription:', subError);
         throw subError;
